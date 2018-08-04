@@ -1,10 +1,11 @@
-package com.xingkong.spingboot.commonUtil;
+package com.xingkong.spingboot.commonutil;
 
 import java.math.BigDecimal;
 
 /**
  * 精确计算工具类
  * Created by 46926 on 2018/8/4.
+ * @author fanxiaoping
  */
 public class AccurateCalculation {
 
@@ -129,6 +130,6 @@ public class AccurateCalculation {
          * BigDecimal.ROUND_UNNECESSARY
          * 一般不用
          */
-        System.out.println(b9.setScale(1,BigDecimal.ROUND_UNNECESSARY));
+        //System.out.println(b9.setScale(1,BigDecimal.ROUND_UNNECESSARY));
     }
 }
