@@ -130,6 +130,6 @@ public class AccurateCalculation {
          * BigDecimal.ROUND_UNNECESSARY
          * 一般不用
          */
-        System.out.println(b9.setScale(1,BigDecimal.ROUND_UNNECESSARY));
+        //System.out.println(b9.setScale(1,BigDecimal.ROUND_UNNECESSARY));
     }
 }
