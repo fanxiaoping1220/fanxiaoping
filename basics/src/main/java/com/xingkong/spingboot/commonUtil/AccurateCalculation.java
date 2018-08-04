@@ -1,4 +1,4 @@
-package com.xingkong.spingboot.common;
+package com.xingkong.spingboot.commonUtil;
 
 import java.math.BigDecimal;
 

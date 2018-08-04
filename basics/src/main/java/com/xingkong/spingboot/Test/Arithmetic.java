@@ -1,6 +1,6 @@
 package com.xingkong.spingboot.Test;
 
-import com.xingkong.spingboot.common.AccurateCalculation;
+import com.xingkong.spingboot.commonUtil.AccurateCalculation;
 
 /**
  * 算术操作符
