@@ -1,9 +1,10 @@
-package com.xingkong.spingboot.Test;
+package com.xingkong.spingboot.test;
 
 /**
  * description:赋值
  * Created by 46926 on 2018/8/4.
  * 别名现象
+ * @author fanxiaoping
  */
 public class Valuation {
 

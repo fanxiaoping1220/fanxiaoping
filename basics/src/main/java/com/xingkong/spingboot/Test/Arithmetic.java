@@ -1,10 +1,11 @@
-package com.xingkong.spingboot.Test;
+package com.xingkong.spingboot.test;
 
-import com.xingkong.spingboot.commonUtil.AccurateCalculation;
+import com.xingkong.spingboot.commonutil.AccurateCalculation;
 
 /**
  * 算术操作符
  * Created by 46926 on 2018/8/4.
+ * @author fanxiaoping
  */
 public class Arithmetic {
 
