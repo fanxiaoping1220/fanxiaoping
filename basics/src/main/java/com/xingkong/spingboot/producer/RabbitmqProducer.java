@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @ClassName RabbitProducer
+ * @ClassName RabbitmqProducer
  * @Description 生产者
  * @Author fanxiaoping
  * @Date 2018/9/4 14:44
  * @Version 1.0.0
  **/
-public class RabbitProducer {
+public class RabbitmqProducer {
 
     /**
      * 交换机名称
