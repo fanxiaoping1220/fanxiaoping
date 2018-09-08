@@ -53,32 +53,32 @@ public class RabbitmqProducer {
         factory.setUsername("root");
         factory.setPassword("root123");
         /**
-         * 创建连接
+         * 1.创建连接
          */
         Connection connection = factory.newConnection();
         /**
-         * 创建通道
+         * 2.创建通道
          */
         Channel channel = connection.createChannel();
         /**
-         * 创建一个type="direct",持久化的,非自动删除的交换机
+         * 3.创建一个type="direct",持久化的,非自动删除的交换机
          */
         channel.exchangeDeclare(EXCHANGE_NAME,"direct",true,false,null);
         /**
-         * 创建一个持久化,非排他的,非自动删除的队列
+         * 4.创建一个持久化,非排他的,非自动删除的队列
          */
         channel.queueDeclare(QUEUE_NAME,true,false,false,null);
         /**
-         * 将交换机与队列通过路由键绑定
+         * 5.将交换机与队列通过路由键绑定
          */
         channel.queueBind(QUEUE_NAME,EXCHANGE_NAME,ROUTING_KEY);
         /**
-         * 发送一条持久化消息
+         * 6.发送一条持久化消息
          */
         String message = " Hello Rabbitmq";
         channel.basicPublish(EXCHANGE_NAME,ROUTING_KEY,MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
         /**
-         * 关闭资源
+         * 7.关闭资源
          */
         channel.close();
         connection.close();
