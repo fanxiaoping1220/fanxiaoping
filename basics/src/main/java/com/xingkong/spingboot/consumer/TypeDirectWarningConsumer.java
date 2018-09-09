@@ -8,7 +8,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @ClassName: TypeDirectWarningConsumer
- * @Description:
+ * @Description: 交换器 type = "direct" 消费 queue_direct_1 路由键：warning
  * @Auther: fanxiaoping
  * @Date: 2018/9/9 15:07
  * @version: 1.0.0

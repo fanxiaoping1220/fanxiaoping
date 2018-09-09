@@ -8,7 +8,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @ClassName: TypeTopicConsumer
- * @Description: Exchange type = "topic"
+ * @Description: Exchange type = "topic" #
  * @Auther: fanxiaoping
  * @Date: 2018/9/9 17:54
  * @version: 1.0.0
