@@ -7,13 +7,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @ClassName RabbitmqConsumer
- * @Description 消费者
+ * @ClassName RabbitmqPushConsumer
+ * @Description 消费者 push 推模式
  * @Author fanxiaoping
  * @Date 2018/9/4 15:44
  * @Version 1.0.0
  **/
-public class RabbitmqConsumer{
+public class RabbitmqPushConsumer {
 
     /**
      * 队列名称
