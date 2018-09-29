@@ -4,6 +4,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
+import com.xingkong.spingboot.commonUtil.ExchangeType;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -38,8 +39,8 @@ public class ExchangeBindProducer {
         connectionFactory.setPassword("guest");
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(EXCHANGE_NAME_1,"direct",true,false,null);
-        channel.exchangeDeclare(EXCHANGE_NAME_2,"fanout",true,false,null);
+        channel.exchangeDeclare(EXCHANGE_NAME_1,ExchangeType.EXCHANGE_TYPE_DIRECT.getName(),true,false,null);
+        channel.exchangeDeclare(EXCHANGE_NAME_2,ExchangeType.EXCHANGE_TYPE_FANOUT.getName(),true,false,null);
         channel.queueDeclare(QUEUE_NAME,true,false,false,null);
         channel.queueBind(QUEUE_NAME,EXCHANGE_NAME_2,"");
         channel.exchangeBind(EXCHANGE_NAME_2,EXCHANGE_NAME_1,ROUTING_KEY);
