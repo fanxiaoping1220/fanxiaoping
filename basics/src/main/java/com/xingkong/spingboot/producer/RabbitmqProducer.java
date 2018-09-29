@@ -4,6 +4,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
+import com.xingkong.spingboot.commonUtil.ExchangeType;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -63,7 +64,7 @@ public class RabbitmqProducer {
         /**
          * 3.创建一个type="direct",持久化的,非自动删除的交换机
          */
-        channel.exchangeDeclare(EXCHANGE_NAME,"direct",true,false,null);
+        channel.exchangeDeclare(EXCHANGE_NAME,ExchangeType.EXCHANGE_TYPE_DIRECT.getName(),true,false,null);
         /**
          * 4.创建一个持久化,非排他的,非自动删除的队列
          */
