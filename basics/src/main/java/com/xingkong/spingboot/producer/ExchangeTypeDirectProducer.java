@@ -4,7 +4,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
-import com.xingkong.spingboot.commonUtil.ExchangeType;
+import com.xingkong.spingboot.commonutil.ExchangeType;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;

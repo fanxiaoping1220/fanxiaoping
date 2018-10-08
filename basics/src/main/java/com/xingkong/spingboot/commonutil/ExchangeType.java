@@ -1,4 +1,4 @@
-package com.xingkong.spingboot.commonUtil;
+package com.xingkong.spingboot.commonutil;
 
 /**
  * @ClassName ExchangeType
