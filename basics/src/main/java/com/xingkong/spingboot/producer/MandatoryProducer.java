@@ -1,7 +1,7 @@
 package com.xingkong.spingboot.producer;
 
 import com.rabbitmq.client.*;
-import com.xingkong.spingboot.commonUtil.ExchangeType;
+import com.xingkong.spingboot.commonutil.ExchangeType;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
