@@ -31,7 +31,7 @@ public class TTLProducer {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare("TTLExchange",ExchangeType.EXCHANGE_TYPE_FANOUT.getName(),true,false,null);
         /**
-         * 创建一个过期时间为30分钟的队列
+         * 1.创建一个过期时间为30分钟的队列
          */
         Map<String, Object> arguments = new HashMap<>();
         arguments.put("x-expires",1800000);
@@ -44,6 +44,9 @@ public class TTLProducer {
         //设置TTL = 6000ms
         builder.expiration("6000");
         AMQP.BasicProperties properties = builder.build();
+        /**
+         * 2.发送一条消息过期时间为6000ms的
+         */
         channel.basicPublish("TTLExchange","",properties,message.getBytes());
         channel.close();
         connection.close();
