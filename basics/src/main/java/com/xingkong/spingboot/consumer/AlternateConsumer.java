@@ -1,7 +1,7 @@
 package com.xingkong.spingboot.consumer;
 
 import com.rabbitmq.client.*;
-import com.xingkong.spingboot.commonutil.Consts;
+import com.xingkong.spingboot.producer.Producer;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -16,13 +16,8 @@ import java.util.concurrent.TimeoutException;
 public class AlternateConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setPort(Consts.PORT);
-        factory.setHost(Consts.IP_ADDRESS);
-        factory.setUsername(Consts.USER_NAME);
-        factory.setPassword(Consts.PASSWORD);
-        Connection connection = factory.newConnection();
-        Channel channel = connection.createChannel();
+        Producer producer = new Producer();
+        Channel channel = producer.basic();
         Consumer consumer = new DefaultConsumer(channel){
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -33,6 +28,5 @@ public class AlternateConsumer {
         channel.basicConsume("normalQueue",consumer);
         channel.basicConsume("unroutedQueue",consumer);
         channel.close();
-        connection.close();
     }
 }
