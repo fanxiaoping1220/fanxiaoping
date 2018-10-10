@@ -1,10 +1,7 @@
 package com.xingkong.spingboot.producer;
 
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
-import com.xingkong.spingboot.commonutil.Consts;
 import com.xingkong.spingboot.commonutil.ExchangeType;
 
 import java.io.IOException;
@@ -22,13 +19,8 @@ import java.util.concurrent.TimeoutException;
 public class DLXProducer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(Consts.IP_ADDRESS);
-        factory.setPort(Consts.PORT);
-        factory.setUsername(Consts.USER_NAME);
-        factory.setPassword(Consts.PASSWORD);
-        Connection connection = factory.newConnection();
-        Channel channel = connection.createChannel();
+        Producer producer = new Producer();
+        Channel channel = producer.basic();
         channel.exchangeDeclare("exchange.dlx",ExchangeType.EXCHANGE_TYPE_DIRECT.getName(),true);
         channel.exchangeDeclare("exchange.normal",ExchangeType.EXCHANGE_TYPE_FANOUT.getName(),true);
         Map<String,Object> map = new HashMap<>();
@@ -41,7 +33,5 @@ public class DLXProducer {
         channel.queueBind("queue.dlx","exchange.dlx","routingKey");
         String message = "hello queue TTL DLX";
         channel.basicPublish("exchange.normal","rk",MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
-        channel.close();
-        connection.close();
     }
 }
