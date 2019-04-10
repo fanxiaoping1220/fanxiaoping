@@ -22,10 +22,10 @@ public class Consts {
     /**
      * 用户名
      */
-    public static final String USER_NAME = "root";
+    public static final String USER_NAME = "guest";
 
     /**
      * 密码
      */
-    public static final String PASSWORD = "root123";
+    public static final String PASSWORD = "guest";
 }
