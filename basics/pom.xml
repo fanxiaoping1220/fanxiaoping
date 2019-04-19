@@ -41,6 +41,12 @@
 			<artifactId>amqp-client</artifactId>
 			<version>${rabbit-amqp-client.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.alipay.sdk</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+			<version>3.7.26.ALL</version>
+		</dependency>
 	</dependencies>
 
 	<build>
