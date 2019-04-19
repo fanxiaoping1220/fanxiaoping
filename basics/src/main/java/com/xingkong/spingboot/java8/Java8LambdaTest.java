@@ -22,10 +22,10 @@ public class Java8LambdaTest {
         // 没有大括号及返回语句
         MathOperation mathOperation3 = (int a , int b) -> a/b;
 
-        System.out.println("mathOpertion: " + test.operate(10,5,mathOperation));
-        System.out.println("mathOpertion1: " + test.operate(10,5,mathOperation1));
-        System.out.println("mathOpertion2: " + test.operate(10,5,mathOperation2));
-        System.out.println("mathOpertion3: " + test.operate(10,5,mathOperation3));
+        System.out.println("mathOperation: " + test.operate(10,5,mathOperation));
+        System.out.println("mathOperation1: " + test.operate(10,5,mathOperation1));
+        System.out.println("mathOperation2: " + test.operate(10,5,mathOperation2));
+        System.out.println("mathOperation3: " + test.operate(10,5,mathOperation3));
 
         // 不用括号
         GreetingService greetingService = message -> System.out.println("hello " + message);
