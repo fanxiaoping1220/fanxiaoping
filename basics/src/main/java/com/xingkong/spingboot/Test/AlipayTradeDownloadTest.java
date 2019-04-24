@@ -9,7 +9,6 @@ import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse
 import com.xingkong.spingboot.commonutil.Consts;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 /**
  * @className: AlipayTradeDownloadTest
