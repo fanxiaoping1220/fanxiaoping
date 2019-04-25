@@ -6,6 +6,10 @@ import com.alipay.api.AlipayConstants;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
+import com.xingkong.spingboot.commonutil.Consts;
+import com.xingkong.spingboot.commonutil.FileUtil;
+
+import java.io.IOException;
 
 /**
  * @className: AlipayTradeDownloadTest
@@ -27,19 +31,21 @@ public class AlipayTradeDownloadTest {
      * @param args
      * @throws AlipayApiException
      */
-    public static void main(String[] args) throws AlipayApiException {
-        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do","app_id","your private_key", AlipayConstants.FORMAT_JSON,AlipayConstants.CHARSET_UTF8,"alipay_public_key",AlipayConstants.SIGN_TYPE_RSA2);
+    public static void main(String[] args) throws AlipayApiException, IOException {
+        AlipayClient alipayClient = new DefaultAlipayClient(Consts.URL,Consts.APP_ID,Consts.PRIVATE_KEY, AlipayConstants.FORMAT_JSON,AlipayConstants.CHARSET_UTF8,Consts.ALIPAY_PUBLIC_KEY,AlipayConstants.SIGN_TYPE_RSA2);
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         request.setBizContent("{" +
-                "\"bill_type\":\"trade\"," +
-                "\"bill_date\":\"2019-04-05\"" +
+                "\"bill_type\":\"signcustomer\"," +
+                "\"bill_date\":\"2019-04-22\"" +
                 "  }");
         AlipayDataDataserviceBillDownloadurlQueryResponse response = alipayClient.execute(request);
         if(response.isSuccess()){
             System.out.println("调用成功");
+            String url = response.getBillDownloadUrl();
+            FileUtil.downloadNet(url,Consts.FILE_PATH);
+            FileUtil.unzip(Consts.FILE_PATH,Consts.FILE_UNZIP_PATH);
         } else {
             System.out.println("调用失败");
         }
     }
-
 }
