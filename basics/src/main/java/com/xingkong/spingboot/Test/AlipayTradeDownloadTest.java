@@ -7,6 +7,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.xingkong.spingboot.commonutil.Consts;
+import com.xingkong.spingboot.commonutil.FileUtil;
 
 import java.io.IOException;
 

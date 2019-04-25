@@ -22,6 +22,27 @@ public class LocalDateTimeUtil {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
+    /**
+     * 获取昨天日期
+     * @return
+     */
+    public static String getYesterday(){
+        LocalDate localDate = LocalDate.now();
+        String date;
+        //判断是不是==1日
+        if(localDate.getDayOfMonth() == 1){
+            //判断是不是==1月
+            if(localDate.getMonth().equals(Month.JANUARY)){
+                date = LocalDate.of(localDate.minusYears(1).getYear(),localDate.minusMonths(1).getMonth(),localDate.minusDays(1).getDayOfMonth()).toString();
+            }else{
+                date = LocalDate.of(localDate.getYear(),localDate.minusMonths(1).getMonth(),localDate.minusDays(1).getDayOfMonth()).toString();
+            }
+        }else{
+            date = LocalDate.of(localDate.getYear(), localDate.getMonth(), localDate.minusDays(1).getDayOfMonth()).toString();
+        }
+        return date;
+    }
+
     public static void main(String[] args) {
         //获取当前时间
         LocalDateTime localDateTime = LocalDateTime.now();

@@ -1,4 +1,4 @@
-package com.xingkong.spingboot.Test;
+package com.xingkong.spingboot.commonutil;
 
 import java.io.*;
 import java.net.MalformedURLException;
