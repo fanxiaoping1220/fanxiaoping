@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 
 /**
  * @className: Java8LambdaTest
