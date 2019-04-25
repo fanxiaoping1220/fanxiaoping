@@ -1,6 +1,7 @@
 package com.xingkong.spingboot.commonutil;
 
 import java.time.LocalDate;
+import java.time.Month;
 
 /**
  * @ClassName Consts
@@ -79,6 +80,19 @@ public class Consts {
      */
     public static String getYesterday(){
         LocalDate localDate = LocalDate.now();
-        return LocalDate.of(localDate.getYear(), localDate.getMonth(), localDate.minusDays(1).getDayOfMonth()).toString();
+        String date;
+        //判断是不是==1日
+        if(localDate.getDayOfMonth() == 1){
+            //判断是不是==1月
+            if(localDate.getMonth().equals(Month.JANUARY)){
+                date = LocalDate.of(localDate.minusYears(1).getYear(),localDate.minusMonths(1).getMonth(),localDate.minusDays(1).getDayOfMonth()).toString();
+            }else{
+                date = LocalDate.of(localDate.getYear(),localDate.minusMonths(1).getMonth(),localDate.minusDays(1).getDayOfMonth()).toString();
+            }
+        }else{
+            date = LocalDate.of(localDate.getYear(), localDate.getMonth(), localDate.minusDays(1).getDayOfMonth()).toString();
+        }
+        return date;
     }
+
 }
