@@ -3,7 +3,10 @@ package com.xingkong.spingboot.java8;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @className: Java8LambdaTest
@@ -63,6 +66,10 @@ public class Java8LambdaTest {
         System.out.println(Arrays.asList(array));
         JButton button = new JButton();
         button.addActionListener(e -> System.out.println(e.getActionCommand()));
+        List<String> list = Stream.of("a","b","c").collect(Collectors.toList());
+        System.out.println(list);
+        List<String> list1 = Stream.of("a","b","c").map(s -> s.toUpperCase()).collect(Collectors.toList());
+        System.out.println(list1);
     }
 
     interface MathOperation{
