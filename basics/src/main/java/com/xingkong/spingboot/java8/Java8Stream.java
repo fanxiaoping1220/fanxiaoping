@@ -42,7 +42,5 @@ public class Java8Stream {
         System.out.println(integers);
         integers = integers.stream().sorted((o1, o2) -> o1.compareTo(o2)).collect(toList());
         System.out.println(integers);
-
-
     }
 }
