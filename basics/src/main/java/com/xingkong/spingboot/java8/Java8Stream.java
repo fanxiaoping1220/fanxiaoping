@@ -1,13 +1,15 @@
 package com.xingkong.spingboot.java8;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.xingkong.spingboot.entity.Artist;
+
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static java.lang.Character.isDigit;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * @ClassName: Java8Stream
@@ -42,5 +44,46 @@ public class Java8Stream {
         System.out.println(integers);
         integers = integers.stream().sorted((o1, o2) -> o1.compareTo(o2)).collect(toList());
         System.out.println(integers);
+        //6.reduce 求和
+        Integer reduce = Stream.of(1, 5, 8, 96).reduce(0, (acc, element) -> acc + element);
+        System.out.println(reduce);
+        //7.forEach
+        //7.1
+        List<Integer> numberList = asList(12,16,147,128,36,25,96,45612,96,77,147);
+        Set<Integer> track = new HashSet<>();
+        for(Integer i :numberList){
+            if(i > 88){
+                track.add(i);
+            }
+        }
+        System.out.println(track);
+        Set<Integer> track1 = new HashSet<>();
+        Set<Integer> track2 = numberList.stream().filter(integer -> integer > 88).collect(toSet());
+        numberList.stream().forEach(integer -> {
+            if(integer > 88){
+                track1.add(integer);
+            }
+        });
+        System.out.println(track1);
+        System.out.println(track2);
+
+        //test
+        //1.求和
+        Double reduce1 = Stream.of(15.26, 158.96, 253.69, 25369.25).reduce(0.00, (number, number2) -> number + number2);
+        System.out.println(reduce1);
+        //2.
+        List<Artist> artistList = Stream.of(new Artist("xxx", "china", LocalDateTime.now()),
+                new Artist("fff", "hhhh", LocalDateTime.now()),
+                new Artist("yyyy", "bbbbb", LocalDateTime.now()))
+                .map(artist -> new Artist(artist.getName(), artist.getNationality()))
+                .collect(toList());
+        System.out.println(artistList);
+        //3.
+        Integer sum = Stream.of(new Artist(15),
+                new Artist(18), new Artist(20), new Artist(11))
+                .map(artist -> artist.getNumber())
+                .reduce(0, (integer, number) -> integer + number);
+        System.out.println(sum);
+
     }
 }
