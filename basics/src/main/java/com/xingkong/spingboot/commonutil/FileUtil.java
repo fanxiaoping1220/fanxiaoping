@@ -1,11 +1,23 @@
 package com.xingkong.spingboot.commonutil;
 
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -96,5 +108,56 @@ public class FileUtil {
             e.printStackTrace();
         }
         return flag;
+    }
+
+    /**
+     * 读取Excel 格式为 .xlsx .xls
+     * @param path
+     * @return
+     * @throws InvalidFormatException
+     * @throws IOException
+     */
+    public static List<String[]> readerExcel(String path) throws InvalidFormatException, IOException {
+        FileInputStream file = new FileInputStream(path);
+        Workbook workbook;
+        if(path.contains(".xlsx")){
+            OPCPackage opcPackage = OPCPackage.open(file);
+            workbook = new XSSFWorkbook(opcPackage);
+        }else {
+            workbook = new HSSFWorkbook(file);
+        }
+        List<String[]> list = new ArrayList<>();
+        Sheet sheetAt = workbook.getSheetAt(0);
+        for(int i = sheetAt.getFirstRowNum()+1;i<= sheetAt.getLastRowNum(); i++){
+            Row row = sheetAt.getRow(i);
+            String[] cells = new String[row.getLastCellNum()];
+            for(int j = row.getFirstCellNum();j < row.getLastCellNum(); j++){
+                if(row.getCell(j) == null){
+                    cells[j] = "";
+                    continue;
+                }
+                if(CellType.STRING.equals(row.getCell(j).getCellType())){
+                    cells[j] = row.getCell(j).getStringCellValue();
+                    continue;
+                }
+                if(CellType.NUMERIC.equals(row.getCell(j).getCellType())){
+                    //对时间进行特殊处理
+                    double numericCellValue = row.getCell(j).getNumericCellValue();
+                    if(String.valueOf(numericCellValue).contains(".")){
+                        String[] split = String.valueOf(numericCellValue).split("\\.");
+                        if(split[1].length() > 2 && !split[1].contains("E")){
+                            cells[j] = HSSFDateUtil.getJavaDate(numericCellValue).toString();
+                        }else {
+                            cells[j] = String.valueOf(numericCellValue);
+                        }
+                    }else {
+                        cells[j] = String.valueOf(numericCellValue);
+                    }
+                }
+            }
+            list.add(cells);
+        }
+        workbook.close();
+        return list;
     }
 }
