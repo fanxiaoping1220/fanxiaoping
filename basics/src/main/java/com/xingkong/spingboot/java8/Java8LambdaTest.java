@@ -1,5 +1,13 @@
 package com.xingkong.spingboot.java8;
 
+import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * @className: Java8LambdaTest
  * @description: Lambda 表达式
@@ -40,6 +48,28 @@ public class Java8LambdaTest {
         int num = 1;
         Converter<Integer,String> converter = (params) -> System.out.println(num+params);
         converter.convert(2);
+
+        Runnable runnable = () -> System.out.println("Hello World");
+        ActionListener actionListener = event -> System.out.println("button clicked");
+        Runnable runnable1 = () -> {
+            System.out.println("Hello");
+            System.out.println("World");
+        };
+        BinaryOperator<Long> add = (x,y) -> x + y;
+        BinaryOperator<Long> addExplicit = (Long x,Long y) -> x + y;
+        System.out.println(runnable);
+        System.out.println(actionListener);
+        System.out.println(runnable1);
+        System.out.println(add);
+        System.out.println(addExplicit);
+        String[] array = {"Hello","World"};
+        System.out.println(Arrays.asList(array));
+        JButton button = new JButton();
+        button.addActionListener(e -> System.out.println(e.getActionCommand()));
+        List<String> list = Stream.of("a","b","c").collect(Collectors.toList());
+        System.out.println(list);
+        List<String> list1 = Stream.of("a","b","c").map(s -> s.toUpperCase()).collect(Collectors.toList());
+        System.out.println(list1);
     }
 
     interface MathOperation{
