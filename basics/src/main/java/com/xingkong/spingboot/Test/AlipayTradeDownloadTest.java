@@ -10,6 +10,7 @@ import com.xingkong.spingboot.commonutil.Consts;
 import com.xingkong.spingboot.commonutil.FileUtil;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * @className: AlipayTradeDownloadTest
@@ -36,7 +37,7 @@ public class AlipayTradeDownloadTest {
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         request.setBizContent("{" +
                 "\"bill_type\":\"signcustomer\"," +
-                "\"bill_date\":\"2019-04-22\"" +
+                "\"bill_date\":\""+ LocalDate.now().minusDays(1).toString() +"\"" +
                 "  }");
         AlipayDataDataserviceBillDownloadurlQueryResponse response = alipayClient.execute(request);
         if(response.isSuccess()){
