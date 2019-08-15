@@ -32,7 +32,7 @@ public class AlipayTradeDownloadTest {
      * @param args
      * @throws AlipayApiException
      */
-    public static void main(String[] args) throws AlipayApiException, IOException {
+    public static void main(String[] args) throws AlipayApiException, IOException { 
         AlipayClient alipayClient = new DefaultAlipayClient(Consts.URL,Consts.APP_ID,Consts.PRIVATE_KEY, AlipayConstants.FORMAT_JSON,AlipayConstants.CHARSET_UTF8,Consts.ALIPAY_PUBLIC_KEY,AlipayConstants.SIGN_TYPE_RSA2);
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         request.setBizContent("{" +
