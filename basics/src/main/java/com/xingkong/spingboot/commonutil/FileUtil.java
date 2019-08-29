@@ -65,16 +65,18 @@ public class FileUtil {
      * @return 解压结果：成功，失败
      */
     @SuppressWarnings("rawtypes")
-    public static boolean unzip(String zipPath, String descDir) {
+    public static List<String> unzip(String zipPath, String descDir) {
+        List<String> pathList = new ArrayList<>();
         File zipFile = new File(zipPath);
-        boolean flag = false;
+//        boolean flag = false;
         File pathFile = new File(descDir);
         if(!pathFile.exists()){
             pathFile.mkdirs();
         }
-        ZipFile zip = null;
+        ZipFile zip;
         try {
-            zip = new ZipFile(zipFile, Charset.forName("gbk"));//防止中文目录，乱码
+            //防止中文目录，乱码
+            zip = new ZipFile(zipFile, Charset.forName("gbk"));
             for(Enumeration entries = zip.entries(); entries.hasMoreElements();){
                 ZipEntry entry = (ZipEntry)entries.nextElement();
                 String zipEntryName = entry.getName();
@@ -92,6 +94,7 @@ public class FileUtil {
                 }
                 //保存文件路径信息（可利用md5.zip名称的唯一性，来判断是否已经解压）
                 System.err.println("当前zip解压之后的路径为：" + outPath);
+                pathList.add(outPath);
                 OutputStream out = new FileOutputStream(outPath);
                 byte[] buf1 = new byte[2048];
                 int len;
@@ -101,13 +104,13 @@ public class FileUtil {
                 in.close();
                 out.close();
             }
-            flag = true;
+//            flag = true;
             //必须关闭，要不然这个zip文件一直被占用着，要删删不掉，改名也不可以，移动也不行，整多了，系统还崩了。
             zip.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return flag;
+        return pathList;
     }
 
     /**
