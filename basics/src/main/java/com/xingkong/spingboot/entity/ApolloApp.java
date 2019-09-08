@@ -60,7 +60,7 @@ public class ApolloApp {
     /**
      * 创建时间
      */
-    private LocalDateTime dataChangeCreateTime;
+    private LocalDateTime dataChangeCreatedTime;
 
     /**
      * 最后修改人邮箱前缀
@@ -147,14 +147,6 @@ public class ApolloApp {
         this.dataChangeCreatedBy = dataChangeCreatedBy;
     }
 
-    public LocalDateTime getDataChangeCreateTime() {
-        return dataChangeCreateTime;
-    }
-
-    public void setDataChangeCreateTime(LocalDateTime dataChangeCreateTime) {
-        this.dataChangeCreateTime = dataChangeCreateTime;
-    }
-
     public String getDataChangeLastModifiedBy() {
         return dataChangeLastModifiedBy;
     }
@@ -169,5 +161,13 @@ public class ApolloApp {
 
     public void setDataChangeLastTime(LocalDateTime dataChangeLastTime) {
         this.dataChangeLastTime = dataChangeLastTime;
+    }
+
+    public LocalDateTime getDataChangeCreatedTime() {
+        return dataChangeCreatedTime;
+    }
+
+    public void setDataChangeCreatedTime(LocalDateTime dataChangeCreatedTime) {
+        this.dataChangeCreatedTime = dataChangeCreatedTime;
     }
 }

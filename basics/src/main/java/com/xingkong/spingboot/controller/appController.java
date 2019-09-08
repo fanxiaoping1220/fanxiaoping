@@ -23,8 +23,12 @@ import java.util.List;
 public class appController {
 
     @Autowired
-    private static ApolloAppDAO apolloAppDAO;
+    private ApolloAppDAO apolloAppDAO;
 
+    /**
+     * 获取列表
+     * @return
+     */
     @GetMapping(value = "/getList")
     JSONArray getList(){
         List<ApolloApp> list = apolloAppDAO.getList();

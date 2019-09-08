@@ -18,6 +18,10 @@ import java.util.List;
 @Mapper
 public interface ApolloAppDAO {
 
+    /**
+     * 列表
+     * @return
+     */
     @Results({
             @Result(column = "Id",property = "id"),@Result(column = "AppId",property = "appId"),@Result(column = "Name",property = "name"),
             @Result(column = "OrgId",property = "orgId"),@Result(column = "OrgName",property = "orgName"),@Result(column = "OwnerName",property = "ownerName"),
