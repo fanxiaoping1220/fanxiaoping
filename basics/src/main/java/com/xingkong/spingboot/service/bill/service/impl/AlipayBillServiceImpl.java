@@ -38,7 +38,7 @@ import java.util.zip.ZipInputStream;
  * @version: 1.0.0
  */
 @Service
-public class AlipayBillServiceIMpl implements AlipayBillService {
+public class AlipayBillServiceImpl implements AlipayBillService {
 
     @Autowired
     private AlipayBillDetailDAO alipayBillDetailDAO;

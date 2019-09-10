@@ -26,6 +26,8 @@ public class AlipayBillController {
     /**
      * 获取支付宝昨日的账单
      * @return
+     * @throws AlipayApiException
+     * @throws IOException
      */
     @PostMapping(value = "/getYesterdayBill")
     String getYesterdayBill() throws AlipayApiException, IOException {

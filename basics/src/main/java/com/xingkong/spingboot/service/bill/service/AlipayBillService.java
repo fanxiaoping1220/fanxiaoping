@@ -16,6 +16,8 @@ public interface AlipayBillService {
     /**
      * 获取支付宝昨日的账单
      * @return
+     * @throws AlipayApiException
+     * @throws IOException
      */
     String getYesterdayBill() throws AlipayApiException, IOException;
 }
