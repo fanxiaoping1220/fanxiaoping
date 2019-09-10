@@ -7,6 +7,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.xingkong.spingboot.commonutil.Consts;
+import com.xingkong.spingboot.producer.AlipayBillProducer;
 import com.xingkong.spingboot.service.bill.dao.AlipayBillDetailDAO;
 import com.xingkong.spingboot.service.bill.dao.AlipayBillTotalDAO;
 import com.xingkong.spingboot.service.bill.entity.AlipayBillDetailDO;
@@ -46,8 +47,11 @@ public class AlipayBillServiceImpl implements AlipayBillService {
     @Autowired
     private AlipayBillTotalDAO alipayBillTotalDAO;
 
+    @Autowired
+    private AlipayBillProducer alipayBillProducer;
+
     @Override
-    public String getYesterdayBill() throws AlipayApiException, IOException {
+    public String getYesterdayBill() throws AlipayApiException, IOException{
         AlipayClient alipayClient = new DefaultAlipayClient(Consts.URL,Consts.APP_ID,Consts.PRIVATE_KEY, AlipayConstants.FORMAT_JSON,AlipayConstants.CHARSET_UTF8,Consts.ALIPAY_PUBLIC_KEY,AlipayConstants.SIGN_TYPE_RSA2);
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         request.setBizContent("{" +
@@ -61,7 +65,10 @@ public class AlipayBillServiceImpl implements AlipayBillService {
             //获取数据
             List<List<String[]>> data = methodTwo(url);
             //存储数据
-            saveData(data);
+            //方案一同步处理数据
+//            saveData(data);
+            //方案二异步处理采用队列存储数据
+            alipayBillProducer.sendAlipayBill(data);
             return "success";
         } else {
             System.out.println("调用失败");
@@ -118,7 +125,7 @@ public class AlipayBillServiceImpl implements AlipayBillService {
      * 支付宝账单汇总表
      * @param dataList
      */
-    private void saveData(List<List<String[]>> dataList){
+    public void saveData(List<List<String[]>> dataList){
         for (List<String[]> data : dataList) {
             if(data.get(0).length > 6 || data.get(1).length > 6){
                 //存入支付宝账单明细表
