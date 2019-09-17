@@ -1,5 +1,7 @@
 package com.xingkong.spingboot.service.bill.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.AlipayConstants;
@@ -7,6 +9,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.xingkong.spingboot.commonutil.Consts;
+import com.xingkong.spingboot.entity.AlipayBillDetailDTO;
 import com.xingkong.spingboot.producer.AlipayBillProducer;
 import com.xingkong.spingboot.service.bill.dao.AlipayBillDetailDAO;
 import com.xingkong.spingboot.service.bill.dao.AlipayBillTotalDAO;
@@ -26,6 +29,7 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +78,18 @@ public class AlipayBillServiceImpl implements AlipayBillService {
             System.out.println("调用失败");
         }
         return "fail";
+    }
+
+    @Override
+    public JSONArray getList(AlipayBillDetailDTO alipayBillDetailDTO) {
+        LocalDateTime startTime = LocalDateTime.now().minusDays(alipayBillDetailDTO.getNumber()).with(LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.now().minusDays(alipayBillDetailDTO.getNumber()).with(LocalTime.MAX);
+        if(alipayBillDetailDTO.getNumber() > 1){
+            alipayBillDetailDTO.setNumber(1);
+            endTime = LocalDateTime.now().minusDays(alipayBillDetailDTO.getNumber()).with(LocalTime.MAX);
+        }
+        List<AlipayBillDetailDO> list = alipayBillDetailDAO.getList(startTime, endTime, alipayBillDetailDTO.getOrderRole());
+        return JSONArray.parseArray(JSON.toJSONString(list));
     }
 
     /**

@@ -1,11 +1,11 @@
 package com.xingkong.spingboot.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alipay.api.AlipayApiException;
+import com.xingkong.spingboot.entity.AlipayBillDetailDTO;
 import com.xingkong.spingboot.service.bill.service.AlipayBillService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -34,4 +34,13 @@ public class AlipayBillController {
         return alipayBillService.getYesterdayBill();
     }
 
+    /**
+     * 查询支付宝账单明细
+     * @param alipayBillDetailDTO
+     * @return
+     */
+    @GetMapping(value = "/getList")
+    JSONArray getList(@RequestBody AlipayBillDetailDTO alipayBillDetailDTO){
+        return alipayBillService.getList(alipayBillDetailDTO);
+    }
 }
