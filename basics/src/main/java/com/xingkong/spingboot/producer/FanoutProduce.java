@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 /**
  * @className: FanoutProduce
  * @description: fanout
+ * 一般rabbitmq使用广播模式发送消息对于同一应用有多个节点只会有一个节点消费，
+ * 但是有业务场景下需要所有的节点都进行消息消费，例如清楚内存缓存，一种方案就是动态生成队列绑定到同一交换机上Exchange，
+ * 每一个节点都可以消费到消息
  * @author: 范小平
  * @date: 2019-10-09 17:18
  * @version: 1.0.0
