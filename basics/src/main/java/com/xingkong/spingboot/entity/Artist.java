@@ -31,6 +31,8 @@ public class Artist {
      */
     private LocalDateTime createTime;
 
+    private Boolean isSolo;
+
     public Artist() {
     }
 
@@ -38,6 +40,14 @@ public class Artist {
         this.name = name;
         this.nationality = nationality;
         this.createTime = createTime;
+    }
+
+    public Artist(String name, String nationality, Integer number, LocalDateTime createTime, Boolean isSolo) {
+        this.name = name;
+        this.nationality = nationality;
+        this.number = number;
+        this.createTime = createTime;
+        this.isSolo = isSolo;
     }
 
     public Artist(Integer number) {
@@ -79,5 +89,13 @@ public class Artist {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public Boolean getSolo() {
+        return isSolo;
+    }
+
+    public void setSolo(Boolean solo) {
+        isSolo = solo;
     }
 }
