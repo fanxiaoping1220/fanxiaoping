@@ -4,7 +4,7 @@ import com.xingkong.spingboot.entity.Artist;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.Character.isDigit;
@@ -125,5 +125,22 @@ public class Java8Stream {
         //求和值计算
         DoubleSummaryStatistics sumCount = Stream.of(15.23, 15.369, 258.1, 12354, 25864.456).collect(summarizingDouble(value -> value.doubleValue()));
         System.out.println("平均值:"+sumCount.getAverage()+" 求和统计:"+sumCount.getSum()+" max:"+sumCount.getMax()+"min:"+sumCount.getMin());
+        //初始化数组
+        double[] doubles = new double[10];
+        Arrays.parallelSetAll(doubles,i -> i);
+        System.out.println(doubles);
+        doubles[1] = 19.23;
+        //排序
+        Arrays.parallelSort(doubles);
+        System.out.println(doubles.toString());
+        //简单计算滑到平均值
+        Arrays.parallelPrefix(doubles,Double :: sum);
+        System.out.println(doubles);
+        int start = 3;
+        double[] doubles1 = IntStream.range(start, doubles.length).mapToDouble(i -> {
+            double prefix = i == start ? 0 : doubles[i - 2];
+            return (doubles[i] - prefix) / 2;
+        }).toArray();
+        System.out.println(doubles1);
     }
 }
