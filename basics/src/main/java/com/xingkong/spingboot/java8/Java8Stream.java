@@ -142,5 +142,10 @@ public class Java8Stream {
             return (doubles[i] - prefix) / 2;
         }).toArray();
         System.out.println(doubles1);
+        //peek 记录日志
+        List<String> peekList = artists.stream().filter(artist -> artist.getNationality().startsWith("LM")).map(artist -> artist.getNationality()).peek(s -> {
+            System.out.println("nationality " + s);
+        }).collect(toList());
+        System.out.println(peekList);
     }
 }
