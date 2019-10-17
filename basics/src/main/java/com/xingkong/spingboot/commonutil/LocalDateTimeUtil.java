@@ -58,7 +58,7 @@ public class LocalDateTimeUtil {
         System.out.println(duration.toDays());
         //相减后的秒
         System.out.println(duration.toMillis());
-        //相减后的秒
+        //相减后的分钟
         System.out.println(duration.toMinutes());
         //时间相减 ---》 年 ，月
         Period period = Period.between(LocalDateTime.now().toLocalDate(),LocalDateTime.of(2019,10,19,12,10).toLocalDate());
