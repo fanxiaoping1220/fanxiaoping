@@ -2,7 +2,9 @@ package com.xingkong.spingboot.commonutil;
 
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @className: LocalDateTimeUtil
@@ -81,6 +83,20 @@ public class LocalDateTimeUtil {
         System.out.println(LocalDate.now());
         //获取现在日期+时间
         System.out.println(LocalDateTime.now());
+
+        /**
+         * 生成这个月的时间
+         */
+        List<LocalDate> list = new ArrayList<>();
+        LocalDate with = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        list.add(with);
+        Period between = Period.between(LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()), LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()));
+        for(int i = 1 ; i <= between.getDays() ; i++){
+            LocalDate localDate = with.plusDays(i);
+            System.out.println(localDate);
+            list.add(localDate);
+        }
+        System.out.println(list);
 
     }
 
