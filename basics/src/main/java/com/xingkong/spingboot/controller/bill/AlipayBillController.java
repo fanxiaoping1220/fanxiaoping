@@ -1,8 +1,8 @@
-package com.xingkong.spingboot.controller;
+package com.xingkong.spingboot.controller.bill;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alipay.api.AlipayApiException;
-import com.xingkong.spingboot.entity.AlipayBillDetailDTO;
+import com.xingkong.spingboot.controller.bill.dto.AlipayBillDetailDTO;
 import com.xingkong.spingboot.service.bill.service.AlipayBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

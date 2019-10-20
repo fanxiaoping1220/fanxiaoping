@@ -1,4 +1,4 @@
-package com.xingkong.spingboot.controller;
+package com.xingkong.spingboot.controller.rabbitmq;
 
 import com.xingkong.spingboot.producer.FanoutProduce;
 import org.springframework.beans.factory.annotation.Autowired;

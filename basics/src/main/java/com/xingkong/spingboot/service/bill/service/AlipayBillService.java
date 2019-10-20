@@ -2,7 +2,7 @@ package com.xingkong.spingboot.service.bill.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alipay.api.AlipayApiException;
-import com.xingkong.spingboot.entity.AlipayBillDetailDTO;
+import com.xingkong.spingboot.controller.bill.dto.AlipayBillDetailDTO;
 
 import java.io.IOException;
 

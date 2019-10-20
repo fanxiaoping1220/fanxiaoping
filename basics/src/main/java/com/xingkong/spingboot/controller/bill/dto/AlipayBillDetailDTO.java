@@ -1,4 +1,4 @@
-package com.xingkong.spingboot.entity;
+package com.xingkong.spingboot.controller.bill.dto;
 
 /**
  * @className: AlipayBillDetailDO

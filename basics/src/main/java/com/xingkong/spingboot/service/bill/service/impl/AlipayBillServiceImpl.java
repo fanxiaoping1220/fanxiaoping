@@ -9,7 +9,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.xingkong.spingboot.commonutil.Consts;
-import com.xingkong.spingboot.entity.AlipayBillDetailDTO;
+import com.xingkong.spingboot.controller.bill.dto.AlipayBillDetailDTO;
 import com.xingkong.spingboot.producer.AlipayBillProducer;
 import com.xingkong.spingboot.service.bill.dao.AlipayBillDetailDAO;
 import com.xingkong.spingboot.service.bill.dao.AlipayBillTotalDAO;
@@ -60,7 +60,7 @@ public class AlipayBillServiceImpl implements AlipayBillService {
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         request.setBizContent("{" +
                 "\"bill_type\":\"signcustomer\"," +
-                "\"bill_date\":\""+ LocalDate.now().minusDays(1).toString() +"\"" +
+                "\"bill_date\":\""+ LocalDate.now().minusDays(4).toString() +"\"" +
                 "  }");
         AlipayDataDataserviceBillDownloadurlQueryResponse response = alipayClient.execute(request);
         if(response.isSuccess()){

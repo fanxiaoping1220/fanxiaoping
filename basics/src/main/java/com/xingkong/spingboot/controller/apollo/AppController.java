@@ -1,4 +1,4 @@
-package com.xingkong.spingboot.controller;
+package com.xingkong.spingboot.controller.apollo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/apollo/app")
-public class appController {
+public class AppController {
 
     @Autowired
     private ApolloAppDAO apolloAppDAO;
