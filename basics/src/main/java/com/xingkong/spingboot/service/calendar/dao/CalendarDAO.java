@@ -25,9 +25,9 @@ public interface CalendarDAO {
      * @return
      */
     @Insert("<script>" +
-            "insert into calendar(date,type) values " +
+            "insert into calendar(date,type,description) values " +
             "<foreach item = 'item' collection = 'list' separator = ','>" +
-            "(#{item.date},#{item.type}) " +
+            "(#{item.date},#{item.type},#{item.description}) " +
             "</foreach>" +
             "</script>")
     int branchInsert(@Param("list") List<CalendarDO> list);

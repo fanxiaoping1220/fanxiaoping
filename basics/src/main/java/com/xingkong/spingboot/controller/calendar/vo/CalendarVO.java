@@ -47,6 +47,11 @@ public class CalendarVO {
     private String typeStr;
 
     /**
+     * 描述
+     */
+    private String description;
+
+    /**
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -96,5 +101,13 @@ public class CalendarVO {
 
     public void setTypeStr(String typeStr) {
         this.typeStr = typeStr;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -41,6 +41,11 @@ public class CalendarDO {
     private Integer type;
 
     /**
+     * 描述
+     */
+    private String description;
+
+    /**
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -82,5 +87,13 @@ public class CalendarDO {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

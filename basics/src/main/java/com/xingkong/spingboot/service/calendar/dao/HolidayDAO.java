@@ -25,9 +25,9 @@ public interface HolidayDAO {
      * @return
      */
     @Insert("<script>" +
-            "insert into holiday (date,type) values " +
+            "insert into holiday (date,type,description) values " +
             "<foreach item = 'item' collection = 'list' separator = ',' >" +
-            "(#{item.date},#{item.type})" +
+            "(#{item.date},#{item.type},#{item.description})" +
             "</foreach>" +
             "</script>")
     int branchInsert(@Param("list") List<HolidayDO> list);

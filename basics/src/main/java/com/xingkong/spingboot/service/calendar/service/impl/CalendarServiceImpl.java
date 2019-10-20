@@ -68,6 +68,7 @@ public class CalendarServiceImpl implements CalendarService {
                 if(holidayMap.containsKey(date)){
                     HolidayDO holidayDO = holidayMap.get(date);
                     calendarDO.setType(holidayDO.getType());
+                    calendarDO.setDescription(holidayDO.getDescription());
                 }else {
                     calendarDO.setType(TypeEnum.WORK_DAY.getCode());
                 }
