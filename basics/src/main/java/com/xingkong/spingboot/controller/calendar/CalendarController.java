@@ -2,6 +2,7 @@ package com.xingkong.spingboot.controller.calendar;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xingkong.spingboot.commonutil.Consts;
 import com.xingkong.spingboot.service.calendar.service.CalendarService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 /**
  * @ClassName: CalendarController
@@ -51,7 +53,13 @@ public class CalendarController {
             jsonArray.add(json);
             return jsonArray;
         }
-        ;
+        if(!Pattern.matches(Consts.REGEX,startTime) || !Pattern.matches(Consts.REGEX,endTime)){
+            JSONObject json = new JSONObject();
+            json.put("message","开始时间或者结束时间格式不正确，正确格式为yyyy-MM-dd 如:2019-05-02");
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(json);
+            return jsonArray;
+        }
         return calendarService.getCalendar(LocalDate.parse(startTime,
                 DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 LocalDate.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
