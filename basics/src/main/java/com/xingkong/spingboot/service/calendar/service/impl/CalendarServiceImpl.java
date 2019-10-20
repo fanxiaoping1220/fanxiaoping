@@ -1,11 +1,14 @@
 package com.xingkong.spingboot.service.calendar.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.xingkong.spingboot.controller.calendar.enums.TypeEnum;
+import com.xingkong.spingboot.controller.calendar.vo.CalendarVO;
 import com.xingkong.spingboot.service.calendar.dao.CalendarDAO;
 import com.xingkong.spingboot.service.calendar.dao.HolidayDAO;
 import com.xingkong.spingboot.service.calendar.entity.CalendarDO;
 import com.xingkong.spingboot.service.calendar.entity.HolidayDO;
 import com.xingkong.spingboot.service.calendar.service.CalendarService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +79,17 @@ public class CalendarServiceImpl implements CalendarService {
             calendarDAO.branchInsert(addList);
         }
         return "success";
+    }
+
+    @Override
+    public JSONArray getCalendar(LocalDate startTime, LocalDate endTime) {
+        List<CalendarDO> calendarList = calendarDAO.getByDate(startTime, endTime);
+        List<CalendarVO> list = new ArrayList<>();
+        calendarList.forEach(calendarDO -> {
+            CalendarVO calendarVO = new CalendarVO();
+            BeanUtils.copyProperties(calendarDO,calendarVO);
+            list.add(calendarVO);
+        });
+        return JSONArray.parseArray(JSONArray.toJSONString(list));
     }
 }

@@ -4,7 +4,9 @@ import com.xingkong.spingboot.service.calendar.entity.CalendarDO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -29,4 +31,13 @@ public interface CalendarDAO {
             "</foreach>" +
             "</script>")
     int branchInsert(@Param("list") List<CalendarDO> list);
+
+    /**
+     * 根据时间段查询
+     * @param StartTime
+     * @param endTime
+     * @return
+     */
+    @Select("select * from calendar where date >= #{startTime} and date <= #{endTime}")
+    List<CalendarDO> getByDate(@Param("startTime") LocalDate StartTime,@Param("endTime") LocalDate endTime);
 }
