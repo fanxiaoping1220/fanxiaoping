@@ -51,7 +51,7 @@ public class LocalDateTimeUtil {
         System.out.println(localDateTime);
         System.out.println(convertDateToLocalDateTime(new Date()));
         //时间相减---》 小时，天，秒，分钟
-        Duration duration = Duration.between(LocalDateTime.now(),LocalDateTime.of(2019,10,8,12,10));
+        Duration duration = Duration.between(LocalDateTime.now(),LocalDateTime.of(2019,10,22,12,10));
         System.out.println(LocalDateTime.now());
         System.out.println(LocalDateTime.of(2019,10,8,12,10));
         //相减后的小时
