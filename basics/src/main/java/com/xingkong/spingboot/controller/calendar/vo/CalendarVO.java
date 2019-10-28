@@ -96,7 +96,7 @@ public class CalendarVO {
     }
 
     public String getTypeStr() {
-        return TypeEnum.getBycode(type);
+        return TypeEnum.getByCode(type);
     }
 
     public void setTypeStr(String typeStr) {

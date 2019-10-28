@@ -42,7 +42,7 @@ public enum TypeEnum {
      * @param code
      * @return
      */
-    public static String getBycode(Integer code){
+    public static String getByCode(Integer code){
         for(TypeEnum typeEnum :TypeEnum.values()){
             if(code.equals(typeEnum.getCode())){
                 return typeEnum.getName();
