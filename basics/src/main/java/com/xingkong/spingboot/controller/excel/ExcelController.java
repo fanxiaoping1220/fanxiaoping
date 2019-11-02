@@ -4,14 +4,17 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.excel.annotation.format.NumberFormat;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.util.FileUtils;
 import com.alibaba.excel.write.metadata.WriteSheet;
-import com.xingkong.spingboot.service.excel.entity.ComplexDateDO;
-import com.xingkong.spingboot.service.excel.entity.ConverterDataDO;
-import com.xingkong.spingboot.service.excel.entity.DemoDateDO;
-import com.xingkong.spingboot.service.excel.entity.ImageDateDO;
+import com.alibaba.excel.write.metadata.style.WriteCellStyle;
+import com.alibaba.excel.write.metadata.style.WriteFont;
+import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.xingkong.spingboot.service.excel.entity.*;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -195,6 +199,64 @@ public class ExcelController {
         //byte
         imageDateDO.setByteArray(FileUtils.readFileToByteArray(new File(imagepath)));
         EasyExcel.write(response.getOutputStream(),ImageDateDO.class).sheet().doWrite(list);
+    }
+
+    /**
+     * 设置列宽，行高
+     * 参照{@link WithAndHeightDataVO}
+     * 列宽{@link ColumnWidth}
+     * 头部行高{@link com.alibaba.excel.annotation.write.style.HeadRowHeight}
+     * 内容行高{@link com.alibaba.excel.annotation.write.style.ContentRowHeight}
+     * @param response
+     * @throws UnsupportedEncodingException
+     */
+    @PostMapping(value = "/withAndHeightWrite")
+    void withAndHeightWrite(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        List<DemoDateDO> demoDateList = doList();
+        List<WithAndHeightDataVO> list = new ArrayList<>();
+        demoDateList.forEach(demoDateDO -> {
+            WithAndHeightDataVO withAndHeightDataVO = new WithAndHeightDataVO();
+            withAndHeightDataVO.setString(demoDateDO.getTitle());
+            withAndHeightDataVO.setDate(new Date());
+            withAndHeightDataVO.setDoubleData(demoDateDO.getDoubleDate());
+            list.add(withAndHeightDataVO);
+        });
+        EasyExcel.write(response.getOutputStream(),WithAndHeightDataVO.class).sheet().doWrite(list);
+    }
+
+    /**
+     * 自定义样式
+     * 参照对象{@link DemoDateDO} 忽然字段 {@link com.alibaba.excel.annotation.ExcelIgnore}
+     * 创建样式策略
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/styleWrite")
+    void styleWrite(HttpServletResponse response)throws IOException{
+        setResponse(response);
+        //设置头部 背景色，字的字体颜色以及大小
+        WriteCellStyle headStyle = new WriteCellStyle();
+        headStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+        WriteFont headFont = new WriteFont();
+        headFont.setFontHeightInPoints((short)15);
+        headFont.setColor(IndexedColors.BLUE.getIndex());
+        headStyle.setWriteFont(headFont);
+        //设置内容 背景色，字的字体颜色以及大小
+        WriteCellStyle contentStyle = new WriteCellStyle();
+        //要设置内容背景色需要设置FillPatternType.SOLID_FOREGROUND,不设置无法添加背景颜色
+        contentStyle.setFillPatternType(FillPatternType.SOLID_FOREGROUND);
+        contentStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        WriteFont contentFont = new WriteFont();
+        contentFont.setFontHeightInPoints((short)10);
+        contentFont.setColor(IndexedColors.DARK_BLUE.getIndex());
+        contentStyle.setWriteFont(contentFont);
+        //设置头部是头部的样式，内容是内容的样式
+        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headStyle,contentStyle);
+        EasyExcel.write(response.getOutputStream(),DemoDateDO.class)
+                .registerWriteHandler(horizontalCellStyleStrategy).sheet()
+                .doWrite(doList());
+
     }
 
     private void setResponse(HttpServletResponse response) throws UnsupportedEncodingException {

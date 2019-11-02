@@ -1,5 +1,6 @@
 package com.xingkong.spingboot.service.excel.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 
@@ -35,6 +36,12 @@ public class DemoDateDO {
     @ColumnWidth(value = 15)
     private Double doubleDate;
 
+    /**
+     * 忽略这个字段
+     */
+    @ExcelIgnore
+    private String ignore;
+
     public DemoDateDO() {
     }
 
@@ -60,5 +67,13 @@ public class DemoDateDO {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getIgnore() {
+        return ignore;
+    }
+
+    public void setIgnore(String ignore) {
+        this.ignore = ignore;
     }
 }
