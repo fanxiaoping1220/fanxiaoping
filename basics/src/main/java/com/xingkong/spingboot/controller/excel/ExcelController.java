@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.util.FileUtils;
+import com.alibaba.excel.write.merge.LoopMergeStrategy;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -32,6 +34,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * @className: ExcelController
@@ -256,6 +260,23 @@ public class ExcelController {
         EasyExcel.write(response.getOutputStream(),DemoDateDO.class)
                 .registerWriteHandler(horizontalCellStyleStrategy).sheet()
                 .doWrite(doList());
+
+    }
+
+    /**
+     * 合并单元格
+     * 1.创建实体对象 参照{@link DemoDateDO}
+     * 2.创建策略，并注册
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/mergeWrite")
+    void mergeWrite(HttpServletResponse response)throws IOException{
+        setResponse(response);
+        //每2行合并一次，对应字段为0
+        LoopMergeStrategy loopMergeStrategy = new LoopMergeStrategy(2,0);
+        EasyExcel.write(response.getOutputStream(),DemoDateDO.class)
+                .registerWriteHandler(loopMergeStrategy).sheet().doWrite(doList());
 
     }
 
