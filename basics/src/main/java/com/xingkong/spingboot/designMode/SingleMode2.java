@@ -9,7 +9,7 @@ package com.xingkong.spingboot.designMode;
  */
 public class SingleMode2 {
 
-    private static SingleMode2 singleMode2;
+    private static volatile SingleMode2 singleMode2;
 
     private SingleMode2() {
     }
