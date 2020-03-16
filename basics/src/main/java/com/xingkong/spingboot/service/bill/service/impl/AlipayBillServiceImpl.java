@@ -60,7 +60,7 @@ public class AlipayBillServiceImpl implements AlipayBillService {
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         request.setBizContent("{" +
                 "\"bill_type\":\"signcustomer\"," +
-                "\"bill_date\":\""+ LocalDate.now().minusDays(4).toString() +"\"" +
+                "\"bill_date\":\""+ LocalDate.now().minusDays(1).toString() +"\"" +
                 "  }");
         AlipayDataDataserviceBillDownloadurlQueryResponse response = alipayClient.execute(request);
         if(response.isSuccess()){
@@ -70,7 +70,7 @@ public class AlipayBillServiceImpl implements AlipayBillService {
             List<List<String[]>> data = methodTwo(url);
             //存储数据
             //方案一同步处理数据
-//            saveData(data);
+            saveData(data);
             //方案二异步处理采用队列存储数据
             alipayBillProducer.sendAlipayBill(data);
             return "success";
