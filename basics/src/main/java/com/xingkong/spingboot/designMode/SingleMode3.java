@@ -9,8 +9,13 @@ package com.xingkong.spingboot.designMode;
  */
 public class SingleMode3 {
 
+    /**
+     * 为了解决反射的方式创建的对象照成的攻击
+     */
     private SingleMode3(){
-
+        if(SingleModeInstance.SINGLE_MODE != null){
+            throw new RuntimeException();
+        }
     }
 
     private static class SingleModeInstance{
