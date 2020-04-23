@@ -80,15 +80,15 @@ public class SingleTest {
      * 防止通过用反射的形式创建对象照成的攻击，解决方案{@link SingleMode3 的SingleMode3()}
      * @throws Exception
      */
-    @Test
-    public void test5() throws Exception{
-        Class clazz = SingleMode3.class;
-        Constructor constructor = clazz.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        SingleMode3 s1 = SingleMode3.getInstance();
-        SingleMode3 s2 = (SingleMode3) constructor.newInstance();
-        System.out.println(s1==s2);//false
-    }
+//    @Test
+////    public void test5() throws Exception{
+////        Class clazz = SingleMode3.class;
+////        Constructor constructor = clazz.getDeclaredConstructor();
+////        constructor.setAccessible(true);
+////        SingleMode3 s1 = SingleMode3.getInstance();
+////        SingleMode3 s2 = (SingleMode3) constructor.newInstance();
+////        System.out.println(s1==s2);//false
+////    }
 
     /**======================================================枚举模式测试=========================================================================================================*/
 
@@ -103,15 +103,15 @@ public class SingleTest {
      * 能有效的防止反射的形式创建的对象照成的攻击
      * @throws Exception
      */
-    @Test
-    public void test7()throws Exception{
-        Class clazz = SingleMode4.class;
-        Constructor constructor = clazz.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        SingleMode4 s1 = SingleMode4.INSTANCE;
-        SingleMode4 s2 = (SingleMode4) constructor.newInstance();
-        System.out.println(s1==s2);
-    }
+//    @Test
+//    public void test7()throws Exception{
+//        Class clazz = SingleMode4.class;
+//        Constructor constructor = clazz.getDeclaredConstructor();
+//        constructor.setAccessible(true);
+//        SingleMode4 s1 = SingleMode4.INSTANCE;
+//        SingleMode4 s2 = (SingleMode4) constructor.newInstance();
+//        System.out.println(s1==s2);
+//    }
 
     /**======================================================懒汉模式测试=========================================================================================================*/
 

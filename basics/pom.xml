@@ -55,11 +55,11 @@
 		</dependency>
 
 		<!-- hutool工具类 -->
-		<dependency>
-			<groupId>cn.hutool</groupId>
-			<artifactId>hutool-parent</artifactId>
-			<version>4.5.2</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>cn.hutool</groupId>-->
+<!--			<artifactId>hutool-parent</artifactId>-->
+<!--			<version>4.5.2</version>-->
+<!--		</dependency>-->
 
 		<!--日志-->
 		<dependency>
