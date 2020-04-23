@@ -10,7 +10,7 @@ import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.xingkong.spingboot.commonutil.Consts;
 import com.xingkong.spingboot.controller.bill.dto.AlipayBillDetailDTO;
-import com.xingkong.spingboot.producer.AlipayBillProducer;
+import com.xingkong.spingboot.rabbitmq.producer.AlipayBillProducer;
 import com.xingkong.spingboot.service.bill.dao.AlipayBillDetailDAO;
 import com.xingkong.spingboot.service.bill.dao.AlipayBillTotalDAO;
 import com.xingkong.spingboot.service.bill.entity.AlipayBillDetailDO;
