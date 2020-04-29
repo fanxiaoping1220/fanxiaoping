@@ -21,7 +21,7 @@ public class RabbitmqController {
     private FanoutProduce fanoutProduce;
 
     @GetMapping(value = "/exchange/fanout")
-    public void exchangeTypeFanout(){
+    public void exchangeTypeFanout() {
         fanoutProduce.fanoutSend("发送消息:fanout类型。123456");
     }
 

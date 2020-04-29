@@ -55,15 +55,15 @@ public class AlipayBillServiceImpl implements AlipayBillService {
     private AlipayBillProducer alipayBillProducer;
 
     @Override
-    public String getYesterdayBill() throws AlipayApiException, IOException{
-        AlipayClient alipayClient = new DefaultAlipayClient(Consts.URL,Consts.APP_ID,Consts.PRIVATE_KEY, AlipayConstants.FORMAT_JSON,AlipayConstants.CHARSET_UTF8,Consts.ALIPAY_PUBLIC_KEY,AlipayConstants.SIGN_TYPE_RSA2);
+    public String getYesterdayBill() throws AlipayApiException, IOException {
+        AlipayClient alipayClient = new DefaultAlipayClient(Consts.URL, Consts.APP_ID, Consts.PRIVATE_KEY, AlipayConstants.FORMAT_JSON, AlipayConstants.CHARSET_UTF8, Consts.ALIPAY_PUBLIC_KEY, AlipayConstants.SIGN_TYPE_RSA2);
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         request.setBizContent("{" +
                 "\"bill_type\":\"signcustomer\"," +
-                "\"bill_date\":\""+ LocalDate.now().minusDays(1).toString() +"\"" +
+                "\"bill_date\":\"" + LocalDate.now().minusDays(1).toString() + "\"" +
                 "  }");
         AlipayDataDataserviceBillDownloadurlQueryResponse response = alipayClient.execute(request);
-        if(response.isSuccess()){
+        if (response.isSuccess()) {
             System.out.println("调用成功");
             String url = response.getBillDownloadUrl();
             //获取数据
@@ -84,7 +84,7 @@ public class AlipayBillServiceImpl implements AlipayBillService {
     public JSONArray getList(AlipayBillDetailDTO alipayBillDetailDTO) {
         LocalDateTime startTime = LocalDateTime.now().minusDays(alipayBillDetailDTO.getNumber()).with(LocalTime.MIN);
         LocalDateTime endTime = LocalDateTime.now().minusDays(alipayBillDetailDTO.getNumber()).with(LocalTime.MAX);
-        if(alipayBillDetailDTO.getNumber() > 1){
+        if (alipayBillDetailDTO.getNumber() > 1) {
             alipayBillDetailDTO.setNumber(1);
             endTime = LocalDateTime.now().minusDays(alipayBillDetailDTO.getNumber()).with(LocalTime.MAX);
         }
@@ -94,8 +94,9 @@ public class AlipayBillServiceImpl implements AlipayBillService {
 
     /**
      * 方法二 通过请求地址address---> 得到InputStream ------>转换成ZipInputStream ------> 对zip里面的数据进去读取并存入list中
+     *
      * @param address url
-     * @return List<List<String[]>>
+     * @return List<List < String [ ]>>
      * @throws IOException 抛异常
      */
     private List<List<String[]>> methodTwo(String address) throws IOException {
@@ -103,10 +104,10 @@ public class AlipayBillServiceImpl implements AlipayBillService {
         URL url = new URL(address);
         URLConnection conn = url.openConnection();
         InputStream inputStream = conn.getInputStream();
-        ZipInputStream zipInputStream = new ZipInputStream(inputStream,Charset.forName(AlipayConstants.CHARSET_GBK));
+        ZipInputStream zipInputStream = new ZipInputStream(inputStream, Charset.forName(AlipayConstants.CHARSET_GBK));
         //读取数据
-        while(zipInputStream.getNextEntry() != null){
-            reader(dataList,zipInputStream);
+        while (zipInputStream.getNextEntry() != null) {
+            reader(dataList, zipInputStream);
         }
         return dataList;
     }
@@ -114,20 +115,21 @@ public class AlipayBillServiceImpl implements AlipayBillService {
     /**
      * 读取数据
      * 通过压缩包输入流读取 ZipInputStream
-     * @param dataList 存储数据的list
+     *
+     * @param dataList       存储数据的list
      * @param zipInputStream 压缩包输入流
      * @throws IOException 抛异常
      */
     private void reader(List<List<String[]>> dataList, ZipInputStream zipInputStream) throws IOException {
-        InputStreamReader inputStreamReader = new InputStreamReader(zipInputStream,Charset.forName(AlipayConstants.CHARSET_GBK));
+        InputStreamReader inputStreamReader = new InputStreamReader(zipInputStream, Charset.forName(AlipayConstants.CHARSET_GBK));
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         //行文件中所有的数据
         List<String[]> data = new ArrayList<>();
         //暂时存放每一行的数据
         String rowRecord;
-        while ((rowRecord = bufferedReader.readLine()) != null){
+        while ((rowRecord = bufferedReader.readLine()) != null) {
             String[] lineList = rowRecord.split("\\,");
-            if(lineList.length > 4){
+            if (lineList.length > 4) {
                 data.add(lineList);
             }
         }
@@ -139,11 +141,12 @@ public class AlipayBillServiceImpl implements AlipayBillService {
      * 保存数据到数据库
      * 支付宝账单明细表
      * 支付宝账单汇总表
+     *
      * @param dataList
      */
-    public void saveData(List<List<String[]>> dataList){
+    public void saveData(List<List<String[]>> dataList) {
         for (List<String[]> data : dataList) {
-            if(data.get(0).length > 6 || data.get(1).length > 6){
+            if (data.get(0).length > 6 || data.get(1).length > 6) {
                 //存入支付宝账单明细表
                 List<AlipayBillDetailDO> billDetailList = new ArrayList<>();
                 for (String[] o : data) {
@@ -165,7 +168,7 @@ public class AlipayBillServiceImpl implements AlipayBillService {
                 }
                 //批量插入
                 alipayBillDetailDAO.branchInsert(billDetailList);
-            }else{
+            } else {
                 //存入支付宝账单汇总表
                 List<AlipayBillTotalDO> billTotalList = new ArrayList<>();
                 for (String[] o : data) {
@@ -176,7 +179,7 @@ public class AlipayBillServiceImpl implements AlipayBillService {
                     billTotalDO.setOutNumber(Integer.valueOf(o[3].trim()));
                     billTotalDO.setOutMoney(BigDecimal.valueOf(Double.valueOf(o[4].trim())));
                     billTotalDO.setTotalMoney(BigDecimal.valueOf(Double.valueOf(o[5].trim())));
-                    billTotalDO.setCreateTime( LocalDateTime.now().minusDays(1));
+                    billTotalDO.setCreateTime(LocalDateTime.now().minusDays(1));
                     billTotalList.add(billTotalDO);
                 }
                 //批量插入

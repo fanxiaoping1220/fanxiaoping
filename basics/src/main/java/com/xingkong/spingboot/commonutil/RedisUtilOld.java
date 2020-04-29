@@ -203,6 +203,7 @@ public class RedisUtilOld {
 
     /**
      * 插入数据对象到redis缓存中，一直有效，无过期时间
+     *
      * @param key
      * @param value
      */
@@ -219,7 +220,6 @@ public class RedisUtilOld {
             }
         });
     }
-
 
 
     /**

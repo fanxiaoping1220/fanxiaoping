@@ -18,6 +18,7 @@ public interface AlipayBillTotalDAO {
 
     /**
      * 批量插入
+     *
      * @param list
      * @return
      */

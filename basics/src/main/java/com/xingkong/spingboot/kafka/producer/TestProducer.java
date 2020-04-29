@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestProducer {
 
     @Autowired
-    private  KafkaTemplate kafkaTemplate;
+    private KafkaTemplate kafkaTemplate;
 
     @GetMapping(value = "/sendMessage")
-    public void sendMessage(){
-        kafkaTemplate.send("test","test01");
+    public void sendMessage() {
+        kafkaTemplate.send("test", "test01");
     }
 
     @GetMapping(value = "/sendModel")
-    public void sendModel(){
-        Test test = new Test("test",1233);
-        kafkaTemplate.send("test-1",test);
+    public void sendModel() {
+        Test test = new Test("test", 1233);
+        kafkaTemplate.send("test-1", test);
     }
 }

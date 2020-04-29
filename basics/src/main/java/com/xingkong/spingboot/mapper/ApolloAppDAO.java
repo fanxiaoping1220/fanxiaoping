@@ -20,13 +20,14 @@ public interface ApolloAppDAO {
 
     /**
      * 列表
+     *
      * @return
      */
     @Results({
-            @Result(column = "Id",property = "id"),@Result(column = "AppId",property = "appId"),@Result(column = "Name",property = "name"),
-            @Result(column = "OrgId",property = "orgId"),@Result(column = "OrgName",property = "orgName"),@Result(column = "OwnerName",property = "ownerName"),
-            @Result(column = "OwnerEmail",property = "ownerEmail"),@Result(column = "IsDelete",property = "isDelete"),@Result(column = "DataChange_CreatedBy",property = "dataChangeCreatedBy"),
-            @Result(column = "DataChange_CreatedTime",property = "dataChangeCreatedTime"),@Result(column = "DataChange_LastModifiedBy",property = "dataChangeLastModifiedBy"),@Result(column = "DataChange_LastTime",property = "dataChangeLastTime"),
+            @Result(column = "Id", property = "id"), @Result(column = "AppId", property = "appId"), @Result(column = "Name", property = "name"),
+            @Result(column = "OrgId", property = "orgId"), @Result(column = "OrgName", property = "orgName"), @Result(column = "OwnerName", property = "ownerName"),
+            @Result(column = "OwnerEmail", property = "ownerEmail"), @Result(column = "IsDelete", property = "isDelete"), @Result(column = "DataChange_CreatedBy", property = "dataChangeCreatedBy"),
+            @Result(column = "DataChange_CreatedTime", property = "dataChangeCreatedTime"), @Result(column = "DataChange_LastModifiedBy", property = "dataChangeLastModifiedBy"), @Result(column = "DataChange_LastTime", property = "dataChangeLastTime"),
     })
     @Select("select * from  App")
     List<ApolloApp> getList();

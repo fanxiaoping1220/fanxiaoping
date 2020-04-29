@@ -17,11 +17,11 @@ public class SingleMode implements Serializable {
     private SingleMode() {
     }
 
-    public static SingleMode getInstance(){
+    public static SingleMode getInstance() {
         return singleMode;
     }
 
-    public void showMessage(){
+    public void showMessage() {
         System.out.println("hello singleMode");
     }
 }

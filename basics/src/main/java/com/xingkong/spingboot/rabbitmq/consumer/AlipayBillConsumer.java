@@ -29,7 +29,7 @@ public class AlipayBillConsumer {
      */
     @RabbitListener(queues = "alipayBill")
     @RabbitHandler
-    public void saveData(List<List<String[]>> data){
+    public void saveData(List<List<String[]>> data) {
         alipayBillService.saveData(data);
     }
 }

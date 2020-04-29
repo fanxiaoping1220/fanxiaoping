@@ -23,10 +23,11 @@ public class AlipayBillProducer {
 
     /**
      * 创建队列
+     *
      * @return
      */
     @Bean
-    public Queue alipayBillQueue(){
+    public Queue alipayBillQueue() {
         return new Queue("alipayBill");
     }
 
@@ -34,10 +35,11 @@ public class AlipayBillProducer {
      * 发送支付宝账单数据
      * 将InputStream读取完的数据发送给队列mq
      * 消费队列mq对数据进行存储
+     *
      * @param data
      */
-    public void sendAlipayBill(List<List<String[]>> data){
-        amqpTemplate.convertAndSend("alipayBill",data);
+    public void sendAlipayBill(List<List<String[]>> data) {
+        amqpTemplate.convertAndSend("alipayBill", data);
     }
 
 }

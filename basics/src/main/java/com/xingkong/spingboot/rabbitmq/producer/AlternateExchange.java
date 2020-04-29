@@ -30,16 +30,16 @@ public class AlternateExchange {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("alternate-exchange","myAe");
-        channel.exchangeDeclare("normalExchange",ExchangeType.EXCHANGE_TYPE_DIRECT.getName(),true,false,arguments);
-        channel.exchangeDeclare("myAe",ExchangeType.EXCHANGE_TYPE_FANOUT.getName(),true,false,null);
-        channel.queueDeclare("normalQueue",true,false,false,null);
-        channel.queueDeclare("unroutedQueue",true,false,false,null);
-        channel.queueBind("normalQueue","normalExchange","normalKey");
-        channel.queueBind("unroutedQueue","myAe","");
+        arguments.put("alternate-exchange", "myAe");
+        channel.exchangeDeclare("normalExchange", ExchangeType.EXCHANGE_TYPE_DIRECT.getName(), true, false, arguments);
+        channel.exchangeDeclare("myAe", ExchangeType.EXCHANGE_TYPE_FANOUT.getName(), true, false, null);
+        channel.queueDeclare("normalQueue", true, false, false, null);
+        channel.queueDeclare("unroutedQueue", true, false, false, null);
+        channel.queueBind("normalQueue", "normalExchange", "normalKey");
+        channel.queueBind("unroutedQueue", "myAe", "");
         String message = "Hello Alternate Exchange ";
-        channel.basicPublish("normalExchange","",MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
-        channel.basicPublish("normalExchange","normalKey",MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
+        channel.basicPublish("normalExchange", "", MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+        channel.basicPublish("normalExchange", "normalKey", MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
         channel.close();
         connection.close();
     }

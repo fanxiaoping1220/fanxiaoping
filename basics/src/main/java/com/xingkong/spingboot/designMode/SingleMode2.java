@@ -28,12 +28,13 @@ public class SingleMode2 {
     /**
      * 采用加锁的模式
      * 线程安全的
+     *
      * @return
      */
-    public static SingleMode2 getInstance(){
-        if(singleMode2 == null){
-            synchronized (SingleMode2.class){
-                if (singleMode2 == null){
+    public static SingleMode2 getInstance() {
+        if (singleMode2 == null) {
+            synchronized (SingleMode2.class) {
+                if (singleMode2 == null) {
                     singleMode2 = new SingleMode2();
                 }
             }

@@ -139,7 +139,7 @@ public class RedisUtil {
     public boolean fuzzyRemovePre(String key) {
         try {
             Set<String> keys = redisTemplate.keys("*" + key);
-            if (keys == null || keys.isEmpty()){
+            if (keys == null || keys.isEmpty()) {
                 return false;
             }
             redisTemplate.delete(keys);
@@ -244,12 +244,13 @@ public class RedisUtil {
 
     /**
      * 向一张hash表中放入数据,如果不存在将创建,自增
+     *
      * @param value 自增值
      * @param key   键
      * @param item  项
      * @return true 成功 false失败
      */
-    public boolean hsetIncr(String key, String item,long value) {
+    public boolean hsetIncr(String key, String item, long value) {
         try {
             redisTemplate.opsForHash().increment(key, item, value);
             return true;
@@ -598,6 +599,7 @@ public class RedisUtil {
 
     /**
      * 加锁(redis分布式锁)
+     *
      * @param key
      * @param value 当前线程操作时的 System.currentTimeMillis() + 2000，2000是超时时间，这个地方不需要去设置redis的expire，
      *              也不需要超时后手动去删除该key，因为会存在并发的线程都会去删除，造成上一个锁失效，结果都获得锁去执行，并发操作失败了就。
@@ -615,7 +617,7 @@ public class RedisUtil {
             //获得之前的key值，同时设置当前的传入的value。这个地方可能几个线程同时过来，但是redis本身天然是单线程的，所以getAndSet方法还是会安全执行，
             //首先执行的线程，此时curVal当然和oldVal值相等，因为就是同一个值，之后该线程set了自己的value，后面的线程就取不到锁了
             String oldVal = redisTemplate.opsForValue().getAndSet(key, value).toString();
-            if(StringUtils.isNotEmpty(oldVal) && oldVal.equals(curVal)) {
+            if (StringUtils.isNotEmpty(oldVal) && oldVal.equals(curVal)) {
                 return true;
             }
         }
@@ -624,6 +626,7 @@ public class RedisUtil {
 
     /**
      * 解锁
+     *
      * @param key
      * @param value
      */

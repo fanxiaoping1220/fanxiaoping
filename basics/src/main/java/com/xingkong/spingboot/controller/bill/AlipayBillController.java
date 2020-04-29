@@ -25,6 +25,7 @@ public class AlipayBillController {
 
     /**
      * 获取支付宝昨日的账单
+     *
      * @return
      * @throws AlipayApiException
      * @throws IOException
@@ -36,11 +37,12 @@ public class AlipayBillController {
 
     /**
      * 查询支付宝账单明细
+     *
      * @param alipayBillDetailDTO
      * @return
      */
     @GetMapping(value = "/getList")
-    JSONArray getList(@RequestBody AlipayBillDetailDTO alipayBillDetailDTO){
+    JSONArray getList(@RequestBody AlipayBillDetailDTO alipayBillDetailDTO) {
         return alipayBillService.getList(alipayBillDetailDTO);
     }
 }

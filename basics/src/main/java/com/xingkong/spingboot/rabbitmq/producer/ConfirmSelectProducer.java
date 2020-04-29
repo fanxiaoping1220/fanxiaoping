@@ -19,10 +19,10 @@ public class ConfirmSelectProducer {
     public static void main(String[] args) throws IOException, TimeoutException {
         Producer producer = new Producer();
         Channel channel = producer.basic();
-        channel.exchangeDeclare("confirmExchange",ExchangeType.EXCHANGE_TYPE_FANOUT.getName(),true,false,null);
-        channel.queueDeclare("confirmQueue",true,false,false,null);
-        channel.queueBind("confirmQueue","confirmExchange","");
-        try{
+        channel.exchangeDeclare("confirmExchange", ExchangeType.EXCHANGE_TYPE_FANOUT.getName(), true, false, null);
+        channel.queueDeclare("confirmQueue", true, false, false, null);
+        channel.queueBind("confirmQueue", "confirmExchange", "");
+        try {
             /**
              * 将信道设置为publisher confirm
              */
@@ -31,11 +31,11 @@ public class ConfirmSelectProducer {
              * 之后正常发送消息
              */
             String message = "hello confirm select producer rabbitMq";
-            channel.basicPublish("confirmExchange","confirm",MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
-            if(!channel.waitForConfirms()){
+            channel.basicPublish("confirmExchange", "confirm", MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+            if (!channel.waitForConfirms()) {
                 System.out.println("send message failed");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

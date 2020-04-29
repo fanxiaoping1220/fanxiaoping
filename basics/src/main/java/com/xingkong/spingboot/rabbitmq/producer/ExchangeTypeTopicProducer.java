@@ -36,15 +36,15 @@ public class ExchangeTypeTopicProducer {
         factory.setHost("127.0.0.1");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(EXCHANGE_NAME,ExchangeType.EXCHANGE_TYPE_TOPIC.getName(),true,false,null);
-        channel.queueDeclare(QUEUE_NAME_1,true,false,false,null);
-        channel.queueDeclare(QUEUE_NAME_2,true,false,false,null);
-        channel.queueBind(QUEUE_NAME_1,EXCHANGE_NAME,"routingKey_#");
-        channel.queueBind(QUEUE_NAME_2,EXCHANGE_NAME,"routingKey_*");
-        String message = "hello rabbitmq exchange type topic "+ROUTING_KEY_1;
-        String message2 = "hello rabbitmq exchange type topic "+ROUTING_KEY_2;
-        channel.basicPublish(EXCHANGE_NAME,ROUTING_KEY_1, MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
-        channel.basicPublish(EXCHANGE_NAME,ROUTING_KEY_2, MessageProperties.PERSISTENT_TEXT_PLAIN,message2.getBytes());
+        channel.exchangeDeclare(EXCHANGE_NAME, ExchangeType.EXCHANGE_TYPE_TOPIC.getName(), true, false, null);
+        channel.queueDeclare(QUEUE_NAME_1, true, false, false, null);
+        channel.queueDeclare(QUEUE_NAME_2, true, false, false, null);
+        channel.queueBind(QUEUE_NAME_1, EXCHANGE_NAME, "routingKey_#");
+        channel.queueBind(QUEUE_NAME_2, EXCHANGE_NAME, "routingKey_*");
+        String message = "hello rabbitmq exchange type topic " + ROUTING_KEY_1;
+        String message2 = "hello rabbitmq exchange type topic " + ROUTING_KEY_2;
+        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_1, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_2, MessageProperties.PERSISTENT_TEXT_PLAIN, message2.getBytes());
         channel.close();
         connection.close();
     }

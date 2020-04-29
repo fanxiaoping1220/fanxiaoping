@@ -61,32 +61,34 @@ public class ExcelController {
 
     /**
      * 写法二
+     *
      * @param response
      * @throws IOException
      */
     @PostMapping(value = "/demoExportExcelTwo")
-    void  demoExportExcelTwo(HttpServletResponse response) throws IOException {
+    void demoExportExcelTwo(HttpServletResponse response) throws IOException {
         setResponse(response);
         ExcelWriter build = EasyExcel.write(response.getOutputStream(), DemoDateDO.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet().build();
-        build.write(doList(),writeSheet);
+        build.write(doList(), writeSheet);
         //千万别忘记finish 会帮忙关闭流
         build.finish();
     }
 
     /**
      * 复杂头导出 参照 {@link ComplexDateDO}
+     *
      * @param response
      * @throws IOException
      */
     @PostMapping(value = "/complexHeader")
-    void complexHeader(HttpServletResponse response)throws IOException{
+    void complexHeader(HttpServletResponse response) throws IOException {
         setResponse(response);
         List<DemoDateDO> demoDateList = doList();
         List<ComplexDateDO> list = new ArrayList<>();
         demoDateList.forEach(demoDateDO -> {
             ComplexDateDO complexDateDO = new ComplexDateDO();
-            BeanUtils.copyProperties(demoDateDO,complexDateDO);
+            BeanUtils.copyProperties(demoDateDO, complexDateDO);
             list.add(complexDateDO);
         });
         EasyExcel.write(response.getOutputStream(), DemoDateDO.class).sheet().doWrite(list);
@@ -95,20 +97,21 @@ public class ExcelController {
     /**
      * 重复多次写入 参照{@link DemoDateDO}
      * 方法一 写到同一个sheet
+     *
      * @param response
      * @throws IOException
      */
     @PostMapping(value = "/repeatedWriteOne")
-    void repeatedWriteOne(HttpServletResponse response)throws IOException{
+    void repeatedWriteOne(HttpServletResponse response) throws IOException {
         setResponse(response);
         //指定写用哪个class去读
         ExcelWriter write = EasyExcel.write(response.getOutputStream(), DemoDateDO.class).build();
         //如果同一个sheet只要创建一次
         WriteSheet writeSheet = EasyExcel.writerSheet().build();
         //去调用写入，这里我调用了5次，实际使用时根据数据库分页的总也数来
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0; i < 5; i++) {
             //分页去数据库查询数据，这里可以去数据库查询每一页的数据
-            write.write(doList(),writeSheet);
+            write.write(doList(), writeSheet);
         }
         //千万别忘记finish 会帮忙关闭流
         write.finish();
@@ -117,20 +120,21 @@ public class ExcelController {
     /**
      * 重复多次写入 参照{@link DemoDateDO}
      * 方法二 如果写到不同的sheet 同一个对象
+     *
      * @param response
      * @throws IOException
      */
     @PostMapping(value = "/repeatedWriteTwo")
-    void repeatedWriteTwo(HttpServletResponse response)throws IOException{
+    void repeatedWriteTwo(HttpServletResponse response) throws IOException {
         setResponse(response);
         //指定class
         ExcelWriter write = EasyExcel.write(response.getOutputStream(), DemoDateDO.class).build();
         //去调用写入,这里我调用了五次，实际使用时根据数据库分页的总的页数来。这里最终会写到5个sheet里面
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0; i < 5; i++) {
             //每次都要创建writeSheet 这里注意必须指定sheetNo
             WriteSheet writeSheet = EasyExcel.writerSheet(i).build();
             //分页去数据库查询数据 这里可以去数据库查询每一页的数据
-            write.write(doList(),writeSheet);
+            write.write(doList(), writeSheet);
         }
         write.finish();
     }
@@ -138,11 +142,12 @@ public class ExcelController {
     /**
      * 重复多次写入 参照{@link DemoDateDO}
      * 方法三 写到不同的sheet,不同的对象
+     *
      * @param response
      * @throws IOException
      */
     @PostMapping(value = "/repeatedWriteThree")
-    void repeatedWriteThree(HttpServletResponse response)throws IOException{
+    void repeatedWriteThree(HttpServletResponse response) throws IOException {
         setResponse(response);
         //不指定class
         ExcelWriter writer = EasyExcel.write(response.getOutputStream()).build();
@@ -151,7 +156,7 @@ public class ExcelController {
             // 每次都要创建writeSheet 这里注意必须指定sheetNo。这里注意DemoData.class 可以每次都变，我这里为了方便 所以用的同一个class 实际上可以一直变
             WriteSheet writeSheet = EasyExcel.writerSheet(i).head(DemoDateDO.class).build();
             // 分页去数据库查询数据 这里可以去数据库查询每一页的数据
-            writer.write(doList(),writeSheet);
+            writer.write(doList(), writeSheet);
         }
         // 千万别忘记finish 会帮忙关闭流
         writer.finish();
@@ -164,6 +169,7 @@ public class ExcelController {
      * 格式转换
      * LocalTime LocalDate LocalDateTime 需要重写{@link Converter}
      * Date 可以直接用 {@link com.alibaba.excel.annotation.format.DateTimeFormat}
+     *
      * @param response
      */
     @PostMapping(value = "/converterWrite")
@@ -183,16 +189,17 @@ public class ExcelController {
 
     /**
      * 图片导出
+     *
      * @param response
      * @throws IOException
      */
     @PostMapping(value = "/imageWrite")
-    void imageWrite(HttpServletResponse response)throws IOException{
+    void imageWrite(HttpServletResponse response) throws IOException {
         setResponse(response);
         List<ImageDateDO> list = new ArrayList<>();
         ImageDateDO imageDateDO = new ImageDateDO();
         list.add(imageDateDO);
-        String imagepath = (new File("")).getAbsolutePath()+File.separator+"image"+File.separator+"img.jpg";
+        String imagepath = (new File("")).getAbsolutePath() + File.separator + "image" + File.separator + "img.jpg";
         //放入四种类型的图片,实际使用只要选一种即可
         //文件
         imageDateDO.setFile(new File(imagepath));
@@ -202,7 +209,7 @@ public class ExcelController {
         imageDateDO.setString(imagepath);
         //byte
         imageDateDO.setByteArray(FileUtils.readFileToByteArray(new File(imagepath)));
-        EasyExcel.write(response.getOutputStream(),ImageDateDO.class).sheet().doWrite(list);
+        EasyExcel.write(response.getOutputStream(), ImageDateDO.class).sheet().doWrite(list);
     }
 
     /**
@@ -211,6 +218,7 @@ public class ExcelController {
      * 列宽{@link ColumnWidth}
      * 头部行高{@link com.alibaba.excel.annotation.write.style.HeadRowHeight}
      * 内容行高{@link com.alibaba.excel.annotation.write.style.ContentRowHeight}
+     *
      * @param response
      * @throws UnsupportedEncodingException
      */
@@ -226,24 +234,25 @@ public class ExcelController {
             withAndHeightDataVO.setDoubleData(demoDateDO.getDoubleDate());
             list.add(withAndHeightDataVO);
         });
-        EasyExcel.write(response.getOutputStream(),WithAndHeightDataVO.class).sheet().doWrite(list);
+        EasyExcel.write(response.getOutputStream(), WithAndHeightDataVO.class).sheet().doWrite(list);
     }
 
     /**
      * 自定义样式
      * 参照对象{@link DemoDateDO} 忽然字段 {@link com.alibaba.excel.annotation.ExcelIgnore}
      * 创建样式策略
+     *
      * @param response
      * @throws IOException
      */
     @PostMapping(value = "/styleWrite")
-    void styleWrite(HttpServletResponse response)throws IOException{
+    void styleWrite(HttpServletResponse response) throws IOException {
         setResponse(response);
         //设置头部 背景色，字的字体颜色以及大小
         WriteCellStyle headStyle = new WriteCellStyle();
         headStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
         WriteFont headFont = new WriteFont();
-        headFont.setFontHeightInPoints((short)15);
+        headFont.setFontHeightInPoints((short) 15);
         headFont.setColor(IndexedColors.BLUE.getIndex());
         headStyle.setWriteFont(headFont);
         //设置内容 背景色，字的字体颜色以及大小
@@ -252,12 +261,12 @@ public class ExcelController {
         contentStyle.setFillPatternType(FillPatternType.SOLID_FOREGROUND);
         contentStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
         WriteFont contentFont = new WriteFont();
-        contentFont.setFontHeightInPoints((short)10);
+        contentFont.setFontHeightInPoints((short) 10);
         contentFont.setColor(IndexedColors.DARK_BLUE.getIndex());
         contentStyle.setWriteFont(contentFont);
         //设置头部是头部的样式，内容是内容的样式
-        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headStyle,contentStyle);
-        EasyExcel.write(response.getOutputStream(),DemoDateDO.class)
+        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headStyle, contentStyle);
+        EasyExcel.write(response.getOutputStream(), DemoDateDO.class)
                 .registerWriteHandler(horizontalCellStyleStrategy).sheet()
                 .doWrite(doList());
 
@@ -267,15 +276,16 @@ public class ExcelController {
      * 合并单元格
      * 1.创建实体对象 参照{@link DemoDateDO}
      * 2.创建策略，并注册
+     *
      * @param response
      * @throws IOException
      */
     @PostMapping(value = "/mergeWrite")
-    void mergeWrite(HttpServletResponse response)throws IOException{
+    void mergeWrite(HttpServletResponse response) throws IOException {
         setResponse(response);
         //每2行合并一次，对应字段为0
-        LoopMergeStrategy loopMergeStrategy = new LoopMergeStrategy(2,0);
-        EasyExcel.write(response.getOutputStream(),DemoDateDO.class)
+        LoopMergeStrategy loopMergeStrategy = new LoopMergeStrategy(2, 0);
+        EasyExcel.write(response.getOutputStream(), DemoDateDO.class)
                 .registerWriteHandler(loopMergeStrategy).sheet().doWrite(doList());
 
     }
@@ -292,15 +302,16 @@ public class ExcelController {
 
     /**
      * 模拟生成数据
+     *
      * @return
      */
-    private List<DemoDateDO> doList(){
+    private List<DemoDateDO> doList() {
         List<DemoDateDO> list = new ArrayList<>();
-        for(int i = 0 ; i <= 10 ; i++){
+        for (int i = 0; i <= 10; i++) {
             DemoDateDO demo = new DemoDateDO();
             demo.setDate(LocalDate.now().plusDays(i).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            demo.setDoubleDate(15.26*i);
-            demo.setTitle("字符串标题:"+i);
+            demo.setDoubleDate(15.26 * i);
+            demo.setTitle("字符串标题:" + i);
             list.add(demo);
         }
         return list;

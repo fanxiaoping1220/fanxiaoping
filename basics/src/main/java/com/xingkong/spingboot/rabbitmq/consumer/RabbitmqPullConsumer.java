@@ -23,9 +23,9 @@ public class RabbitmqPullConsumer {
         ConnectionFactory factory = new ConnectionFactory();
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        GetResponse response = channel.basicGet(QUEUE_NAME,false);
+        GetResponse response = channel.basicGet(QUEUE_NAME, false);
         System.out.println(new String(response.getBody()));
-        channel.basicAck(response.getEnvelope().getDeliveryTag(),false);
+        channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
         channel.close();
         connection.close();
     }

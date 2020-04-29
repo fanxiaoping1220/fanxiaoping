@@ -15,21 +15,21 @@ public class ComplexDateDO {
     /**
      * 标题
      */
-    @ExcelProperty(value = "标题",index = 0)
+    @ExcelProperty(value = "标题", index = 0)
     @ColumnWidth(value = 15)
     private String title;
 
     /**
      * 日期
      */
-    @ExcelProperty(value = "日期",index = 1)
+    @ExcelProperty(value = "日期", index = 1)
     @ColumnWidth(value = 15)
     private String date;
 
     /**
-     *数字标题
+     * 数字标题
      */
-    @ExcelProperty(value = "数字标题",index = 2)
+    @ExcelProperty(value = "数字标题", index = 2)
     @ColumnWidth(value = 15)
     private Double doubleDate;
 

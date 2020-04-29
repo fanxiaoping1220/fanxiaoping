@@ -16,11 +16,12 @@ public class FanoutConsumer {
 
     /**
      * 消费消息不指定队里名称
+     *
      * @param message
      */
     @RabbitListener(queues = "${rabbitmq.queue.name}")
     @RabbitHandler
-    public void fanoutConsumer(String message){
+    public void fanoutConsumer(String message) {
         System.out.println(message);
     }
 }

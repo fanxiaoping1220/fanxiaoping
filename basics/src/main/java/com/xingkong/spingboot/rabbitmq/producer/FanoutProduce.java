@@ -33,38 +33,42 @@ public class FanoutProduce {
 
     /**
      * 创建队列
+     *
      * @return
      */
     @Bean
-    public Queue fanoutQueue(){
+    public Queue fanoutQueue() {
         return new Queue(name);
     }
 
     /**
      * 创建type = fanout 的交换机
+     *
      * @return
      */
     @Bean
-    public FanoutExchange exchange(){
+    public FanoutExchange exchange() {
         return new FanoutExchange(EXCHANGE_FANOUT);
     }
 
     /**
      * 将队里绑定交换机
+     *
      * @return
      */
     @Bean
-    public Binding binding(){
+    public Binding binding() {
         return BindingBuilder.bind(fanoutQueue()).to(exchange());
     }
 
     /**
      * 发送消息
      * ExchangeType = fanout
+     *
      * @param message
      */
-    public void fanoutSend(String message){
-        rabbitTemplate.convertAndSend(EXCHANGE_FANOUT,"",message);
+    public void fanoutSend(String message) {
+        rabbitTemplate.convertAndSend(EXCHANGE_FANOUT, "", message);
     }
 
 }

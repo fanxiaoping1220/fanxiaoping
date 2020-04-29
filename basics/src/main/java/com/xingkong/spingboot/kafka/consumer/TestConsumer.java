@@ -16,19 +16,21 @@ public class TestConsumer {
 
     /**
      * 字符串
+     *
      * @param data
      */
     @KafkaListener(topics = "test")
-    public void consumerTest(String data){
+    public void consumerTest(String data) {
         System.out.println(data);
     }
 
     /**
      * model
+     *
      * @param data
      */
     @KafkaListener(topics = "test-1")
-    public void consumerModelTest(String data){
+    public void consumerModelTest(String data) {
         Test test = JSON.parseObject(data, Test.class);
         System.out.println(test.toString());
     }

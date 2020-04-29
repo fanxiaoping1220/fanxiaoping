@@ -29,14 +29,14 @@ public class TTLProducer {
         factory.setPassword(Consts.PASSWORD);
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare("TTLExchange",ExchangeType.EXCHANGE_TYPE_FANOUT.getName(),true,false,null);
+        channel.exchangeDeclare("TTLExchange", ExchangeType.EXCHANGE_TYPE_FANOUT.getName(), true, false, null);
         /**
          * 1.创建一个过期时间为30分钟的队列
          */
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("x-expires",1800000);
-        channel.queueDeclare("TTLQueue",false,false,false,arguments);
-        channel.queueBind("TTLQueue","TTLExchange","routingKey");
+        arguments.put("x-expires", 1800000);
+        channel.queueDeclare("TTLQueue", false, false, false, arguments);
+        channel.queueBind("TTLQueue", "TTLExchange", "routingKey");
         String message = " Hello TTL RabbitMq";
         AMQP.BasicProperties.Builder builder = new AMQP.BasicProperties.Builder();
         //持久化消息
@@ -47,7 +47,7 @@ public class TTLProducer {
         /**
          * 2.发送一条消息过期时间为6000ms的
          */
-        channel.basicPublish("TTLExchange","",properties,message.getBytes());
+        channel.basicPublish("TTLExchange", "", properties, message.getBytes());
         channel.close();
         connection.close();
     }

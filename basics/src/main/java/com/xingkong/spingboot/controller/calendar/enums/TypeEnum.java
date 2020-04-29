@@ -12,17 +12,17 @@ public enum TypeEnum {
     /**
      * 节假日
      */
-    HOLIDAY_DAY(1,"节假日"),
+    HOLIDAY_DAY(1, "节假日"),
 
     /**
      * 休息日
      */
-    REST_DAY(2,"休息日"),
+    REST_DAY(2, "休息日"),
 
     /**
      * 工作日
      */
-    WORK_DAY(3,"工作日");
+    WORK_DAY(3, "工作日");
 
 
     private Integer code;
@@ -39,12 +39,13 @@ public enum TypeEnum {
 
     /**
      * 根据code查询name
+     *
      * @param code
      * @return
      */
-    public static String getByCode(Integer code){
-        for(TypeEnum typeEnum :TypeEnum.values()){
-            if(code.equals(typeEnum.getCode())){
+    public static String getByCode(Integer code) {
+        for (TypeEnum typeEnum : TypeEnum.values()) {
+            if (code.equals(typeEnum.getCode())) {
                 return typeEnum.getName();
             }
         }

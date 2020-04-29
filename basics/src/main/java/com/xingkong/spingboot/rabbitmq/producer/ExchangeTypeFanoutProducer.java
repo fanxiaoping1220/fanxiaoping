@@ -36,11 +36,11 @@ public class ExchangeTypeFanoutProducer {
         factory.setPassword("guest");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(EXCHANGE_NAME,ExchangeType.EXCHANGE_TYPE_FANOUT.getName(),true,false,null);
-        channel.queueDeclare(QUEUE_NAME,true,false,false,null);
-        channel.queueBind(QUEUE_NAME,EXCHANGE_NAME,ROUTING_KEY);
+        channel.exchangeDeclare(EXCHANGE_NAME, ExchangeType.EXCHANGE_TYPE_FANOUT.getName(), true, false, null);
+        channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
         String message = "Hello Rabbitmq Exchange Type fanout";
-        channel.basicPublish(EXCHANGE_NAME,"111", MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
+        channel.basicPublish(EXCHANGE_NAME, "111", MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
         channel.close();
         connection.close();
     }

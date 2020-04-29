@@ -17,21 +17,21 @@ public class Java8Classlib {
 
     private static final Logger logger = LoggerFactory.getLogger(Java8Classlib.class);
 
-    public void  debug(Supplier<String> message){
-        if(logger.isDebugEnabled()){
+    public void debug(Supplier<String> message) {
+        if (logger.isDebugEnabled()) {
             logger.debug(message.get());
         }
     }
 
-    private interface IntegerBiFunction extends BinaryOperator<Integer>{
+    private interface IntegerBiFunction extends BinaryOperator<Integer> {
 
     }
 
-    private static void overloadedMethod(BinaryOperator<Integer> lambda){
+    private static void overloadedMethod(BinaryOperator<Integer> lambda) {
         System.out.println("BinaryOperator");
     }
 
-    private static void overloadedMethod(IntegerBiFunction lambda){
+    private static void overloadedMethod(IntegerBiFunction lambda) {
         System.out.println("IntegerBinaryOperator");
     }
 

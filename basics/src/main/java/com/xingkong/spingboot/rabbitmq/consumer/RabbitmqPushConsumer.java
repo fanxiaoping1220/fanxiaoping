@@ -32,7 +32,7 @@ public class RabbitmqPushConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
 
-        Address[] addresses = new Address[]{new Address(IP_ADDRESS,PORT)};
+        Address[] addresses = new Address[]{new Address(IP_ADDRESS, PORT)};
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUsername("root");
         factory.setPassword("root123");
@@ -48,20 +48,20 @@ public class RabbitmqPushConsumer {
          * 设置客户端最多接收未被ack的消息个数
          */
         channel.basicQos(64);
-        Consumer consumer = new DefaultConsumer(channel){
+        Consumer consumer = new DefaultConsumer(channel) {
             @Override
-            public void handleDelivery(String consumerTag, Envelope envelope,AMQP.BasicProperties properties,byte[] body)throws IOException{
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 System.out.println(body);
-                System.out.println("recv message: "+new String(body));
-                try{
+                System.out.println("recv message: " + new String(body));
+                try {
                     TimeUnit.SECONDS.sleep(1);
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                channel.basicAck(envelope.getDeliveryTag(),false);
+                channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
-        channel.basicConsume(QUEUE_NAME,consumer);
+        channel.basicConsume(QUEUE_NAME, consumer);
         /**
          * 等待回调函数执行完毕之后，关闭资源
          */

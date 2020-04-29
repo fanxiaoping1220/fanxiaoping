@@ -21,6 +21,7 @@ public interface CalendarDAO {
 
     /**
      * 批量插入
+     *
      * @param list
      * @return
      */
@@ -34,10 +35,11 @@ public interface CalendarDAO {
 
     /**
      * 根据时间段查询
+     *
      * @param StartTime
      * @param endTime
      * @return
      */
     @Select("select * from calendar where date >= #{startTime} and date <= #{endTime}")
-    List<CalendarDO> getByDate(@Param("startTime") LocalDate StartTime,@Param("endTime") LocalDate endTime);
+    List<CalendarDO> getByDate(@Param("startTime") LocalDate StartTime, @Param("endTime") LocalDate endTime);
 }

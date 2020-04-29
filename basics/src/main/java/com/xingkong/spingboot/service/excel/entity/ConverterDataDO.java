@@ -26,7 +26,7 @@ public class ConverterDataDO {
      * LocalTime LocalDate LocalDateTime 需要重写{@link Converter}
      * Date 可以直接用 {@link com.alibaba.excel.annotation.format.DateTimeFormat}
      */
-    @ExcelProperty(value = "日期",converter = CustomStringStringConverter.class)
+    @ExcelProperty(value = "日期", converter = CustomStringStringConverter.class)
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ColumnWidth(value = 30)
     private LocalTime date;

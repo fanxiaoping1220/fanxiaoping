@@ -27,10 +27,11 @@ public class AppController {
 
     /**
      * 获取列表
+     *
      * @return
      */
     @GetMapping(value = "/getList")
-    JSONArray getList(){
+    JSONArray getList() {
         List<ApolloApp> list = apolloAppDAO.getList();
         return JSONArray.parseArray(JSON.toJSONString(list));
     }

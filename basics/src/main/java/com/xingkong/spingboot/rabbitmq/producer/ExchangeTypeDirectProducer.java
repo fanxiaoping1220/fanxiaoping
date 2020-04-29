@@ -42,22 +42,22 @@ public class ExchangeTypeDirectProducer {
         connectionFactory.setPassword("guest");
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(EXCHANGE_NAME,ExchangeType.EXCHANGE_TYPE_DIRECT.getName(),true,false,null);
-        channel.queueDeclare(QUEUE_NAME_1,true,false,false,null);
-        channel.queueDeclare(QUEUE_NAME_2,true,false,false,null);
-        channel.queueBind(QUEUE_NAME_1,EXCHANGE_NAME,ROUTING_KEY_INFO);
-        channel.queueBind(QUEUE_NAME_1,EXCHANGE_NAME,ROUTING_KEY_WARNING);
-        channel.queueBind(QUEUE_NAME_1,EXCHANGE_NAME,ROUTING_KEY_DEBUG);
+        channel.exchangeDeclare(EXCHANGE_NAME, ExchangeType.EXCHANGE_TYPE_DIRECT.getName(), true, false, null);
+        channel.queueDeclare(QUEUE_NAME_1, true, false, false, null);
+        channel.queueDeclare(QUEUE_NAME_2, true, false, false, null);
+        channel.queueBind(QUEUE_NAME_1, EXCHANGE_NAME, ROUTING_KEY_INFO);
+        channel.queueBind(QUEUE_NAME_1, EXCHANGE_NAME, ROUTING_KEY_WARNING);
+        channel.queueBind(QUEUE_NAME_1, EXCHANGE_NAME, ROUTING_KEY_DEBUG);
         /**
          * 参数1.队列，2.交换器，3.路由键
          */
-        channel.queueBind(QUEUE_NAME_2,EXCHANGE_NAME,ROUTING_KEY_WARNING);
-        String message = "Hello Exchange type direct"+ROUTING_KEY_WARNING;
-        String message1 = "Hello Exchange type direct"+ROUTING_KEY_INFO;
-        String message2 = "Hello Exchange type direct"+ROUTING_KEY_DEBUG;
-        channel.basicPublish(EXCHANGE_NAME,ROUTING_KEY_WARNING, MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
-        channel.basicPublish(EXCHANGE_NAME,ROUTING_KEY_DEBUG,MessageProperties.PERSISTENT_TEXT_PLAIN,message2.getBytes());
-        channel.basicPublish(EXCHANGE_NAME,ROUTING_KEY_INFO,MessageProperties.PERSISTENT_TEXT_PLAIN,message1.getBytes());
+        channel.queueBind(QUEUE_NAME_2, EXCHANGE_NAME, ROUTING_KEY_WARNING);
+        String message = "Hello Exchange type direct" + ROUTING_KEY_WARNING;
+        String message1 = "Hello Exchange type direct" + ROUTING_KEY_INFO;
+        String message2 = "Hello Exchange type direct" + ROUTING_KEY_DEBUG;
+        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_WARNING, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_DEBUG, MessageProperties.PERSISTENT_TEXT_PLAIN, message2.getBytes());
+        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_INFO, MessageProperties.PERSISTENT_TEXT_PLAIN, message1.getBytes());
         channel.close();
         connection.close();
     }

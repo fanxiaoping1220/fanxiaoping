@@ -17,6 +17,7 @@ public interface AlipayBillService {
 
     /**
      * 获取支付宝昨日的账单
+     *
      * @return
      * @throws AlipayApiException
      * @throws IOException
@@ -26,6 +27,7 @@ public interface AlipayBillService {
     /**
      * 查询支付宝账单明细
      * 条件：昨天的账单, 3天的账单, 一个星期的账单
+     *
      * @param alipayBillDetailDTO
      * @return
      */

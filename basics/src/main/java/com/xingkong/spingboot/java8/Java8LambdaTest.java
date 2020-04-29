@@ -22,18 +22,20 @@ public class Java8LambdaTest {
     public static void main(String[] args) {
         Java8LambdaTest test = new Java8LambdaTest();
         //类型的声明
-        MathOperation mathOperation = (int a,int b) -> a + b;
+        MathOperation mathOperation = (int a, int b) -> a + b;
         //不用类型的声明
-        MathOperation mathOperation1 = (a,b) -> a - b;
+        MathOperation mathOperation1 = (a, b) -> a - b;
         // 大括号中的返回语句
-        MathOperation mathOperation2 = (int a, int b) -> {return a * b;};
+        MathOperation mathOperation2 = (int a, int b) -> {
+            return a * b;
+        };
         // 没有大括号及返回语句
-        MathOperation mathOperation3 = (int a , int b) -> a/b;
+        MathOperation mathOperation3 = (int a, int b) -> a / b;
 
-        System.out.println("mathOperation: " + test.operate(10,5,mathOperation));
-        System.out.println("mathOperation1: " + test.operate(10,5,mathOperation1));
-        System.out.println("mathOperation2: " + test.operate(10,5,mathOperation2));
-        System.out.println("mathOperation3: " + test.operate(10,5,mathOperation3));
+        System.out.println("mathOperation: " + test.operate(10, 5, mathOperation));
+        System.out.println("mathOperation1: " + test.operate(10, 5, mathOperation1));
+        System.out.println("mathOperation2: " + test.operate(10, 5, mathOperation2));
+        System.out.println("mathOperation3: " + test.operate(10, 5, mathOperation3));
 
         // 不用括号
         GreetingService greetingService = message -> System.out.println("hello " + message);
@@ -46,7 +48,7 @@ public class Java8LambdaTest {
         greetingService2.sayMessage("Runoob");
 
         int num = 1;
-        Converter<Integer,String> converter = (params) -> System.out.println(num+params);
+        Converter<Integer, String> converter = (params) -> System.out.println(num + params);
         converter.convert(2);
 
         Runnable runnable = () -> System.out.println("Hello World");
@@ -55,24 +57,24 @@ public class Java8LambdaTest {
             System.out.println("Hello");
             System.out.println("World");
         };
-        BinaryOperator<Long> add = (x,y) -> x + y;
-        BinaryOperator<Long> addExplicit = (Long x,Long y) -> x + y;
+        BinaryOperator<Long> add = (x, y) -> x + y;
+        BinaryOperator<Long> addExplicit = (Long x, Long y) -> x + y;
         System.out.println(runnable);
         System.out.println(actionListener);
         System.out.println(runnable1);
         System.out.println(add);
         System.out.println(addExplicit);
-        String[] array = {"Hello","World"};
+        String[] array = {"Hello", "World"};
         System.out.println(Arrays.asList(array));
         JButton button = new JButton();
         button.addActionListener(e -> System.out.println(e.getActionCommand()));
-        List<String> list = Stream.of("a","b","c").collect(Collectors.toList());
+        List<String> list = Stream.of("a", "b", "c").collect(Collectors.toList());
         System.out.println(list);
-        List<String> list1 = Stream.of("a","b","c").map(s -> s.toUpperCase()).collect(Collectors.toList());
+        List<String> list1 = Stream.of("a", "b", "c").map(s -> s.toUpperCase()).collect(Collectors.toList());
         System.out.println(list1);
     }
 
-    interface MathOperation{
+    interface MathOperation {
         int operation(int a, int b);
     }
 
@@ -84,8 +86,8 @@ public class Java8LambdaTest {
         void convert(int i);
     }
 
-    private int operate(int a ,int b,MathOperation mathOperation){
-        return mathOperation.operation(a,b);
+    private int operate(int a, int b, MathOperation mathOperation) {
+        return mathOperation.operation(a, b);
     }
 
 }

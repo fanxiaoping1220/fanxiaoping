@@ -21,19 +21,19 @@ public class TypeTopicConsumer {
         ConnectionFactory factory = new ConnectionFactory();
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        Consumer consumer = new DefaultConsumer(channel){
+        Consumer consumer = new DefaultConsumer(channel) {
             @Override
-            public void handleDelivery(String consumerTag, Envelope envelope,AMQP.BasicProperties properties,byte[] body)throws IOException {
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 System.out.println(new String(body));
-                try{
+                try {
                     TimeUnit.SECONDS.sleep(1);
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                channel.basicAck(envelope.getDeliveryTag(),false);
+                channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
-        channel.basicConsume(QUEUE_NAME,consumer);
+        channel.basicConsume(QUEUE_NAME, consumer);
         TimeUnit.SECONDS.sleep(1);
         channel.close();
         connection.close();

@@ -26,9 +26,9 @@ public class DistributedLockTest {
     private RedisUtil redisUtil;
 
     @GetMapping(value = "/test")
-    public void test(){
+    public void test() {
         String s = UUID.randomUUID().toString();
-        boolean a = redisPoolUtil.tryGetDistributedLock("A",s, 1000);
+        boolean a = redisPoolUtil.tryGetDistributedLock("A", s, 1000);
         System.out.println(s);
         System.out.println(a);
         String w = UUID.randomUUID().toString();
@@ -39,7 +39,7 @@ public class DistributedLockTest {
         System.out.println(a1);
         boolean a2 = redisPoolUtil.releaseDistributedLock("A", w);
         System.out.println(a2);
-        redisUtil.set("aaa","123456");
+        redisUtil.set("aaa", "123456");
         System.out.println((String) redisUtil.get("aaa"));
     }
 }

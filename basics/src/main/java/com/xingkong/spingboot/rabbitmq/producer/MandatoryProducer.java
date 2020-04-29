@@ -34,15 +34,15 @@ public class MandatoryProducer {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         String message = "mandatory test";
-        channel.exchangeDeclare(EXCHANGE_NAME,ExchangeType.EXCHANGE_TYPE_DIRECT.getName(),true,false,null);
-        channel.queueDeclare(QUEUE_NAME,true,false,false,null);
-        channel.queueBind(QUEUE_NAME,EXCHANGE_NAME,"mandatory");
-        channel.basicPublish(EXCHANGE_NAME,"",true,MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
+        channel.exchangeDeclare(EXCHANGE_NAME, ExchangeType.EXCHANGE_TYPE_DIRECT.getName(), true, false, null);
+        channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "mandatory");
+        channel.basicPublish(EXCHANGE_NAME, "", true, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
         channel.addReturnListener(new ReturnListener() {
             @Override
             public void handleReturn(int replyCode, String replyText, String exchange, String routingKey, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body);
-                System.out.println("basic return返回的结果是："+message);
+                System.out.println("basic return返回的结果是：" + message);
             }
         });
 

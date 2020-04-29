@@ -28,20 +28,20 @@ public class SingleTest {
      * 获取的同一个对象
      */
     @Test
-    public void  test(){
+    public void test() {
         SingleMode s1 = SingleMode.getInstance();
         SingleMode s2 = SingleMode.getInstance();
         System.out.println(s1);
         System.out.println(s2);
-        System.out.println(s1==s2);
+        System.out.println(s1 == s2);
     }
 
     /**
      * 采用线程的方式测试
      */
     @Test
-    public void test2(){
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(50,Integer.MAX_VALUE,0, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<>());
+    public void test2() {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(50, Integer.MAX_VALUE, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         for (int i = 0; i < 20; i++) {
             threadPoolExecutor.execute(() -> {
                 System.out.println(SingleMode.getInstance());
@@ -52,6 +52,7 @@ public class SingleTest {
 
     /**
      * 反射的测试
+     *
      * @throws Exception
      */
     @Test
@@ -63,16 +64,18 @@ public class SingleTest {
         SingleMode s2 = (SingleMode) constructor.newInstance();
         System.out.println(s1);
         System.out.println(s2);
-        System.out.println(s1==s2);//false
+        System.out.println(s1 == s2);//false
     }
 
-    /**======================================================静态内部类模式测试（登记式）=========================================================================================================*/
+    /**
+     * ======================================================静态内部类模式测试（登记式）=========================================================================================================
+     */
 
     @Test
-    public void test4(){
+    public void test4() {
         SingleMode3 s1 = SingleMode3.getInstance();
         SingleMode3 s2 = SingleMode3.getInstance();
-        System.out.println(s1==s2);
+        System.out.println(s1 == s2);
     }
 
     /**
@@ -90,13 +93,15 @@ public class SingleTest {
 ////        System.out.println(s1==s2);//false
 ////    }
 
-    /**======================================================枚举模式测试=========================================================================================================*/
+    /**
+     * ======================================================枚举模式测试=========================================================================================================
+     */
 
     @Test
-    public void test6(){
+    public void test6() {
         SingleMode4 s1 = SingleMode4.INSTANCE;
         SingleMode4 s2 = SingleMode4.INSTANCE;
-        System.out.println(s1==s2);
+        System.out.println(s1 == s2);
     }
 
     /**
@@ -113,13 +118,15 @@ public class SingleTest {
 //        System.out.println(s1==s2);
 //    }
 
-    /**======================================================懒汉模式测试=========================================================================================================*/
+    /**
+     * ======================================================懒汉模式测试=========================================================================================================
+     */
 
     @Test
-    public void test8(){
+    public void test8() {
         SingleMode2 s1 = SingleMode2.getInstance();
         SingleMode2 s2 = SingleMode2.getInstance();
-        System.out.println(s1==s2);
+        System.out.println(s1 == s2);
     }
 
     /**
@@ -127,8 +134,8 @@ public class SingleTest {
      * 需要采用加锁的形式synchronized{@link SingleMode2}
      */
     @Test
-    public void test9(){
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(50,Integer.MAX_VALUE,0,TimeUnit.MILLISECONDS,new LinkedBlockingQueue<>());
+    public void test9() {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(50, Integer.MAX_VALUE, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         for (int i = 0; i < 20; i++) {
             threadPoolExecutor.execute(() -> {
                 System.out.println(SingleMode2.getInstance());

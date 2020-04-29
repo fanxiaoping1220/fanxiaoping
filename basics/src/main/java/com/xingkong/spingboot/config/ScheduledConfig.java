@@ -20,10 +20,11 @@ public class ScheduledConfig {
     /**
      * 每一个定时任务每次创建一个新的线程
      * 创建一个定时任务的线程池size为100
+     *
      * @return
      */
     @Bean
-    public TaskScheduler taskScheduler(){
+    public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(100);
         return taskScheduler;

@@ -41,42 +41,42 @@ public class CalendarServiceImpl implements CalendarService {
         //1.获取今年的假节日
         LocalDate now = LocalDate.now();
         LocalDate startTime = LocalDate.of(now.getYear(), 1, 1);
-        LocalDate endTime = LocalDate.of(now.getYear(),12,31);
+        LocalDate endTime = LocalDate.of(now.getYear(), 12, 31);
         List<HolidayDO> holidayList = holidayDAO.getByDate(startTime, endTime);
         Map<LocalDate, HolidayDO> holidayMap = holidayList.stream().collect(Collectors.toMap(o -> o.getDate(), o -> o));
         //2.生成日历
         List<CalendarDO> addList = new ArrayList<>();
         LocalDate monthFirstDay;
         LocalDate monthLastDay;
-        for(int i = 0 ; i < 12; i++){
-            if(i == 0){
+        for (int i = 0; i < 12; i++) {
+            if (i == 0) {
                 monthFirstDay = startTime;
-            }else {
+            } else {
                 monthFirstDay = startTime.plusMonths(i);
             }
             monthLastDay = monthFirstDay.with(TemporalAdjusters.lastDayOfMonth());
             Period between = Period.between(monthFirstDay, monthLastDay);
             LocalDate date;
-            for(int j = 0; j <= between.getDays(); j++){
-                if(j == 0){
+            for (int j = 0; j <= between.getDays(); j++) {
+                if (j == 0) {
                     date = monthFirstDay;
-                }else {
+                } else {
                     date = monthFirstDay.plusDays(j);
                 }
                 CalendarDO calendarDO = new CalendarDO();
                 calendarDO.setDate(date);
-                if(holidayMap.containsKey(date)){
+                if (holidayMap.containsKey(date)) {
                     HolidayDO holidayDO = holidayMap.get(date);
                     calendarDO.setType(holidayDO.getType());
                     calendarDO.setDescription(holidayDO.getDescription());
-                }else {
+                } else {
                     calendarDO.setType(TypeEnum.WORK_DAY.getCode());
                 }
                 addList.add(calendarDO);
             }
 
         }
-        if(addList.size() > 0){
+        if (addList.size() > 0) {
             calendarDAO.branchInsert(addList);
         }
         return "success";
@@ -88,7 +88,7 @@ public class CalendarServiceImpl implements CalendarService {
         List<CalendarVO> list = new ArrayList<>();
         calendarList.forEach(calendarDO -> {
             CalendarVO calendarVO = new CalendarVO();
-            BeanUtils.copyProperties(calendarDO,calendarVO);
+            BeanUtils.copyProperties(calendarDO, calendarVO);
             list.add(calendarVO);
         });
         return JSONArray.parseArray(JSONArray.toJSONString(list));

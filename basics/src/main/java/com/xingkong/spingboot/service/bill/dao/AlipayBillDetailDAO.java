@@ -18,6 +18,7 @@ public interface AlipayBillDetailDAO {
 
     /**
      * 批量插入
+     *
      * @param list
      * @return
      */
@@ -33,16 +34,17 @@ public interface AlipayBillDetailDAO {
 
     /**
      * 查询多少天以内的 + 排序规则
+     *
      * @param startTime 开始时间
-     * @param endTime 结束时间
+     * @param endTime   结束时间
      * @param orderRole 排序规则
      * @return
      */
     @Results({
-            @Result(column = "bill_serial_number",property = "billSerialNumber"),@Result(column = "business_serial_number",property = "businessSerialNumber"),@Result(column = "goods_order_number",property = "goodsOrderNumber"),
-            @Result(column = "goods_name",property = "goodsName"),@Result(column = "create_time",property = "createTime"),@Result(column = "pay_account_number",property = "payAccountNumber"),
-            @Result(column = "in_money",property = "inMoney"),@Result(column = "out_money",property = "outMoney"),@Result(column = "accountBalanceMoney",property = "accountBalanceMoney"),
-            @Result(column = "deal_channel",property = "dealChannel"),@Result(column = "business_type",property = "businessType")
+            @Result(column = "bill_serial_number", property = "billSerialNumber"), @Result(column = "business_serial_number", property = "businessSerialNumber"), @Result(column = "goods_order_number", property = "goodsOrderNumber"),
+            @Result(column = "goods_name", property = "goodsName"), @Result(column = "create_time", property = "createTime"), @Result(column = "pay_account_number", property = "payAccountNumber"),
+            @Result(column = "in_money", property = "inMoney"), @Result(column = "out_money", property = "outMoney"), @Result(column = "accountBalanceMoney", property = "accountBalanceMoney"),
+            @Result(column = "deal_channel", property = "dealChannel"), @Result(column = "business_type", property = "businessType")
     })
     @Select("SELECT * FROM alipay_bill_detail where create_time >= #{startTime} and create_time <= #{endTime} ORDER BY create_time ${orderRole}")
     List<AlipayBillDetailDO> getList(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime, @Param("orderRole") String orderRole);

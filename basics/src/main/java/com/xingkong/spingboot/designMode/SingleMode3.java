@@ -12,17 +12,17 @@ public class SingleMode3 {
     /**
      * 为了解决反射的方式创建的对象照成的攻击
      */
-    private SingleMode3(){
-        if(SingleModeInstance.SINGLE_MODE != null){
+    private SingleMode3() {
+        if (SingleModeInstance.SINGLE_MODE != null) {
             throw new RuntimeException();
         }
     }
 
-    private static class SingleModeInstance{
+    private static class SingleModeInstance {
         private static final SingleMode3 SINGLE_MODE = new SingleMode3();
     }
 
-    public static SingleMode3 getInstance(){
+    public static SingleMode3 getInstance() {
         return SingleModeInstance.SINGLE_MODE;
     }
 }

@@ -21,6 +21,7 @@ public interface HolidayDAO {
 
     /**
      * 批量插入
+     *
      * @param list
      * @return
      */
@@ -34,6 +35,7 @@ public interface HolidayDAO {
 
     /**
      * 根据时间查询
+     *
      * @param startTime
      * @param endTime
      * @return

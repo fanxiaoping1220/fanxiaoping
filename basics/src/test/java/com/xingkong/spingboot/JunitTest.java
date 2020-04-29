@@ -14,32 +14,32 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class JunitTest {
 
     @BeforeClass
-    public static void beforeClass(){
+    public static void beforeClass() {
         System.out.println("BeforeClass");
     }
 
     @Before
-    public void before(){
+    public void before() {
         System.out.println("Before");
     }
 
     @Test
-    public void test(){
+    public void test() {
         System.out.println("Test");
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         System.out.println("Test2");
     }
 
     @After
-    public void after(){
+    public void after() {
         System.out.println("After");
     }
 
     @AfterClass
-    public static void afterClass(){
+    public static void afterClass() {
         System.out.println("AfterClass");
     }
 }

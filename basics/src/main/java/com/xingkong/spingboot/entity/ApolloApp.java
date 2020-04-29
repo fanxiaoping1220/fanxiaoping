@@ -39,7 +39,7 @@ public class ApolloApp {
     /**
      * ownerName
      */
-    private String  ownerName;
+    private String ownerName;
 
     /**
      * ownerEmail

@@ -14,12 +14,12 @@ public class AutoIncrementAndDiminishing {
         int i = 0;
         System.out.println(i);
         /** 后缀递增 0*/
-        System.out.println("i++ ="+i++);
+        System.out.println("i++ =" + i++);
         /**前缀递增 2*/
-        System.out.println("++i ="+(++i));
+        System.out.println("++i =" + (++i));
         /**后缀递减 2*/
-        System.out.println("i-- ="+i--);
+        System.out.println("i-- =" + i--);
         /**前缀递减 0*/
-        System.out.println("--i ="+(--i));
+        System.out.println("--i =" + (--i));
     }
 }

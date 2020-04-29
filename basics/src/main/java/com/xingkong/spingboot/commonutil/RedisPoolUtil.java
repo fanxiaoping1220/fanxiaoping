@@ -44,16 +44,17 @@ public class RedisPoolUtil {
      * time: 代码key的过期时间
      * 总的来说：1.当前没有锁（key不存在），把那么久进行加锁操作，并对锁设置个有效期，同时value表示加锁的客户端。
      * 2.已有锁存在，不做任何操作。
-     * @param lockKey 锁
-     * @param requestId 请求标识
+     *
+     * @param lockKey    锁
+     * @param requestId  请求标识
      * @param expireTime 过期时间
      * @return 是否加锁成功
      */
-    public  boolean tryGetDistributedLock(String lockKey,String requestId,int expireTime){
+    public boolean tryGetDistributedLock(String lockKey, String requestId, int expireTime) {
 
-        String result = jedis.set(lockKey,requestId,SET_IF_NOT_EXIST,SET_WITH_EXPIRE_TIME,expireTime);
+        String result = jedis.set(lockKey, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, expireTime);
 
-        if(LOCK_SUCCESS.equals(result)){
+        if (LOCK_SUCCESS.equals(result)) {
             return true;
         }
 
@@ -62,18 +63,19 @@ public class RedisPoolUtil {
 
     /**
      * 释放分布式锁
-     * @param lockKey 锁
+     *
+     * @param lockKey   锁
      * @param requestId 请求标识
      * @return 是否释放锁成功
      */
-    public  boolean releaseDistributedLock(String lockKey,String requestId){
+    public boolean releaseDistributedLock(String lockKey, String requestId) {
 
         /** 是否锁脚本 */
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 
         Object result = jedis.eval(script, asList(lockKey), asList(requestId));
 
-        if (RELEASE_SUCCESS.equals(result)){
+        if (RELEASE_SUCCESS.equals(result)) {
             return true;
         }
         return false;
@@ -81,15 +83,16 @@ public class RedisPoolUtil {
 
     /**
      * 获取key 对于的值value,不存在这返回null
+     *
      * @param key
      * @return
      */
-    public String get(String key){
+    public String get(String key) {
         try {
             return jedis.get(key);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             jedis.close();
         }
         return null;
@@ -97,16 +100,17 @@ public class RedisPoolUtil {
 
     /**
      * setkey 若key-value不存在则存入缓存，并且返回1，存在则返回0
+     *
      * @param key
      * @param value
      * @return
      */
-    public Long setnx(String key ,String value){
-        try{
-            return jedis.setnx(key,value);
-        }catch (Exception e){
+    public Long setnx(String key, String value) {
+        try {
+            return jedis.setnx(key, value);
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             jedis.close();
         }
         return null;
@@ -115,16 +119,17 @@ public class RedisPoolUtil {
     /**
      * getset
      * 先获取key对应的值value，不存在则返回null，存在则替换value的值
+     *
      * @param key
      * @param value
      * @return
      */
-    public String getSet(String key,String value){
+    public String getSet(String key, String value) {
         try {
-            return jedis.getSet(key,value);
-        }catch (Exception e){
+            return jedis.getSet(key, value);
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             jedis.close();
         }
         return null;
@@ -132,16 +137,17 @@ public class RedisPoolUtil {
 
     /**
      * 设置key-value的有效期为seconds秒。
+     *
      * @param key
      * @param seconds
      * @return
      */
-    public Long expire(String key,int seconds ){
+    public Long expire(String key, int seconds) {
         try {
-            return jedis.expire(key,seconds);
-        }catch (Exception e){
+            return jedis.expire(key, seconds);
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             jedis.close();
         }
         return null;
@@ -149,15 +155,16 @@ public class RedisPoolUtil {
 
     /**
      * 删除指定的key
+     *
      * @param key
      * @return
      */
-    public Long del(String key){
+    public Long del(String key) {
         try {
             return jedis.del(key);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             jedis.close();
         }
         return null;

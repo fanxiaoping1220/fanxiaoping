@@ -14,23 +14,24 @@ import java.sql.SQLException;
 @SpringBootTest
 public class BasicsApplicationTests {
 
-	@Resource
-	DataSource dataSource;
+    @Resource
+    DataSource dataSource;
 
     /**
      * 测试连接数据库
+     *
      * @throws SQLException
      */
-	@Test
-	public void contextLoads() throws SQLException {
+    @Test
+    public void contextLoads() throws SQLException {
 
-		System.out.println("数据源>>>>>>" + dataSource.getClass());
-		Connection connection = dataSource.getConnection();
+        System.out.println("数据源>>>>>>" + dataSource.getClass());
+        Connection connection = dataSource.getConnection();
 
-		System.out.println("连接>>>>>>>>>" + connection);
-		System.out.println("连接地址>>>>>" + connection.getMetaData().getURL());
-		connection.close();
+        System.out.println("连接>>>>>>>>>" + connection);
+        System.out.println("连接地址>>>>>" + connection.getMetaData().getURL());
+        connection.close();
 
-	}
+    }
 
 }
