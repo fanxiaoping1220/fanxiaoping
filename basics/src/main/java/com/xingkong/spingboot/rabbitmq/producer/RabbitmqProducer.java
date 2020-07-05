@@ -51,8 +51,8 @@ public class RabbitmqProducer {
          */
         factory.setHost(IP_ADDRESS);
         factory.setPort(PORT);
-        factory.setUsername("root");
-        factory.setPassword("root123");
+        factory.setUsername("guest");
+        factory.setPassword("guest");
         /**
          * 1.创建连接
          */
