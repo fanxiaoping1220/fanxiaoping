@@ -14,12 +14,12 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 public class LongitudeAndLatitudeCount {
 
     public static void main(String[] args){
-        GlobalCoordinates source = new GlobalCoordinates(29.490295, 106.486654);
-        GlobalCoordinates target = new GlobalCoordinates(29.615467, 106.581515);
+        GlobalCoordinates source = new GlobalCoordinates( 24.46452179999999998472048901021480560302734375,118.0667710999999968635165714658796787261962890625);
+        GlobalCoordinates target = new GlobalCoordinates(24.4626940,118.0708532);
 
-        double meter1 = getDistanceMeter(source, target, Ellipsoid.Sphere);
+//        double meter1 = getDistanceMeter(source, target, Ellipsoid.Sphere);
         double meter2 = getDistanceMeter(source, target, Ellipsoid.WGS84);
-        System.out.println("Sphere坐标系计算结果："+meter1 + "米");
+//        System.out.println("Sphere坐标系计算结果："+meter1 + "米");
         System.out.println("WGS84坐标系计算结果："+meter2 + "米");
     }
 
