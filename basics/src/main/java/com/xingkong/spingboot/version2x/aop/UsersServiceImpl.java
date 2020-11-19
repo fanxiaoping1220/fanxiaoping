@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * * @date: 2020/10/29 14:54
  **/
 @Service
-public class UserServiceImpl implements UserService {
+public class UsersServiceImpl implements UsersService {
 
     @Override
     public void printUser(User user) {

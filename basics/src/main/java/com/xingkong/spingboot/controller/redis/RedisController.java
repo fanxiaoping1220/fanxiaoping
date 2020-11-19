@@ -1,10 +1,10 @@
 package com.xingkong.spingboot.controller.redis;
 
+import com.xingkong.spingboot.version2x.transactional.User;
+import com.xingkong.spingboot.version2x.transactional.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -23,6 +23,9 @@ public class RedisController {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/stringAndHash")
     public Map<String,Object> testStringAndHash(){
@@ -135,5 +138,25 @@ public class RedisController {
         Map<String,Object> result = new HashMap<>();
         result.put("success",true);
         return result;
+    }
+
+    @GetMapping(value = "/getUser")
+    public User getUser(@RequestParam("id") Long id){
+        return userService.getById(id);
+    }
+
+    @PostMapping(value = "/add")
+    public User add(@RequestBody User user){
+        return userService.add(user);
+    }
+
+    @PostMapping(value = "/update")
+    public User update(@RequestBody User user){
+        return userService.updateById(user);
+    }
+
+    @DeleteMapping(value = "/deleteById")
+    public int deleteById(@RequestParam("id") Long id){
+        return userService.deleteById(id);
     }
 }

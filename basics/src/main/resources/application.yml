@@ -20,6 +20,9 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       group-id: foo
+  cache:
+    type: redis
+    cache-names: redisCache
 
 server:
   port: 9000

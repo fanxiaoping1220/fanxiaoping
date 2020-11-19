@@ -17,7 +17,7 @@ public class MyAspect {
      * 之前
      * 一
      */
-    @Before("execution( * com.xingkong.spingboot.version2x.aop.UserService.printUser(..))")
+    @Before("execution( * com.xingkong.spingboot.version2x.aop.UsersService.printUser(..))")
     public void before(){
         System.out.println("before..............");
     }
@@ -26,7 +26,7 @@ public class MyAspect {
      * 之后
      * 二
      */
-    @After("execution( * com.xingkong.spingboot.version2x.aop.UserService.printUser(..))")
+    @After("execution( * com.xingkong.spingboot.version2x.aop.UsersService.printUser(..))")
     public void after(){
         System.out.println("after..............");
     }
@@ -35,7 +35,7 @@ public class MyAspect {
      * 运行正常
      * 三
      */
-    @AfterReturning("execution( * com.xingkong.spingboot.version2x.aop.UserService.printUser(..))")
+    @AfterReturning("execution( * com.xingkong.spingboot.version2x.aop.UsersService.printUser(..))")
     public void afterReturning(){
         System.out.println("afterReturning...........");
     }
@@ -44,7 +44,7 @@ public class MyAspect {
      * 运行异常
      * 三
      */
-    @AfterThrowing("execution( * com.xingkong.spingboot.version2x.aop.UserService.printUser(..))")
+    @AfterThrowing("execution( * com.xingkong.spingboot.version2x.aop.UsersService.printUser(..))")
     public void afterThrowing(){
         System.out.println("afterThrowing............");
     }

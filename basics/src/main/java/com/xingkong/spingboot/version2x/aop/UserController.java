@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UsersService usersService;
 
     @GetMapping(value = "/printUser")
     public User printUser(){
@@ -24,7 +24,7 @@ public class UserController {
         user.setId(1);
         user.setUserName("ffff");
         user.setNote("note");
-        userService.printUser(user);
+        usersService.printUser(user);
         return user;
     }
 }
