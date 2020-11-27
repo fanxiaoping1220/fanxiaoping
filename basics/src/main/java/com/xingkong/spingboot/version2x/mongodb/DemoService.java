@@ -1,5 +1,8 @@
 package com.xingkong.spingboot.version2x.mongodb;
 
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
+
 import java.util.List;
 
 /**
@@ -28,8 +31,8 @@ public interface DemoService {
      * 查询
      * @param userName
      * @param note
-     * @param skip
-     * @param limit
+     * @param skip 跳过用户个数
+     * @param limit 限制返回条数
      * @return
      */
     List<Demo> findDemo(String userName,String note,Integer skip,Integer limit);
@@ -39,13 +42,13 @@ public interface DemoService {
      * @param demo
      * @return
      */
-    int update(Demo demo);
+    UpdateResult update(Demo demo);
 
     /**
      * 删除
      * @param id
      * @return
      */
-    int deleteById(Long id);
+    DeleteResult deleteById(Long id);
 
 }
