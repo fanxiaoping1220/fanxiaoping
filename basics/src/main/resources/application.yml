@@ -23,6 +23,10 @@ spring:
   cache:
     type: redis
     cache-names: redisCache
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/springboot
+
 
 server:
   port: 9000
