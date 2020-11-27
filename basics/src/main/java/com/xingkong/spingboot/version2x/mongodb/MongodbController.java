@@ -21,6 +21,9 @@ public class MongodbController {
     @Autowired
     private DemoService demoService;
 
+    @Autowired
+    private DemoDao demoDao;
+
     @GetMapping(value = "/add")
     public int add(){
         Demo demo = new Demo();
@@ -48,5 +51,10 @@ public class MongodbController {
     @GetMapping(value = "/findDemo")
     public List<Demo> findDemo(@RequestParam("userName") String userName, @RequestParam("note") String note, @RequestParam("skip") Integer skip, @RequestParam("limit") Integer limit){
         return demoService.findDemo(userName,note,skip,limit);
+    }
+
+    @GetMapping(value = "/byUserName")
+    public List<Demo> findByUserName(@RequestParam("userName") String userName){
+        return demoDao.findByUserNameLike(userName);
     }
 }
