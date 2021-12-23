@@ -13,6 +13,8 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.xingkong.spingboot.controller.excel.read.ReadUser;
+import com.xingkong.spingboot.controller.excel.read.UserInfoDTO;
 import com.xingkong.spingboot.service.excel.entity.*;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -288,6 +290,12 @@ public class ExcelController {
         EasyExcel.write(response.getOutputStream(), DemoDateDO.class)
                 .registerWriteHandler(loopMergeStrategy).sheet().doWrite(doList());
 
+    }
+
+    @PostMapping(value = "/test")
+    public void test(){
+        String path = "C:"+ File.separator+"Users"+ File.separator+"cky"+ File.separator+"Desktop"+ File.separator+"电信小程序项目"+File.separator+"导入用户.xlsx";
+        EasyExcel.read(path, UserInfoDTO.class, new ReadUser()).sheet().doRead();
     }
 
     private void setResponse(HttpServletResponse response) throws UnsupportedEncodingException {
