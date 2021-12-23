@@ -29,6 +29,11 @@ spring:
     username: colovu
     password: pass4colovu
     connection-timeout: 60s
+  data:
+    mongodb:
+      host: 116.62.48.25
+      port: 27017
+      database: jiwang-cmdb
 
 server:
   port: 9000
