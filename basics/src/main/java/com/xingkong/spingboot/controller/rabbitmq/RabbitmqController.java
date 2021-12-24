@@ -38,11 +38,12 @@ public class RabbitmqController {
         workProduce.sendMessage();
     }
 
+    /**
+     * 发送一个消息通知sms,user,email同时接收到消息
+     */
     @GetMapping(value = "/fanoutTest")
     public void fanoutTest(){
-        rabbitTemplate.convertAndSend("sms","发送sms短信通知!");
-        rabbitTemplate.convertAndSend("user","通知user!");
-        rabbitTemplate.convertAndSend("email","发送email通知!");
+        rabbitTemplate.convertAndSend("fanout-exchange","","发送通知!");
     }
 
 }
