@@ -2,6 +2,7 @@ package com.xingkong.spingboot.controller.rabbitmq;
 
 import com.xingkong.spingboot.rabbitmq.producer.FanoutProduce;
 import com.xingkong.spingboot.rabbitmq.producer.WorkProduce;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,9 @@ public class RabbitmqController {
     @Autowired
     private WorkProduce workProduce;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     @GetMapping(value = "/exchange/fanout")
     public void exchangeTypeFanout() {
         fanoutProduce.fanoutSend("发送消息:fanout类型。123456");
@@ -32,6 +36,13 @@ public class RabbitmqController {
     @GetMapping(value = "/workTest")
     public void workTest(){
         workProduce.sendMessage();
+    }
+
+    @GetMapping(value = "/fanoutTest")
+    public void fanoutTest(){
+        rabbitTemplate.convertAndSend("sms","发送sms短信通知!");
+        rabbitTemplate.convertAndSend("user","通知user!");
+        rabbitTemplate.convertAndSend("email","发送email通知!");
     }
 
 }

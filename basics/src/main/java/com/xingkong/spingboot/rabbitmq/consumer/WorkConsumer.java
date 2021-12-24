@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * * @className: WorkOneConsumer
- * * @description:
+ * * @description:轮询模式
  * * @author: fan xiaoping
  * * @date: 2021/12/23 0023 15:29
  **/
