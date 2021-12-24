@@ -46,4 +46,13 @@ public class RabbitmqController {
         rabbitTemplate.convertAndSend("fanout-exchange","","发送通知!");
     }
 
+    /**
+     * 分别给sms,email发送消息
+     */
+    @GetMapping(value = "/directTest")
+    public void directTest(){
+        rabbitTemplate.convertAndSend("direct-exchange","sms","发送消息给sms业务!");
+        rabbitTemplate.convertAndSend("direct-exchange","email","发送消息给email业务!");
+    }
+
 }
