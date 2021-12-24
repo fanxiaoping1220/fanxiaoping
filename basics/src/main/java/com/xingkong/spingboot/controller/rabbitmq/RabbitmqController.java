@@ -55,4 +55,12 @@ public class RabbitmqController {
         rabbitTemplate.convertAndSend("direct-exchange","email","发送消息给email业务!");
     }
 
+    @GetMapping(value = "/topicTest")
+    public void topicTest(){
+        //#.sms.*
+        //*.email.#
+        String routingKey = "sms.email";
+        rabbitTemplate.convertAndSend("topic-exchange",routingKey,"发送通知!");
+    }
+
 }
