@@ -1,4 +1,4 @@
-package com.xingkong.spingboot.rabbitmq.producer;
+package com.xingkong.spingboot.rabbitmq.producer.springboot;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

@@ -2,6 +2,9 @@ package com.xingkong.spingboot.controller.rabbitmq;
 
 import com.xingkong.spingboot.rabbitmq.producer.FanoutProduce;
 import com.xingkong.spingboot.rabbitmq.producer.WorkProduce;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,4 +66,31 @@ public class RabbitmqController {
         rabbitTemplate.convertAndSend("topic-exchange",routingKey,"发送通知!");
     }
 
+    /**
+     * 设置过期时间5000ms
+     */
+    @GetMapping(value = "/ttlTest")
+    public void ttlTest(){
+        rabbitTemplate.convertAndSend("ttl-exchange","ttl","设置过期时间5000ms");
+    }
+
+    @GetMapping(value = "/ttlMessageTest")
+    public void ttlMessageTest(){
+        MessagePostProcessor messagePostProcessor = new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                //设置过期时间 expiration
+                message.getMessageProperties().setExpiration("5000");
+                //设置消息内容编码格式
+                message.getMessageProperties().setContentEncoding("UTF-8");
+                return message;
+            }
+        };
+        rabbitTemplate.convertAndSend("ttl-exchange","ttl.message","单条消息设置过期时间5000ms",messagePostProcessor);
+    }
+
+    @GetMapping(value = "/deadTest")
+    public void deadTest(){
+        rabbitTemplate.convertAndSend("ttl-expiration-exchange","ttl","设置过期时间5000ms,时间一过到死信队列");
+    }
 }
