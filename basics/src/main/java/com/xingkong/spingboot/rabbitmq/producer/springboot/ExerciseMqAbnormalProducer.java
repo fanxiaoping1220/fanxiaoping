@@ -32,7 +32,6 @@ public class ExerciseMqAbnormalProducer {
         Map<String,Object> args = new HashMap<>();
         args.put("x-dead-letter-exchange","handle.exchange");
         args.put("x-dead-letter-routing-key","dead");
-//        args.put("x-message-ttl",60000);
         return new Queue("dead.queue",true,false,false,args);
     }
 
