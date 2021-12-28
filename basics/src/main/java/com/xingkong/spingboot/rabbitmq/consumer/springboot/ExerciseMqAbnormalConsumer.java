@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * * @className: ExerciseMqAbnormalConsumer
  * * @description: 处理消息消费异常
+ * 当程序出现异常时，重试3次，如果失败，将通过死信队列存入到进行二次处理数据库，相当于当异常的数据进行保存，方便后期可以人工进行处理
  * * @author: fan xiaoping
  * * @date: 2021/12/28 0028 12:19
  **/
