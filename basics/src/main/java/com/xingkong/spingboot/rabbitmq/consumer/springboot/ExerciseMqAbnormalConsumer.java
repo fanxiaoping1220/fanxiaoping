@@ -15,6 +15,9 @@ import java.util.Map;
  * * @className: ExerciseMqAbnormalConsumer
  * * @description: 处理消息消费异常
  * 当程序出现异常时，重试3次，如果失败，将通过死信队列存入到进行二次处理数据库，相当于当异常的数据进行保存，方便后期可以人工进行处理
+ *  下面两种方式都可以。application.yml rabbitmq配置
+ *   第一种选择自动模式  acknowledge-mode: auto
+ *   第二种选择手动模式 acknowledge-mode: manual
  * * @author: fan xiaoping
  * * @date: 2021/12/28 0028 12:19
  **/
@@ -28,6 +31,13 @@ public class ExerciseMqAbnormalConsumer {
 //        //制造异常重试3次进入死信队列
 //        System.out.println(1/0);
 //        System.out.println(data);
+//    }
+
+//    @RabbitListener(queues = "handle.queue")
+//    @RabbitHandler
+//    public void deadTestReceiver(String data) throws IOException {
+//        log.info("将重试3次异常的消息存入数据库!");
+//        log.info("消息将放入死信队列:"+data);
 //    }
 
     @RabbitListener(queues = "dead.queue")
