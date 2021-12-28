@@ -29,6 +29,16 @@ spring:
     username: colovu
     password: pass4colovu
     connection-timeout: 60s
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          max-attempts: 3
+          max-interval: 1000ms
+#        default-requeue-rejected: false
+#    publisher-confirms: true
+#    publisher-returns: true
   data:
     mongodb:
       host: 116.62.48.25

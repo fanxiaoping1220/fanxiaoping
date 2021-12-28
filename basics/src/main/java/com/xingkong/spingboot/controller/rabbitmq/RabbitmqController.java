@@ -6,10 +6,13 @@ import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 /**
  * @className: RabbitmqController
@@ -92,5 +95,10 @@ public class RabbitmqController {
     @GetMapping(value = "/deadTest")
     public void deadTest(){
         rabbitTemplate.convertAndSend("ttl-expiration-exchange","ttl","设置过期时间5000ms,时间一过到死信队列");
+    }
+
+    @GetMapping(value = "/HandleDeadTest")
+    public void HandleDeadTest(){
+        rabbitTemplate.convertAndSend("direct.dead.exchange","abnormal","发送消息,消息消费失败,重发次数达到3次,进行二次处理", new CorrelationData(UUID.randomUUID().toString()));
     }
 }
