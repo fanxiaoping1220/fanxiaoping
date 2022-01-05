@@ -57,6 +57,7 @@ person:
     - 123
     - dfxj
     - xingkong
+  name: fan18324485857@163.com
 
 rabbitmq:
   queue:

@@ -3,7 +3,9 @@ package com.xingkong.spingboot.entity;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Email;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.Map;
  **/
 @Data
 @Component
+@Validated
 @ConfigurationProperties(prefix = "person")
 public class Person {
 
@@ -28,4 +31,7 @@ public class Person {
     private Map<String,String> map;
 
     private List<String> list;
+
+    @Email(message = "邮箱格式错误")
+    private String name;
 }
