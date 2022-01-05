@@ -48,6 +48,16 @@ spring:
 server:
   port: 9000
 
+person:
+  id: 100
+  age: 10
+  birthday: 1992/12/20
+  map: {ss: 123,name: xingkong,age: sdf}
+  list:
+    - 123
+    - dfxj
+    - xingkong
+
 rabbitmq:
   queue:
     name: ${server.port}

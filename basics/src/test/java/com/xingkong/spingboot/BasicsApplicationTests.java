@@ -1,7 +1,9 @@
 package com.xingkong.spingboot;
 
+import com.xingkong.spingboot.entity.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -16,6 +18,9 @@ public class BasicsApplicationTests {
 
     @Resource
     DataSource dataSource;
+
+    @Autowired
+    private Person person;
 
     /**
      * 测试连接数据库
@@ -32,6 +37,11 @@ public class BasicsApplicationTests {
         System.out.println("连接地址>>>>>" + connection.getMetaData().getURL());
         connection.close();
 
+    }
+
+    @Test
+    public void test(){
+        System.out.println(person);
     }
 
 }
