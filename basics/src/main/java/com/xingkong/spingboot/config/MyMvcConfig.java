@@ -29,6 +29,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
                 //拦截所有请求
                 .addPathPatterns("/**")
                 //排除
-                .excludePathPatterns("/rabbitmq/exchange/fanout");
+                .excludePathPatterns("/rabbitmq/exchange/fanout","/error","/user/login");
     }
 }
