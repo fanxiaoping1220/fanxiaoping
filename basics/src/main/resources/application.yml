@@ -46,6 +46,11 @@ spring:
       host: 116.62.48.25
       port: 27017
       database: jiwang-cmdb
+  mail:
+    host: smtp.163.com
+    password: FQXKPKXUTNZCKUEA
+    username: fan18324485857@163.com
+
 
 server:
   port: 9000

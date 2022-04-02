@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -21,6 +23,9 @@ public class BasicsApplicationTests {
 
     @Autowired
     private Person person;
+
+    @Autowired
+    private JavaMailSenderImpl mailSender;
 
     /**
      * 测试连接数据库
@@ -42,6 +47,19 @@ public class BasicsApplicationTests {
     @Test
     public void test(){
         System.out.println(person);
+    }
+
+    /**
+     * 发送邮件
+     */
+    @Test
+    public void sendMail(){
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom("fan18324485857@163.com");
+        simpleMailMessage.setTo("fan18324485857@163.com");
+        simpleMailMessage.setSubject("发送邮件");
+        simpleMailMessage.setText("你好范小平");
+        mailSender.send(simpleMailMessage);
     }
 
 }
