@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,6 +27,9 @@ public class BasicsApplicationTests {
 
     @Autowired
     private JavaMailSenderImpl mailSender;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 测试连接数据库
@@ -60,6 +64,25 @@ public class BasicsApplicationTests {
         simpleMailMessage.setSubject("发送邮件");
         simpleMailMessage.setText("你好范小平");
         mailSender.send(simpleMailMessage);
+    }
+
+    /**
+     * redis测试
+     * opsForHash
+     * opsForValue
+     * opsForList
+     * opsForSet
+     * opsForZSet
+     * opsForGeo 地图
+     * opsForHyperLogLog 统计数据
+     * 除了基本的操作，我们常用的方法都可以直接通过redisTemplate操作，比如事务，和基本的CRUD
+     */
+    @Test
+    public void redisTest(){
+        redisTemplate.opsForValue().set("xing","xingkong");
+        redisTemplate.opsForValue().set("guanzhu","星辰");
+        System.out.println(redisTemplate.opsForValue().get("xing"));
+        System.out.println(redisTemplate.opsForValue().get("guanzhu"));
     }
 
 }
