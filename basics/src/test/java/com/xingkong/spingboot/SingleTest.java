@@ -4,7 +4,6 @@ import com.xingkong.spingboot.designMode.SingleMode;
 import com.xingkong.spingboot.designMode.SingleMode2;
 import com.xingkong.spingboot.designMode.SingleMode3;
 import com.xingkong.spingboot.designMode.SingleMode4;
-import org.apache.commons.lang3.SerializationUtils;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
