@@ -5,6 +5,7 @@ package com.xingkong.spingboot.thread;
  * * @description: 模拟取钱
  * * 不安全的取钱
  * * 两个人同时去银行取钱，同一个账号
+ * * 加上synchronize(){}同步代码块变成线程安全的了
  * * @author: fan xiaoping
  * * @date: 2022/6/18 0018 17:15
  **/
@@ -70,27 +71,29 @@ class Drawing extends Thread{
      */
     @Override
     public void run() {
-        //判读是否有钱
-        if(userAccount.money - drawingMoney < 0){
-            System.out.println(Thread.currentThread().getName()+"钱不够，取不了，余额为"+userAccount.money);
-            return;
+        //锁的对象是变化的量,需要增删改的对象
+        synchronized (this.userAccount){
+            //判读是否有钱
+            if(userAccount.money - drawingMoney < 0){
+                System.out.println(Thread.currentThread().getName()+"钱不够，取不了，余额为"+userAccount.money);
+                return;
+            }
+
+            try {
+                //sleep可以放大问题的发生性
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            //卡里余额
+            userAccount.money = userAccount.money - drawingMoney;
+            // 手里的钱
+            nowMoney += drawingMoney;
+
+            System.out.println(userAccount.name+ "余额为"+ userAccount.money);
+            // Thread.currentThread().getName() = this.getName() 因为继承了Thread
+            System.out.println(this.getName()+"手里的钱为"+nowMoney);
         }
-
-        try {
-            //sleep可以放大问题的发生性
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //卡里余额
-        userAccount.money = userAccount.money - drawingMoney;
-        // 手里的钱
-        nowMoney += drawingMoney;
-
-        System.out.println(userAccount.name+ "余额为"+ userAccount.money);
-        // Thread.currentThread().getName() = this.getName() 因为继承了Thread
-        System.out.println(this.getName()+"手里的钱为"+nowMoney);
-
     }
 }

@@ -44,7 +44,12 @@ class Tickets implements Runnable{
         }
     }
 
-    private void buy() throws InterruptedException {
+    /**
+     * synchronized
+     * 加上同步锁 变成线程安全的了
+     * @throws InterruptedException
+     */
+    private synchronized void buy() throws InterruptedException {
         //是否有票
         if(TicketsNum <= 0){
             flag = false;
