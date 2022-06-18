@@ -7,7 +7,7 @@ package com.xingkong.spingboot.thread;
  * * @author: fan xiaoping
  * * @date: 2022/6/17 0017 23:34
  **/
-public class TestDaeMon {
+public class TestDaemon {
 
     public static void main(String[] args) {
         Thread gob = new Thread(new God());
