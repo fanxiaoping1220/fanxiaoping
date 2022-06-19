@@ -10,6 +10,7 @@ package com.xingkong.spingboot.thread;
 public class TestPC {
 
     public static void main(String[] args) {
+
         SynCache synCache = new SynCache();
         new Produce(synCache).start();
         new Consumer(synCache).start();
@@ -22,15 +23,15 @@ public class TestPC {
 class Produce extends Thread {
     public SynCache synCache;
 
-    public Produce(SynCache synCache) {
+    public Produce (SynCache synCache){
         this.synCache = synCache;
     }
 
     @Override
     public void run() {
         for (int i = 0; i < 100; i++) {
-            System.out.println("生产了"+i+"鸡");
             synCache.push(new Goods(i));
+            System.out.println("生产者生成了第"+i+"鸡");
         }
     }
 }
@@ -40,16 +41,16 @@ class Produce extends Thread {
 class  Consumer extends Thread{
 
     public SynCache synCache;
-    public Consumer(SynCache synCache){
+
+    public Consumer (SynCache synCache){
         this.synCache = synCache;
     }
 
     @Override
     public void run() {
         for (int i = 0; i < 100; i++) {
-            System.out.println("消费了---->"+synCache.pop().i+"只鸡");
+            System.out.println("消费者消费了第"+synCache.pop().id+"只鸡");
         }
-
     }
 }
 
@@ -58,13 +59,10 @@ class  Consumer extends Thread{
  */
 class Goods{
 
-    /**
-     * 几只鸡
-     */
-    public int i;
+    public int id;
 
-    public Goods(int i) {
-        this.i = i;
+    public Goods(int id) {
+        this.id = id;
     }
 }
 
@@ -75,7 +73,6 @@ class SynCache{
 
     //需要一个容器大小
     public Goods[] goodsList = new Goods[10];
-
     //计数器
     public int count = 0;
 
@@ -85,8 +82,8 @@ class SynCache{
         if(count == goodsList.length){
             //通知消费者消费，生产者等待
             System.out.println("通知消费者消费，生产者等待");
-            //生产者等待
             try {
+                //生产者等待
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -99,20 +96,24 @@ class SynCache{
         this.notifyAll();
     }
 
-    //消费者消费产品
-    public synchronized Goods pop (){
+    /**
+     * 消费者消费产品
+     * @return
+     */
+    public synchronized Goods pop(){
         //判断是否有产品
         if(count == 0){
-            System.out.println("等待生成者生成，消费者消费!");
+            //通知生产者生成，消费者等待
+            System.out.println("通知生产者生成，消费者等待");
             try {
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        //消费者消费产品
         count--;
         Goods goods = goodsList[count];
-        //通知生产者生成
         this.notifyAll();
         return goods;
     }
