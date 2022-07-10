@@ -1,8 +1,6 @@
 package com.xingkong.spingboot.net;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -28,7 +26,20 @@ public class TcpFileUploadClient {
         while ((len = fileInputStream.read(buffer)) != -1) {
             outputStream.write(buffer,0,len);
         }
-        //5.关闭流
+        //通知服务器我已经结束了
+        socket.shutdownOutput();
+        //5.去掉服务端接收完毕,才能断开连接
+        InputStream inputStream = socket.getInputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] buffer2 = new byte[1024];
+        int len2;
+        while ((len2 = inputStream.read(buffer)) != -1){
+            byteArrayOutputStream.write(buffer2,0,len2);
+        }
+        System.out.println(byteArrayOutputStream.toString());
+        //6.关闭流
+        byteArrayOutputStream.close();
+        inputStream.close();
         fileInputStream.close();
         outputStream.close();
         socket.close();

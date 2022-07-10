@@ -3,6 +3,7 @@ package com.xingkong.spingboot.net;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -28,7 +29,10 @@ public class TcpFileUploadServer {
         while ((len = inputStream.read(buffer)) != -1){
             outputStream.write(buffer,0,len);
         }
-        //4.关闭流
+        //5.通知客户端接收完毕了可以关闭了
+        OutputStream os = socket.getOutputStream();
+        os.write("我接收完毕了，你可以关闭了-------------".getBytes());
+        //6.关闭流
         outputStream.close();
         inputStream.close();
         socket.close();
