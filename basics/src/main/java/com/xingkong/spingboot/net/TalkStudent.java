@@ -10,6 +10,6 @@ public class TalkStudent {
 
     public static void main(String[] args) {
         new Thread(new TalkSender("localhost",9000,7777)).start();
-        new Thread(new TalkRecevice(8000,"老师")).start();
+        new Thread(new TalkReceive(8000,"老师")).start();
     }
 }

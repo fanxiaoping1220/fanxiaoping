@@ -10,7 +10,7 @@ import java.net.DatagramSocket;
  * * @author: fan xiaoping
  * * @date: 2022/7/17 0017 17:58
  **/
-public class TalkRecevice implements Runnable {
+public class TalkReceive implements Runnable {
     DatagramSocket socket = null;
 
     /**
@@ -23,7 +23,7 @@ public class TalkRecevice implements Runnable {
      */
     private String fromMsg;
 
-    public TalkRecevice(int fromPort,String fromMsg) {
+    public TalkReceive(int fromPort, String fromMsg) {
         this.fromPort = fromPort;
         this.fromMsg = fromMsg;
         try {
