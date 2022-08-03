@@ -1,6 +1,8 @@
 package com.xingkong.spingboot.reflection;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * * @className: Test
@@ -24,6 +26,8 @@ public class Test {
     }
 }
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 class User{
 
@@ -32,5 +36,9 @@ class User{
     private Integer age;
 
     private Integer id;
+
+    private void test(){
+
+    }
 }
 
