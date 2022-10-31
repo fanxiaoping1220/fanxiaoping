@@ -1,5 +1,9 @@
 #-----------------数据库---------------------------------------
 spring:
+  application:
+    name: basics
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/learn?characterEncoding=utf8
     username: root
@@ -16,13 +20,13 @@ spring:
         max-idle: 8
         max-active: 8
     password: 123456
-  kafka:
-    producer:
-      bootstrap-servers: 127.0.0.1:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    consumer:
-      group-id: foo
+#  kafka:
+#    producer:
+#      bootstrap-servers: 127.0.0.1:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#    consumer:
+#      group-id: foo
   cache:
     type: redis
     cache-names: redisCache
@@ -40,13 +44,23 @@ spring:
           max-attempts: 3  # 最大重试次数
           max-interval: 1000ms # 最大间隔时间
         default-requeue-rejected: false # 被拒绝的消息是否重新入列 默认为true
-    publisher-confirms: true # 消息发布确认
     publisher-returns: true # 消息发布返回
+    publisher-confirm-type: simple
   data:
     mongodb:
       host: 116.62.48.25
       port: 27017
       database: jiwang-cmdb
+    elasticsearch:
+      client:
+        reactive:
+          endpoints: 139.196.200.244:9200
+          username: elastic
+          password: 123456
+          connection-timeout: 10s
+  elasticsearch:
+    rest:
+      uris: 139.196.200.244:9200
   mail:
     host: smtp.163.com
     password: FQXKPKXUTNZCKUEA
