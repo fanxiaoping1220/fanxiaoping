@@ -48,4 +48,21 @@ public class ContentController {
         return contentService.searchPage(keyword,pageNo,pageSize);
     }
 
+    /**
+     * 分页高亮查询
+     * @param keyword
+     * @param pageNo
+     * @param pageSize
+     * @return
+     * @throws IOException
+     */
+    @GetMapping(value = "/searchHighLight/{keyword}/{pageNo}/{pageSize}")
+    public Map<String,Object> searchPageHighLight(@PathVariable(name = "keyword") String keyword,@PathVariable(name = "pageNo") Integer pageNo,@PathVariable(name = "pageSize") Integer pageSize) throws IOException {
+        if(pageNo == null || pageSize == null){
+            pageNo = 0;
+            pageSize = 10;
+        }
+        return contentService.searchPageHighLight(keyword,pageNo,pageSize);
+    }
+
 }
