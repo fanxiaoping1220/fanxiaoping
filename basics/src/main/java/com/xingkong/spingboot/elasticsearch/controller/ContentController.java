@@ -34,8 +34,8 @@ public class ContentController {
     /**
      * 分页查询
      * @param keyword
-     * @param pageNo
-     * @param pageSize
+     * @param pageNo 当前页
+     * @param pageSize 每页显示条数
      * @return
      * @throws IOException
      */

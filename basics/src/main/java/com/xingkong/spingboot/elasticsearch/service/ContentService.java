@@ -81,9 +81,14 @@ public class ContentService {
             Content content = JSON.parseObject(documentFields.getSourceAsString(), Content.class);
             list.add(content);
         });
+        long totalPage = searchResponse.getHits().getTotalHits().value / pageSize;
+        if(searchResponse.getHits().getTotalHits().value % pageSize > 0){
+            totalPage++;
+        }
         result.put("currentPage",pageNo);
         result.put("total",searchResponse.getHits().getTotalHits().value);
         result.put("list",list);
+        result.put("totalPage",totalPage);
         return result;
     }
 }
