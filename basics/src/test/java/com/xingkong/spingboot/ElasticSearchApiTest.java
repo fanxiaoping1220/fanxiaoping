@@ -89,7 +89,7 @@ public class ElasticSearchApiTest {
     @Test
     public void createDocument() throws IOException {
         //1.创建对象
-        User user = new User("星空", 18);
+        User user = new User("星空", 18,"男");
         //2.创建请求
         IndexRequest request = new IndexRequest(INDEX);
         request.id("1");
@@ -134,7 +134,7 @@ public class ElasticSearchApiTest {
     @Test
     public void updateDocument() throws IOException {
         UpdateRequest request = new UpdateRequest(INDEX,"1");
-        User user = new User("星辰说未来", 22);
+        User user = new User("星辰说未来", 22,"女");
         request.timeout("1s");
         request.doc(JSON.toJSONString(user),XContentType.JSON);
         UpdateResponse updateResponse = restHighLevelClient.update(request, RequestOptions.DEFAULT);
@@ -160,7 +160,7 @@ public class ElasticSearchApiTest {
         BulkRequest request = new BulkRequest();
         List<User> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            list.add(new User("星辰说未来",i));
+            list.add(new User("星辰说未来",i,"男"));
         }
         //批量处理
         for (int i = 0; i < list.size(); i++) {
