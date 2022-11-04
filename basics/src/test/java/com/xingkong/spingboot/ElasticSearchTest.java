@@ -22,11 +22,20 @@ import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.client.indices.GetIndexResponse;
+import org.elasticsearch.common.text.Text;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.Max;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +43,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * * @className: ElasticSearchTest
@@ -268,5 +279,186 @@ public class ElasticSearchTest {
             list.add(user);
         }
         list.stream().forEach(System.out ::println);
+    }
+
+    /**
+     * 多条件查询 and
+     */
+    @Test
+    public void multipleConditionsQueryDoc() throws IOException {
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("age",22));
+        boolQueryBuilder.must(QueryBuilders.termQuery("sex.keyword","男"));
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(searchResponse.getTook());
+        System.out.println(searchResponse.getHits().getTotalHits().value);
+        List<User> list = new ArrayList<>();
+        for (SearchHit hit : searchResponse.getHits()) {
+            System.out.println(hit.getSourceAsString());
+            User user = JSON.parseObject(hit.getSourceAsString(), User.class);
+            list.add(user);
+        }
+        list.stream().forEach(System.out ::println);
+    }
+
+    /**
+     * 多条件 or查询
+     */
+    @Test
+    public void orQueryDoc() throws IOException {
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+        builder.should(QueryBuilders.termQuery("age",23));
+        builder.should(QueryBuilders.termQuery("age",22));
+        searchSourceBuilder.query(builder);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(search.getHits().getTotalHits().value);
+        System.out.println(search.getTook());
+        List<User> list = new ArrayList<>();
+        for (SearchHit hit : search.getHits()) {
+            System.out.println(hit.getSourceAsString());
+            User user = JSON.parseObject(hit.getSourceAsString(), User.class);
+            list.add(user);
+        }
+        list.stream().forEach(System.out :: println);
+    }
+
+    /**
+     * 范围查询
+     */
+    @Test
+    public void rangeQueryDoc() throws IOException {
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+        builder.must(QueryBuilders.termQuery("sex.keyword","男"));
+        builder.filter(QueryBuilders.rangeQuery("age").gte(18).lte(22));
+        searchSourceBuilder.query(builder);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(searchResponse.getHits().getTotalHits().value);
+        System.out.println(searchResponse.getTook());
+        List<User> list = new ArrayList<>();
+        for (SearchHit hit : searchResponse.getHits()) {
+            System.out.println(hit.getSourceAsString());
+            User user = JSON.parseObject(hit.getSourceAsString(), User.class);
+            list.add(user);
+        }
+        list.stream().forEach(System.out :: println);
+    }
+
+    /**
+     * 模糊查询
+     */
+    @Test
+    public void likeQueryDoc() throws IOException {
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.fuzzyQuery("name","如来").fuzziness(Fuzziness.ONE));
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(search.getHits().getTotalHits().value);
+        System.out.println(search.getTook());
+        List<User> list = new ArrayList<>();
+        for (SearchHit hit : search.getHits()) {
+            System.out.println(hit.getSourceAsString());
+            User user = JSON.parseObject(hit.getSourceAsString(), User.class);
+            list.add(user);
+        }
+        list.stream().forEach(System.out :: println);
+    }
+
+    /**
+     * 高亮查询
+     */
+    @Test
+    public void highLightQueryDoc() throws IOException {
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.termQuery("sex","男"));
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("sex");
+        highlightBuilder.preTags("<font style='red'>");
+        highlightBuilder.postTags("</font>");
+        searchSourceBuilder.highlighter(highlightBuilder);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(search.getTook());
+        System.out.println(search.getHits().getTotalHits().value);
+        List<User> list = new ArrayList<>();
+        for (SearchHit hit : search.getHits()) {
+            User user = JSON.parseObject(hit.getSourceAsString(), User.class);
+            System.out.println(hit.getSourceAsString());
+            list.add(user);
+            Map<String, HighlightField> highlightFields = hit.getHighlightFields();
+            HighlightField highlightField = highlightFields.get("sex");
+            StringBuilder sex = new StringBuilder();
+            for (Text text : highlightField.getFragments()) {
+                sex.append(text);
+            }
+            user.setSex(sex.toString());
+        }
+        list.stream().forEach(System.out :: println);
+    }
+
+    /**
+     * 聚合查询 最大值 max
+     */
+    @Test
+    public void aggregationQueryDoc() throws IOException {
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
+        searchSourceBuilder.aggregation(AggregationBuilders.max("max_age").field("age"));
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(search.getTook());
+        System.out.println(search.getHits().getTotalHits().value);
+        Map<String,Object> result = new HashMap<>();
+        List<User> list = new ArrayList<>();
+        System.out.println(search.getHits().toString());
+        System.out.println(search.getHits());
+        for (SearchHit hit : search.getHits()) {
+            System.out.println(hit.getSourceAsString());
+            User user = JSON.parseObject(hit.getSourceAsString(), User.class);
+            list.add(user);
+        }
+        list.stream().forEach(System.out :: println);
+        result.put("list",list);
+        System.out.println(search.getAggregations());
+        System.out.println(search.getAggregations().toString());
+        Max max = search.getAggregations().get("max_age");
+        result.put("max_avg",max.value());
+        System.out.println(result.toString());
+    }
+
+    /**
+     * 聚合查询 分组查询
+     */
+    @Test
+    public void aggregationGroupQueryDoc() throws IOException {
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.aggregation(AggregationBuilders.terms("group_age").field("age"));
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(search.getTook());
+        System.out.println(search.getHits().getTotalHits().value);
+        Aggregations aggregations = search.getAggregations();
+        Terms terms = aggregations.get("group_age");
+        System.out.println("====================");
+        Map<String,Object> result = new HashMap<>();
+        terms.getBuckets().stream().forEach(bucket -> {
+            System.out.println(bucket.getKeyAsString());
+            System.out.println(bucket.getDocCount());
+        });
+        result.put("group_age",terms.getBuckets());
+        System.out.println(result.toString());
     }
 }
