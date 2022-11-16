@@ -31,10 +31,10 @@ spring:
     type: redis
     cache-names: redisCache
   rabbitmq:
-    host: 116.62.48.25
-    port: 5662
-    username: colovu
-    password: pass4colovu
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
     connection-timeout: 60s
     listener:
       simple:
@@ -48,9 +48,11 @@ spring:
     publisher-confirm-type: simple
   data:
     mongodb:
-      host: 116.62.48.25
+      host: stage.irendui.com
       port: 27017
-      database: jiwang-cmdb
+      username: root
+      password: Rendui123456!
+      database: rendui
     elasticsearch:
       client:
         reactive:
