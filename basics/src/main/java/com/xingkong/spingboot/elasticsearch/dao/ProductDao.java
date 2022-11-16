@@ -9,5 +9,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
  * * @author: fan xiaoping
  * * @date: 2022/11/16 0016 14:11
  **/
-public interface ProductDao extends ElasticsearchRepository<Product, Integer> {
+public interface ProductDao extends ElasticsearchRepository<Product, Long> {
 }

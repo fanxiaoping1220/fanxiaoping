@@ -62,7 +62,7 @@ public class SpringDataESIndexTest {
     @Test
     public void save(){
         Product product = new Product();
-        product.setId(1);
+        product.setId(1L);
         product.setCategory("手机");
         product.setTitle("华为手机");
         product.setPrice(6880.0);
@@ -76,7 +76,7 @@ public class SpringDataESIndexTest {
     @Test
     public void update(){
         Product product = new Product();
-        product.setId(2);
+        product.setId(2L);
         product.setCategory("手机");
         product.setTitle("小米手机");
         product.setPrice(2998.0);
@@ -89,7 +89,7 @@ public class SpringDataESIndexTest {
      */
     @Test
     public void getId(){
-        Product product = productDao.findById(1).get();
+        Product product = productDao.findById(1L).get();
         System.out.println(product);
     }
 
@@ -109,7 +109,7 @@ public class SpringDataESIndexTest {
      */
     @Test
     public void deleteById(){
-        productDao.deleteById(1);
+        productDao.deleteById(1L);
     }
 
     /**
@@ -118,7 +118,7 @@ public class SpringDataESIndexTest {
     @Test
     public void deleteByProduce(){
         Product product = new Product();
-        product.setId(1);
+        product.setId(1L);
         productDao.delete(product);
     }
 
@@ -135,7 +135,7 @@ public class SpringDataESIndexTest {
      */
     @Test
     public void deleteIdList(){
-        productDao.deleteAllById(asList(1,2));
+        productDao.deleteAllById(asList(1L,2L));
     }
 
     /**
@@ -146,7 +146,7 @@ public class SpringDataESIndexTest {
         List<Product> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             Product product = new Product();
-            product.setId(i+1);
+            product.setId(i+1L);
             product.setTitle("小米"+product.getId()+"手机");
             product.setCategory("手机");
             product.setPrice(200 + product.getId() * 100.0);

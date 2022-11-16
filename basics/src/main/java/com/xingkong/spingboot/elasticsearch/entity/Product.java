@@ -28,8 +28,7 @@ public class Product {
      * id
      */
     @Id
-    @Field(name = "id",type = FieldType.Long)
-    private Integer id;
+    private Long id;
 
     /**
      * 标题
