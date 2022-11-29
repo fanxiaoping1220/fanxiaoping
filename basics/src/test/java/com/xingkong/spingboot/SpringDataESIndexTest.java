@@ -3,7 +3,8 @@ package com.xingkong.spingboot;
 import com.xingkong.spingboot.elasticsearch.dao.ProductDao;
 import com.xingkong.spingboot.elasticsearch.entity.Product;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.data.elasticsearch.core.query.IndexBoost;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 
 import java.util.ArrayList;
@@ -165,6 +163,59 @@ public class SpringDataESIndexTest {
         System.out.println(page.getTotalPages());
         System.out.println(page.getPageable());
         page.getContent().forEach(product -> {
+            System.out.println(product);
+        });
+    }
+
+    /**
+     * 通过自定义方法查询
+     */
+    @Test
+    public void customQuery(){
+        List<Product> list = productDao.queryByTitle("小米6手机");
+        list.forEach(product -> {
+            System.out.println(product);
+        });
+    }
+
+    /**
+     * term查询
+     */
+    @Test
+    public void termQuery(){
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("price",1500);
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder().withQuery(termQueryBuilder);
+        SearchHits<Product> search = restTemplate.search(nativeSearchQueryBuilder.build(), Product.class);
+        search.getSearchHits().stream().forEach(productSearchHit -> {
+            System.out.println(productSearchHit.getContent());
+        });
+    }
+
+    /**
+     * term查询加分页和排序
+     */
+    @Test
+    public void termPageQuery(){
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("category", "手机");
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder().withQuery(termQueryBuilder);
+        nativeSearchQueryBuilder.withPageable(PageRequest.of(0,5));
+        nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.DESC));
+        SearchHits<Product> search = restTemplate.search(nativeSearchQueryBuilder.build(), Product.class);
+        search.getSearchHits().stream().forEach(productSearchHit -> {
+            System.out.println(productSearchHit.getContent());
+        });
+    }
+
+    /**
+     * 自定义方法分页查询
+     */
+    @Test
+    public void customPageQuery(){
+        Page<Product> page = productDao.queryByCategory("手机", PageRequest.of(0, 10));
+        System.out.println(page.getPageable().getPageNumber());
+        System.out.println(page.getPageable().getPageSize());
+        System.out.println(page.getTotalPages());
+        page.getContent().stream().forEach(product -> {
             System.out.println(product);
         });
     }
