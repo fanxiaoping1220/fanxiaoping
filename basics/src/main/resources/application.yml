@@ -48,11 +48,7 @@ spring:
     publisher-confirm-type: simple
   data:
     mongodb:
-      host: stage.irendui.com
-      port: 27017
-      username: root
-      password: Rendui123456!
-      database: rendui
+      uri: mongodb://admin:Rendui123456!@s-2ze3517db91ac0e4-pub.mongodb.rds.aliyuncs.com:3717,s-2ze1a4695cbb9c84-pub.mongodb.rds.aliyuncs.com:3717/rendui-test
     elasticsearch:
       client:
         reactive:
@@ -86,6 +82,10 @@ person:
 rabbitmq:
   queue:
     name: ${server.port}
+
+echarts:
+  host: http://127.0.0.1:6666
+
 
 
 #------------日志---------------------
