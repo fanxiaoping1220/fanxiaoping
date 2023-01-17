@@ -1,4 +1,4 @@
-package com.xingkong.spingboot.Test;
+package com.xingkong.spingboot.echarts;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
