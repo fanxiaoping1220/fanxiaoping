@@ -27,7 +27,7 @@ public class EchartsUtil {
      */
 //    @Value("${file.path}")
     private String TEMP_FILE_PATH = (new File("")).getAbsolutePath()+File.pathSeparator+"bill"+File.separator;
-    @Value("${echarts.jost}")
+    @Value("${echarts.host}")
     private String echartsHost;
     private static final String SUCCESS_CODE = "1";
     private static final Logger logger = LoggerFactory.getLogger(EchartsUtil.class);

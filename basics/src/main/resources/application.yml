@@ -52,13 +52,13 @@ spring:
     elasticsearch:
       client:
         reactive:
-          endpoints: 139.196.200.244:9200
+          endpoints: es-cn-2r42zlal6000nzvcr.public.elasticsearch.aliyuncs.com:9200
           username: elastic
-          password: 123456
+          password: rendui123456!
           connection-timeout: 10s
   elasticsearch:
     rest:
-      uris: 139.196.200.244:9200
+      uris: es-cn-2r42zlal6000nzvcr.public.elasticsearch.aliyuncs.com:9200
   mail:
     host: smtp.163.com
     password: FQXKPKXUTNZCKUEA
@@ -99,3 +99,13 @@ logging:
       springframework: debug
       springframework.boot: debug
     root: debug
+
+wxpay:
+  mchId: 1376395802
+  appId: wxa11729a79b0e847e
+  mchKey: wing123456wing123456wing123456wi
+  apiV3Key: adjf232893jsejsaSasdf828320qfjqh
+  certSerialNo: 2FA165D45C8938477421C509F5567D6C6694EECF
+  keyPath: ./cert/apiclient_cert.p12
+  privateCertPath: ./cert/apiclient_cert.pem
+  privateKeyPath: ./cert/apiclient_key.pem

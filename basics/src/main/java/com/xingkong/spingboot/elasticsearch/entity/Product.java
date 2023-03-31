@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -21,6 +22,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Data
 @Document(indexName = "product")
 @Setting(shards = 3,replicas = 2)
+@Accessors(chain = true)
 @ToString
 public class Product {
 
