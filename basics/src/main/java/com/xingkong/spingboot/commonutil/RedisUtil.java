@@ -421,6 +421,40 @@ public class RedisUtil {
     }
 
     /**
+     * set
+     * 将 key中的value移动到destKey里面
+     * @param key
+     * @param destKey
+     * @param value
+     * @return
+     */
+    public Boolean setMove(String key,String destKey,Object value){
+        try {
+            return redisTemplate.opsForSet().move(key, value, destKey);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * set
+     * 从key随机弹出N个元素,并删除
+     * @param key
+     * @param count
+     * @return
+     */
+    public Object setPop(String key,long count){
+        try {
+            Object pop = redisTemplate.opsForSet().pop(key,count);
+            return pop;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * 移除值为value的
      *
      * @param key    键
@@ -436,6 +470,75 @@ public class RedisUtil {
             return 0;
         }
     }
+
+    /**
+     * set
+     * 从key展示N个值,值不删除
+     * @param key
+     * @param number
+     * @return
+     */
+    public List<?> setRandomMembers(String key,long number){
+        try {
+            List list = redisTemplate.opsForSet().randomMembers(key, number);
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * set
+     * key,otherKey求差集
+     * @param key
+     * @param otherKey
+     * @return
+     */
+    public Set<?> setDifference(String key,String otherKey){
+        try {
+            Set difference = redisTemplate.opsForSet().difference(key, otherKey);
+            return difference;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * set
+     * key,otherKey求并集
+     * @param key
+     * @param otherKey
+     * @return
+     */
+    public Set<?> setUnion(String key,String otherKey){
+        try {
+            Set union = redisTemplate.opsForSet().union(key, otherKey);
+            return union;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * set
+     * key,otherKey求交集
+     * @param key
+     * @param otherKey
+     * @return
+     */
+    public Set<?> setIntersect(String key,String otherKey){
+        try {
+            Set intersect = redisTemplate.opsForSet().intersect(key, otherKey);
+            return intersect;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**
      * 获取list缓存的内容
