@@ -700,6 +700,367 @@ public class RedisUtil {
         }
     }
 
+//  --------------------------------------------------------------------------------zSet------------------------------------------------------------------------------------------------------
+
+    /**
+     * zSet
+     * 添加元素
+     * @param key key
+     * @param value 值
+     * @param score 分数
+     * @return
+     */
+    public boolean zSetAdd(String key,Object value,double score){
+        try {
+            return redisTemplate.opsForZSet().add(key, value, score);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * zSet
+     * 从小到大安装score进行排序 正序
+     * start 开始位置 end结束位置 0 -1表示全部
+     * @param key
+     * @param start 开始坐标
+     * @param end 结束坐标
+     * @return
+     */
+    public Set<?> zSetRange(String key,long start,long end){
+        try {
+            return redisTemplate.opsForZSet().range(key,start,end);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 获取指定分数范围的
+     * 正序 从min到max之间的
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @return
+     */
+    public Set<?> zSetRangeByScore(String key,double min,double max){
+        try {
+            return redisTemplate.opsForZSet().rangeByScore(key,min,max);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 正序
+     * 获取指定分数范围的
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @param offset 开始位置
+     * @param count 显示个数
+     * @return
+     */
+    public Set<?> zSetRangeByScore(String key,double min,double max,long offset,long count){
+        try {
+            return redisTemplate.opsForZSet().rangeByScore(key,min,max,offset,count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 正序
+     * 获取指定分数范围的 + 显示分数
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @param offset 开始位置
+     * @param count 显示个数
+     * @return
+     */
+    public Set<?> zSetRangeByScoreWithScores(String key,double min,double max,long offset,long count){
+        try {
+            return redisTemplate.opsForZSet().rangeByScoreWithScores(key,min,max,offset,count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 正序
+     * 获取指定分数范围的 + 显示分数
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @return
+     */
+    public Set<?> zSetRangeByScoreWithScores(String key,double min,double max){
+        try {
+            return redisTemplate.opsForZSet().rangeByScoreWithScores(key,min,max);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 倒序 从大到小
+     * 从大到小按照分数进行排序
+     * start 0 end -1 表示全部
+     * @param key key
+     * @param start 开始位置
+     * @param end 结束位置
+     * @return
+     */
+    public Set<?> zSetReverseRange(String key,long start,long end){
+        try {
+            return redisTemplate.opsForZSet().reverseRange(key,start,end);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 倒序
+     * 获取指定分数范围的
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @return
+     */
+    public Set<?> zSetReverseRangeByScore(String key,double min,double max){
+        try {
+            return redisTemplate.opsForZSet().reverseRangeByScore(key,min,max);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 倒序
+     * 获取指定分数范围的
+     * offset 0 count 2 ==> limit 0 2
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @param offset 开始位置
+     * @param count 显示个数
+     * @return
+     */
+    public Set<?> zSetReverseRangeByScore(String key,double min,double max,long offset,long count){
+        try {
+            return redisTemplate.opsForZSet().reverseRangeByScore(key,min,max,offset,count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 倒序
+     * 获取指定分数范围的 + 显示分数
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @param offset 开始位置
+     * @param count 显示个数
+     * @return
+     */
+    public Set<?> zSetReverseRangeByScoreWithScores(String key,double min,double max,long offset,long count){
+        try {
+            return redisTemplate.opsForZSet().reverseRangeByScoreWithScores(key,min,max,offset,count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 倒序
+     * 获取指定分数范围内 + 显示分数
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @return
+     */
+    public Set<?> zSetReverseRangeByScoreWithScores(String key,double min,double max){
+        try {
+            return redisTemplate.opsForZSet().reverseRangeByScoreWithScores(key,min,max);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 获取元素的分数
+     * @param key key
+     * @param value 元素
+     * @return
+     */
+    public Double zSetGetValueScore(String key,Object value){
+        try {
+            return redisTemplate.opsForZSet().score(key,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     *zSet
+     * 获取key中的元素数量
+     * size
+     * @param key key
+     * @return
+     */
+    public Long zSetGetSize(String key){
+        try {
+            return redisTemplate.opsForZSet().size(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 删除
+     * 根据value删除
+     * @param key
+     * @param value
+     * @return
+     */
+    public Long zSetRemove(String key,Object... value){
+        try {
+            return redisTemplate.opsForZSet().remove(key,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 删除
+     * 根据位置范围删除
+     * @param key key
+     * @param start 开始位置
+     * @param end 结束位置
+     * @return
+     */
+    public Long zSetRemoveRange(String key,long start,long end){
+        try {
+            return redisTemplate.opsForZSet().removeRange(key,start,end);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 删除
+     * 根据分数范围删除
+     * @param key key
+     * @param min 最小值
+     * @param max 最大值
+     * @return
+     */
+    public Long zSetRemoveRangeByScore(String key,double min,double max){
+        try {
+            return redisTemplate.opsForZSet().removeRangeByScore(key,min,max);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 增加某个元素的分数
+     * @param key key
+     * @param value value
+     * @param score + 分数
+     * @return
+     */
+    public Double zSetIncrementScore(String key,Object value,double score){
+        try {
+            return redisTemplate.opsForZSet().incrementScore(key,value,score);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 获取指定分数范围内的元素个数
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
+    public Long zSetCount(String key,double min,double max){
+        try {
+            return redisTemplate.opsForZSet().count(key,min,max);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 正序 获取value的下标值
+     * @param key
+     * @param value
+     * @return
+     */
+    public Long zSetRank(String key,Object value){
+        try {
+            return redisTemplate.opsForZSet().rank(key,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * zSet
+     * 倒序 获取value的下标值
+     * @param key
+     * @param value
+     * @return
+     */
+    public Long zSetReverseRank(String key,Object value){
+        try {
+            return redisTemplate.opsForZSet().reverseRank(key,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     /**
      * 加锁(redis分布式锁)
      *
