@@ -2,6 +2,7 @@ package com.xingkong.spingboot.commonutil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -1060,6 +1061,55 @@ public class RedisUtil {
         }
     }
 
+//  --------------------------------------------------------------------bitmap----------------------------------------------------------------------------------------------------------
+
+    /**
+     * bitmap
+     * set
+     * @param key key
+     * @param offset 偏移位
+     * @param value 值1或0
+     * @return
+     */
+    public Boolean bitSet(String key,long offset,Boolean value){
+        try {
+            return redisTemplate.opsForValue().setBit(key,offset,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * bitmap
+     * get
+     * @param key key
+     * @param offset 偏移量
+     * @return
+     */
+    public Boolean bitGet(String key,long offset){
+        try {
+            return redisTemplate.opsForValue().getBit(key,offset);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * bitFiled 位域
+     * @param key
+     * @param subCommands
+     * @return
+     */
+    public List<Long> bitFiled(String key, BitFieldSubCommands subCommands){
+        try {
+            return redisTemplate.opsForValue().bitField(key,subCommands);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * 加锁(redis分布式锁)

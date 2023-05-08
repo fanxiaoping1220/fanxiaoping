@@ -4,7 +4,10 @@ import com.xingkong.spingboot.commonutil.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.connection.BitFieldSubCommands;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -208,5 +211,58 @@ public class RedisTest {
         System.out.println(intersect);
     }
 
+    /**
+     * bitmap
+     * set
+     */
+    @Test
+    public void bitset(){
+        redisUtil.bitSet("k1:202305",0,true);
+        redisUtil.bitSet("k1:202305",1,true);
+        redisUtil.bitSet("k1:202305",2,false);
+        redisUtil.bitSet("k1:202305",3,true);
+        redisUtil.bitSet("k1:202305",4,true);
+        redisUtil.bitSet("k1:202305",5,true);
+        redisUtil.bitSet("k1:202305",6,false);
+        redisUtil.bitSet("k1:202305",7,false);
+    }
+
+    /**
+     * bitmap
+     * get
+     */
+    @Test
+    public void bitGet(){
+        Boolean one = redisUtil.bitGet("k1:202305", 0);
+        Boolean two = redisUtil.bitGet("k1:202305", 1);
+        Boolean three = redisUtil.bitGet("k1:202305", 2);
+        Boolean five = redisUtil.bitGet("k1:202305", 3);
+        Boolean four = redisUtil.bitGet("k1:202305", 4);
+        Boolean six = redisUtil.bitGet("k1:202305", 5);
+        Boolean seven = redisUtil.bitGet("k1:202305", 6);
+        Boolean eight = redisUtil.bitGet("k1:202305", 7);
+        System.out.println(one);
+        System.out.println(two);
+        System.out.println(three);
+        System.out.println(five);
+        System.out.println(four);
+        System.out.println(six);
+        System.out.println(seven);
+        System.out.println(eight);
+        int dayOfMonth = LocalDate.now().getDayOfMonth();
+        List<Long> result = redisUtil.bitFiled("k1:202305", BitFieldSubCommands.create().get(BitFieldSubCommands.BitFieldType.unsigned(dayOfMonth)).valueAt(0));
+        System.out.println(result);
+        Long number = result.get(0);
+        int count = 0;
+        while (true){
+            if((number & 1) == 0){
+                break;
+            }else {
+                count++;
+            }
+            number >>>= 1;
+        }
+        System.out.println(count);
+    }
 
 }
