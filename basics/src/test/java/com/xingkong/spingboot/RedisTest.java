@@ -297,4 +297,53 @@ public class RedisTest {
         System.out.println(values);
     }
 
+    /**
+     * hyperLogLog
+     * add
+     */
+    @Test
+    public void hyperLogLogAdd(){
+        Long hyperLogLog = redisUtil.hyAdd("hyperLogLog", 1, 3, 5, 7, 9, 8, 0);
+        Long hyperLogLog2 = redisUtil.hyAdd("hyperLogLog2", 11, 22, 33, 4, 4, 4, 55, 55, 6, 7, 8, 10);
+        System.out.println(hyperLogLog);
+        System.out.println(hyperLogLog2);
+    }
+
+    /**
+     * hyperLogLog
+     * count
+     */
+    @Test
+    public void hyperLogLogCount(){
+        Long hyperLogLog = redisUtil.hyCount("hyperLogLog");
+        Long hyperLogLog2 = redisUtil.hyCount("hyperLogLog2");
+        Long hyperLogLog3 = redisUtil.hyCount("hyperLogLog2","hyperLogLog");
+        System.out.println(hyperLogLog);
+        System.out.println(hyperLogLog2);
+        System.out.println(hyperLogLog3);
+    }
+
+    /**
+     * hyperLogLog
+     * union
+     */
+    @Test
+    public void hyperLogLogUnion(){
+        Long union = redisUtil.hyUnion("resultKey", "hyperLogLog", "hyperLogLog2");
+        Long resultKey = redisUtil.hyCount("resultKey");
+        System.out.println(union);
+        System.out.println(resultKey);
+    }
+
+    /**
+     * hyperLogLog
+     * delete
+     */
+    @Test
+    public void hyperLogLogDelete(){
+        redisUtil.hyDelete("resultKey");
+        Long resultKey = redisUtil.hyCount("resultKey");
+        System.out.println(resultKey);
+    }
+
 }

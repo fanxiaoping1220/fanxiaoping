@@ -1141,6 +1141,69 @@ public class RedisUtil {
         }
     }
 
+//  -----------------------------------------------------------------------------------hyperLogLog----------------------------------------------------------------------------------
+
+    /**
+     * hyperLogLog 基数统计 去重统计
+     * add
+     * @param key key
+     * @param values values 需要添加元素值
+     * @return
+     */
+    public Long hyAdd(String key, Object... values){
+        try {
+            return redisTemplate.opsForHyperLogLog().add(key,values);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * hyperLogLog
+     * count  统计个数
+     * 单个或者多个key
+     * @param keys 需要查询的key
+     * @return
+     */
+    public Long hyCount(String... keys){
+        try {
+            return redisTemplate.opsForHyperLogLog().size(keys);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * hyperLogLog
+     * union 合并
+     * @param resultKey 返回值key
+     * @param key 需要合并的key
+     * @return
+     */
+    public Long hyUnion(String resultKey,String... key){
+        try {
+            return redisTemplate.opsForHyperLogLog().union(resultKey,key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * hyperLogLog
+     * delete 删除
+     * @param key 需要删除的key
+     */
+    public void hyDelete(String key){
+        try {
+            redisTemplate.opsForHyperLogLog().delete(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 加锁(redis分布式锁)
      *
