@@ -339,6 +339,36 @@ public class RedisUtil {
     }
 
     /**
+     * hash
+     * 通过hashKey获取key的所有field
+     * @param key
+     * @return
+     */
+    public Set<Object> hGetFields(String key) {
+        try {
+            return redisTemplate.opsForHash().keys(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 通过hashKey获取key的所有values
+     * @param key
+     * @return
+     */
+    public List<Object> hGetValues(String key) {
+        try {
+            return redisTemplate.opsForHash().values(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    /**
      * 根据key获取Set中的所有值
      *
      * @param key 键

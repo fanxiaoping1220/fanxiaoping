@@ -265,4 +265,36 @@ public class RedisTest {
         System.out.println(count);
     }
 
+    /**
+     * hash
+     * set
+     */
+    @Test
+    public void hSet(){
+        redisUtil.hset("hash","v1","xx");
+        redisUtil.hset("hash","v2","yy");
+        redisUtil.hset("hash","v3","11");
+        redisUtil.hset("hash","v4","22");
+    }
+
+    /**
+     * hash
+     * getFields
+     */
+    @Test
+    public void hashGetFieldS(){
+        Set<Object> fields = redisUtil.hGetFields("hash");
+        System.out.println(fields);
+    }
+
+    /**
+     * hash
+     * getValues
+     */
+    @Test
+    public void HashGetValues(){
+        List<Object> values = redisUtil.hGetValues("hash");
+        System.out.println(values);
+    }
+
 }
