@@ -1,8 +1,11 @@
 package com.xingkong.spingboot.commonutil;
 
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
+import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -1201,6 +1204,126 @@ public class RedisUtil {
             redisTemplate.opsForHyperLogLog().delete(key);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+//  ---------------------------------------------------------------------------地理空间GEO------------------------------------------------------------------------------------
+
+    /**
+     * geo
+     * 添加
+     * @param key key
+     * @param point 地址 x表示:经度坐标 y表示:纬度坐标
+     * @param member member
+     * @return
+     */
+    public Long geoAdd(String key, Point point,Object member){
+        try {
+            return redisTemplate.opsForGeo().add(key,point,member);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * geo
+     * 根据member获取经纬度
+     * @param key key
+     * @param member member
+     * @return
+     */
+    public List<Point> geoPosition(String key, Object... member){
+        try {
+            return redisTemplate.opsForGeo().position(key,member);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * geo
+     * 根据member获取经纬度的hash表示
+     * @param key key
+     * @param member member
+     * @return
+     */
+    public List<String> geoHash(String key, Object... member){
+        try {
+            return redisTemplate.opsForGeo().hash(key,member);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * geo
+     * 获取2个member之间的距离
+     * @param key key
+     * @param member member
+     * @param member2 member2
+     * @param Metric 单位 km m ft mi
+     * @return
+     */
+    public Distance geoDistance(String key, Object member, Object member2, Metric Metric){
+        try {
+            return redisTemplate.opsForGeo().distance(key,member,member2,Metric);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * geo
+     * 根据member+指定距离获取范围内的经纬度
+     * @param key key
+     * @param member member
+     * @param distance 距离
+     * @return
+     */
+    public GeoResults<RedisGeoCommands.GeoLocation> geoRadius(String key, Object member, Distance distance){
+        try {
+            return redisTemplate.opsForGeo().radius(key,member,distance);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * geo
+     * 根据经纬度+指定距离获取内的经纬度
+     * @param key
+     * @param point
+     * @param distance
+     * @return
+     */
+    public GeoResults<RedisGeoCommands.GeoLocation> geoRadius(String key, Point point, Distance distance){
+        try {
+            Circle circle = new Circle(point,distance);
+            return redisTemplate.opsForGeo().radius(key,circle);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * geo
+     * 根据member删除
+     * @param key
+     * @param member
+     * @return
+     */
+    public Long geoRemove(String key, Object... member){
+        try {
+            return redisTemplate.opsForGeo().remove(key,member);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 

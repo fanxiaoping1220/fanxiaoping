@@ -4,7 +4,11 @@ import com.xingkong.spingboot.commonutil.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
+import org.springframework.data.redis.connection.RedisGeoCommands;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -344,6 +348,98 @@ public class RedisTest {
         redisUtil.hyDelete("resultKey");
         Long resultKey = redisUtil.hyCount("resultKey");
         System.out.println(resultKey);
+    }
+
+    /**
+     * geo
+     * add
+     */
+    @Test
+    public void geoAdd(){
+        redisUtil.geoAdd("city",new Point(119.083293,27.624457),"巧姐烟酒");
+        redisUtil.geoAdd("city",new Point(119.083791,27.624509),"中洁管道");
+        redisUtil.geoAdd("city",new Point(119.084285,27.624553),"顾家家居");
+        redisUtil.geoAdd("city",new Point(119.083922,27.625045),"庆元农商银行");
+        redisUtil.geoAdd("city",new Point(119.083692,27.625265),"金球影城");
+        redisUtil.geoAdd("city",new Point(119.083616,27.625433),"海纳百川大浴场");
+        redisUtil.geoAdd("city",new Point(119.083203,27.625681),"k歌之王");
+        redisUtil.geoAdd("city",new Point(119.083203,27.625681),"金丝玉玛瓷砖");
+        redisUtil.geoAdd("city",new Point(119.084721,27.625249),"和家园");
+        redisUtil.geoAdd("city",new Point(119.081986,27.624769),"温州银行");
+    }
+
+    /**
+     * geo
+     * position
+     */
+    @Test
+    public void geoPosition(){
+        List<Point> points = redisUtil.geoPosition("city", "巧姐烟酒", "中洁管道", "温州银行");
+        points.forEach(point -> {
+            System.out.println(point);
+        });
+    }
+
+    /**
+     * geo
+     * hash
+     */
+    @Test
+    public void geoHash(){
+        List<String> strings = redisUtil.geoHash("city", "和家园", "k歌之王", "庆元农商银行");
+        strings.forEach(s -> {
+            System.out.println(s);
+        });
+    }
+
+    /**
+     * geo
+     * distance
+     * 2个地点之间距离
+     */
+    @Test
+    public void geoDistance(){
+        //m
+        Distance distance = redisUtil.geoDistance("city", "温州银行", "庆元农商银行", RedisGeoCommands.DistanceUnit.METERS);
+        //km
+        Distance distance2 = redisUtil.geoDistance("city", "温州银行", "金丝玉玛瓷砖", RedisGeoCommands.DistanceUnit.KILOMETERS);
+        System.out.println(distance);
+        System.out.println(distance2);
+    }
+
+    /**
+     * geo
+     * radius
+     * 范围内的经纬度
+     */
+    @Test
+    public void geoRadius(){
+        RedisGeoCommands.GeoRadiusCommandArgs geoRadiusCommandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs();
+        geoRadiusCommandArgs.limit(2);
+        geoRadiusCommandArgs.sortDescending();
+        GeoResults<RedisGeoCommands.GeoLocation> geoResults = redisUtil.geoRadius("city", "庆元农商银行", new Distance(50, RedisGeoCommands.DistanceUnit.METERS));
+        GeoResults<RedisGeoCommands.GeoLocation> geoResult2 = redisUtil.geoRadius("city", new Point(119.083922,27.625045),new Distance(100, RedisGeoCommands.DistanceUnit.METERS));
+        System.out.println(geoResults);
+        System.out.println(geoResult2);
+        System.out.println(geoResults.getAverageDistance());
+        geoResults.getContent().forEach(geoLocationGeoResult -> {
+            System.out.println(geoLocationGeoResult);
+            System.out.println(geoLocationGeoResult.getContent().getName());
+            List<Point> city = redisUtil.geoPosition("city", geoLocationGeoResult.getContent().getName());
+            city.forEach(point -> {
+                System.out.println(point);
+            });
+        });
+    }
+
+    /**
+     * geo
+     * remove
+     */
+    @Test
+    public void geoRemove(){
+        Long aLong = redisUtil.geoRemove("city", "温州银行", "巧姐烟酒");
+        System.out.println(aLong);
     }
 
 }
