@@ -1,6 +1,7 @@
 package com.xingkong.spingboot.controller.wx;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.binarywang.wxpay.bean.entpay.EntPayResult;
 import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
@@ -14,7 +15,7 @@ import com.wechat.pay.java.service.payments.jsapi.model.Payer;
 import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
 import com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse;
 import com.xingkong.spingboot.commonutil.RandomUtil;
-import com.xingkong.spingboot.commonutil.WxpayV3Util;
+import com.xingkong.spingboot.commonutil.WxPayV3Util;
 import com.xingkong.spingboot.config.WxPayProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class PayController {
         wxPayService.setConfig(wxPayConfig); //微信配置信息
 
         try {
-            JSONObject jsonObject = WxpayV3Util.unifiedOrderV3(PAY_V3_URL, param(), wxPayService);
+            JSONObject jsonObject = WxPayV3Util.unifiedOrderV3(PAY_V3_URL, param(), wxPayService);
             log.info("支付返回：{}", jsonObject);
             return jsonObject;
         } catch (WxPayException e) {
@@ -133,6 +134,15 @@ public class PayController {
         PrepayResponse response = service.prepay(request);
         System.out.println(response.getPrepayId());
         return response;
+    }
+
+    /**
+     * 微信提现至零钱
+     */
+    @PostMapping(value = "/depositSmallChange")
+    public EntPayResult depositSmallChange() throws WxPayException {
+        EntPayResult entPayResult = WxPayV3Util.depositSmallChange("o-M6O4mMzhvBycpxtu1nXem2Rqh0", "星辰", 30, wxPayProperties);
+        return entPayResult;
     }
 
 }
