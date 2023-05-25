@@ -83,7 +83,7 @@ public class WxPayV3Util {
         wxPayConfig.setPrivateKeyPath(wxPayProperties.getPrivateKeyPath());
         wxPayConfig.setTradeType(WxPayConstants.TradeType.JSAPI);
         wxPayConfig.setSignType(WxPayConstants.SignType.MD5);
-        WxPayServiceImpl wxPayService = new WxPayServiceImpl();
+        WxPayService wxPayService =new WxPayServiceImpl();
         //微信配置信息
         wxPayService.setConfig(wxPayConfig);
         EntPayRequest entPayRequest = new EntPayRequest();
