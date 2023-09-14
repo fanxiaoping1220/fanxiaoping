@@ -446,6 +446,7 @@ public class RedisTest {
     /**
      * redis集群cluster
      * 哈希槽的计算
+     * key对应的哈希槽值
      */
     @Test
     public void hashSlot(){
