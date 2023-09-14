@@ -1,6 +1,7 @@
 package com.xingkong.spingboot;
 
 import com.xingkong.spingboot.commonutil.RedisUtil;
+import io.lettuce.core.cluster.SlotHash;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -440,6 +441,18 @@ public class RedisTest {
     public void geoRemove(){
         Long aLong = redisUtil.geoRemove("city", "温州银行", "巧姐烟酒");
         System.out.println(aLong);
+    }
+
+    /**
+     * redis集群cluster
+     * 哈希槽的计算
+     */
+    @Test
+    public void hashSlot(){
+        System.out.println(SlotHash.getSlot("A"));
+        System.out.println(SlotHash.getSlot("B"));
+        System.out.println(SlotHash.getSlot("b"));
+        System.out.println(SlotHash.getSlot("a"));
     }
 
 }
