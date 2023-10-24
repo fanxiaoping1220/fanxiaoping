@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -77,7 +78,9 @@ public class RedisConfig extends CachingConfigurerSupport {
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL,Visibility.ANY);
-        om.enableDefaultTyping(DefaultTyping.NON_FINAL);
+        //过时 om.enableDefaultTyping(DefaultTyping.NON_FINAL);
+        //用下面的方法代替上面的方法
+        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         //配置序列化
         //key采用string序列化方式
