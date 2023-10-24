@@ -20,6 +20,23 @@ spring:
         max-idle: 8
         max-active: 8
     password: Rendui123456!
+# redis集群配置
+#  redis:
+#    password: #密码
+#    cluster:
+#      max-redirects: 3 #最大重定向次数
+#      nodes: #集群节点
+#    lettuce:
+#      cluster:
+#        refresh:
+#          period: 2000 #定时刷新
+#          adaptive: true #支持集群拓扑动态感应刷新，自适应拓扑刷新是否使用所有可用的更新，默认false关闭
+#      pool:
+#        max-active: 8 #最大活动连接数
+#        max-idle: 8 #最大空闲连接数
+#        min-idle: 0 #最小空闲连接数
+#        max-wait: -1 #最大等待时间
+
 #  kafka:
 #    producer:
 #      bootstrap-servers: 127.0.0.1:9092
