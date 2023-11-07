@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * * @className: CanalClientExample
- * * @description: 通过canal连接mysql 保持mysql数据变更与redis一致 双写一致性
+ * * @description: 通过canal连接mysql 保持mysql数据与redis一致 双写一致性
  * * @author: fan xiaoping
  * * @date: 2023/11/7 0007 17:22
  **/
