@@ -1228,6 +1228,22 @@ public class RedisUtil {
 
     /**
      * geo
+     * 添加
+     * @param key key
+     * @param member key:名称:point 坐标 x:经度 y:纬度
+     * @return
+     */
+    public Long geoAdd(String key,Map<String,Point> member){
+        try {
+            return redisTemplate.opsForGeo().add(key,member);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * geo
      * 根据member获取经纬度
      * @param key key
      * @param member member
@@ -1305,6 +1321,25 @@ public class RedisUtil {
         try {
             Circle circle = new Circle(point,distance);
             return redisTemplate.opsForGeo().radius(key,circle);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * geo
+     * 根据经纬度+指定距离获取内的经纬度
+     * @param key key
+     * @param point 坐标
+     * @param distance 距离
+     * @param args 返回条数，升序 降序
+     * @return
+     */
+    public GeoResults<RedisGeoCommands.GeoLocation> geoRadius(String key, Point point, Distance distance, RedisGeoCommands.GeoRadiusCommandArgs args){
+        try {
+            Circle circle = new Circle(point,distance);
+            return redisTemplate.opsForGeo().radius(key,circle,args);
         }catch (Exception e){
             e.printStackTrace();
             return null;

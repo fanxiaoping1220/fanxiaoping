@@ -420,8 +420,11 @@ public class RedisTest {
         geoRadiusCommandArgs.sortDescending();
         GeoResults<RedisGeoCommands.GeoLocation> geoResults = redisUtil.geoRadius("city", "庆元农商银行", new Distance(50, RedisGeoCommands.DistanceUnit.METERS));
         GeoResults<RedisGeoCommands.GeoLocation> geoResult2 = redisUtil.geoRadius("city", new Point(119.083922,27.625045),new Distance(100, RedisGeoCommands.DistanceUnit.METERS));
+        RedisGeoCommands.GeoRadiusCommandArgs args = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs().sortAscending().limit(5);
+        GeoResults<RedisGeoCommands.GeoLocation> geoResult3 = redisUtil.geoRadius("city", new Point(119.083922, 27.625045), new Distance(100, RedisGeoCommands.DistanceUnit.METERS), args);
         System.out.println(geoResults);
         System.out.println(geoResult2);
+        System.out.println(geoResult3);
         System.out.println(geoResults.getAverageDistance());
         geoResults.getContent().forEach(geoLocationGeoResult -> {
             System.out.println(geoLocationGeoResult);
