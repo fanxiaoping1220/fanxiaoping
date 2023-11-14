@@ -755,7 +755,7 @@ public class RedisUtil {
 
     /**
      * zSet
-     * 从小到大安装score进行排序 正序
+     * 从小到大按照score进行排序 正序
      * start 开始位置 end结束位置 0 -1表示全部
      * @param key
      * @param start 开始坐标
