@@ -2,6 +2,7 @@ package com.xingkong.spingboot;
 
 import com.xingkong.spingboot.commonutil.RedisUtil;
 import io.lettuce.core.cluster.SlotHash;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,15 +13,17 @@ import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
  * * @className: RedisTest
- * * @description:
+ * * @description: redis案例
  * * @author: fan xiaoping
  * * @date: 2023/5/6 0006 15:42
  **/
+@Slf4j
 @SpringBootTest
 public class RedisTest {
 
@@ -457,6 +460,34 @@ public class RedisTest {
         System.out.println(SlotHash.getSlot("B"));
         System.out.println(SlotHash.getSlot("b"));
         System.out.println(SlotHash.getSlot("a"));
+    }
+
+    /**
+     * 测试hash冲突
+     */
+    @Test
+    public void testHashCollide(){
+        System.out.println("AA".hashCode());
+        System.out.println("BB".hashCode());
+        //冲突
+        System.out.println("Aa".hashCode());
+        System.out.println("BB".hashCode());
+        System.out.println("柳柴".hashCode());
+        System.out.println("柴柕".hashCode());
+
+        System.out.println();
+
+        Set<Integer> sets = new HashSet<>();
+        int hashcode;
+        for (int i = 0; i < 200000; i++) {
+            hashcode = new Object().hashCode();
+            if(sets.contains(hashcode)){
+                log.info("运行到第{},出现hash冲突,hashcode:{}",i,hashcode);
+                continue;
+            }
+            sets.add(hashcode);
+        }
+        System.out.println("sets size:"+sets.size());
     }
 
 }
