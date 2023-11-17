@@ -103,6 +103,10 @@ rabbitmq:
 echarts:
   host: http://127.0.0.1:6666
 
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.xingkong.spingboot.entity
+
 
 
 #------------日志---------------------
