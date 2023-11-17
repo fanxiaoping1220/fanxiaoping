@@ -6,6 +6,7 @@ import com.xingkong.spingboot.mapper.UserRedisMapper;
 import com.xingkong.spingboot.service.UserRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,7 @@ public class UserRedisServiceImpl implements UserRedisService {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Transactional
     @Override
     public void addUser(UserRedis user) {
         user.setCreateTime(LocalDateTime.now());
