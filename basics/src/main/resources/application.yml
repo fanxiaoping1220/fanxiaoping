@@ -11,7 +11,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   redis:
     database: 10
-    host: r-2ze4r1ddzycwxhkq9dpd.redis.rds.aliyuncs.com
+    host: r-2zewkei5oh67ybtnn5pd.redis.rds.aliyuncs.com
     port: 6379
     lettuce:
       pool:
@@ -65,7 +65,7 @@ spring:
     publisher-confirm-type: simple
   data:
     mongodb:
-      uri: mongodb://admin:Rendui123456!@s-2ze3517db91ac0e4-pub.mongodb.rds.aliyuncs.com:3717,s-2ze1a4695cbb9c84-pub.mongodb.rds.aliyuncs.com:3717/rendui-test
+      uri: mongodb://admin:Rendui147258!@s-2ze3517db91ac0e4-pub.mongodb.rds.aliyuncs.com:3717,s-2ze1a4695cbb9c84-pub.mongodb.rds.aliyuncs.com:3717/rendui-test
     elasticsearch:
       client:
         reactive:

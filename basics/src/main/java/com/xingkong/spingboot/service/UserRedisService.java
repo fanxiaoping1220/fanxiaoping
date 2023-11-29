@@ -22,4 +22,11 @@ public interface UserRedisService {
      * @return
      */
     UserRedis getUser(Long id);
+
+    /**
+     * BloomFilter-->redis-->mysql
+     * @param customerId
+     * @return
+     */
+    UserRedis findCustomerByIdWithBloomFilter(Integer customerId);
 }

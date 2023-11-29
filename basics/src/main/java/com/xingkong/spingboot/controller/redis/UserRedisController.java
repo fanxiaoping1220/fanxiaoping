@@ -36,4 +36,15 @@ public class UserRedisController {
     public UserRedis getUser(@PathVariable(name = "id") Long id){
         return userRedisService.getUser(id);
     }
+
+    /**
+     * 从BloomFiler --> redis --> mysql
+     * 校验改用户是否在白名单中，不存在则返回null
+     * @param customerId
+     * @return
+     */
+    @GetMapping(value = "/customer/{customerId}")
+    public UserRedis findCustomerByIdWithBloomFilter(@PathVariable(name = "customerId") Integer customerId){
+        return userRedisService.findCustomerByIdWithBloomFilter(customerId);
+    }
 }
