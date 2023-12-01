@@ -55,4 +55,13 @@ public class UserRedisController {
     public void guavaBloomFilter(){
         userRedisService.guavaBloomFilter();
     }
+
+    /**
+     * 获取下一个视频,已推荐过的不推荐
+     * @return
+     */
+    @GetMapping(value = "/getVideo")
+    public Integer getVideo(){
+        return userRedisService.getVideo();
+    }
 }

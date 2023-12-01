@@ -34,4 +34,11 @@ public interface UserRedisService {
      * google guava 布隆过滤器 case2
      */
     void guavaBloomFilter();
+
+    /**
+     * 获取下一个视频,已推荐过的不推荐
+     * @param
+     * @return
+     */
+    Integer getVideo();
 }

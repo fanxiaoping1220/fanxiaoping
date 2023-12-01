@@ -13,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * * @className: UserRedisServiceImpl
@@ -44,7 +47,12 @@ public class UserRedisServiceImpl implements UserRedisService {
     //3.误判率,它越小误判的个数也就越少(思考:是否可以是无限小？？没有误判率不是更好)
     public static final double FPP = 0.03;
     //4.创建guava布隆过滤器
-    public static final BloomFilter<Integer> bloomFilter = BloomFilter.create(Funnels.integerFunnel(),SIZE,FPP);
+    public static final BloomFilter<Integer> BLOOM_FILTER = BloomFilter.create(Funnels.integerFunnel(),SIZE,FPP);
+    //黑名单，查看过的不推荐
+    public static final BloomFilter<Integer> USER_BLOOM_FILTER = BloomFilter.create(Funnels.integerFunnel(),_1W,FPP);
+    //初始化视频
+    public static final List<Integer> VIDEO_LIST = new ArrayList<>();
+
 
     @Transactional
     @Override
@@ -94,17 +102,59 @@ public class UserRedisServiceImpl implements UserRedisService {
     public void guavaBloomFilter() {
         //1.先让bloomFilter加入100w白名单数据
         for (int i = 1; i <= SIZE; i++) {
-            bloomFilter.put(i);
+            BLOOM_FILTER.put(i);
         }
         //2.故意取10w个不在合法范围内的数据,来进行误判率的演示
         ArrayList<Object> list = new ArrayList<>(10 * _1W);
         //3.验证
         for (int i = SIZE+1; i < SIZE + (10 * _1W); i++) {
-            if(bloomFilter.mightContain(i)){
+            if(BLOOM_FILTER.mightContain(i)){
                 log.info("被误判:{}",i);
                 list.add(i);
             }
         }
         log.info("误判总数量:{}",list.size());
+    }
+
+    @Override
+    public Integer getVideo() {
+        Random random = new Random();
+        Boolean flag = false;
+        //2.获取视频
+        int index = random.nextInt(10);
+        int video = VIDEO_LIST.get(index);
+        //3.验证
+        while (!flag){
+            //已推荐
+            if(USER_BLOOM_FILTER.mightContain(video)){
+                //重新推荐
+                log.info("{}视频已推荐过",video);
+                index = random.nextInt(10);
+                video = VIDEO_LIST.get(index);
+            }else {
+                //未推荐
+                flag = true;
+            }
+        }
+        USER_BLOOM_FILTER.put(video);
+        log.info("推荐视频为:{}",video);
+        return  video;
+    }
+
+    /**
+     * 1.初始化视频
+     */
+    @PostConstruct
+    public void initVideo(){
+        VIDEO_LIST.add(1);
+        VIDEO_LIST.add(2);
+        VIDEO_LIST.add(5);
+        VIDEO_LIST.add(6);
+        VIDEO_LIST.add(3);
+        VIDEO_LIST.add(4);
+        VIDEO_LIST.add(9);
+        VIDEO_LIST.add(10);
+        VIDEO_LIST.add(7);
+        VIDEO_LIST.add(9);
     }
 }
