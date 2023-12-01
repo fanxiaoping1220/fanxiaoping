@@ -47,4 +47,12 @@ public class UserRedisController {
     public UserRedis findCustomerByIdWithBloomFilter(@PathVariable(name = "customerId") Integer customerId){
         return userRedisService.findCustomerByIdWithBloomFilter(customerId);
     }
+
+    /**
+     * google guava 布隆过滤器 case2
+     */
+    @PostMapping(value = "/google/guavaBloomFilter")
+    public void guavaBloomFilter(){
+        userRedisService.guavaBloomFilter();
+    }
 }

@@ -29,4 +29,9 @@ public interface UserRedisService {
      * @return
      */
     UserRedis findCustomerByIdWithBloomFilter(Integer customerId);
+
+    /**
+     * google guava 布隆过滤器 case2
+     */
+    void guavaBloomFilter();
 }

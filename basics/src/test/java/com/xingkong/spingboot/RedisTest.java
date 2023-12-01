@@ -1,5 +1,7 @@
 package com.xingkong.spingboot;
 
+import com.google.common.hash.BloomFilter;
+import com.google.common.hash.Funnels;
 import com.xingkong.spingboot.commonutil.RedisUtil;
 import io.lettuce.core.cluster.SlotHash;
 import lombok.extern.slf4j.Slf4j;
@@ -488,6 +490,23 @@ public class RedisTest {
             sets.add(hashcode);
         }
         System.out.println("sets size:"+sets.size());
+    }
+
+    /**
+     * google guava版布隆过滤器,测试用例
+     */
+    @Test
+    public void testGuavaWithBloomFilter(){
+        //1.创建guava版本布隆过滤器 初始化数量
+        BloomFilter<Integer> bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 100);
+        //2.判断指定的元素是否存在
+        System.out.println(bloomFilter.mightContain(1));
+        System.out.println(bloomFilter.mightContain(10));
+        //3.将元素新增进入bloomFilter
+        bloomFilter.put(1);
+        bloomFilter.put(10);
+        System.out.println(bloomFilter.mightContain(1));
+        System.out.println(bloomFilter.mightContain(10));
     }
 
 }

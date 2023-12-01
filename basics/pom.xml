@@ -294,6 +294,12 @@
 			<artifactId>mybatis-plus-generator</artifactId>
 			<version>3.3.2</version>
 		</dependency>
+		<!--google guava布隆过滤器-->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>32.1.2-jre</version>
+		</dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-core</artifactId>
