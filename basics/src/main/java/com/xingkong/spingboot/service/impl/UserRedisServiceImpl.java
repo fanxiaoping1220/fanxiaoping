@@ -106,6 +106,5 @@ public class UserRedisServiceImpl implements UserRedisService {
             }
         }
         log.info("误判总数量:{}",list.size());
-
     }
 }
