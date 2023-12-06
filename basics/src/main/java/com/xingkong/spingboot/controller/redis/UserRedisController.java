@@ -1,9 +1,17 @@
 package com.xingkong.spingboot.controller.redis;
 
+import com.xingkong.spingboot.commonutil.RedisUtil;
+import com.xingkong.spingboot.entity.Product;
 import com.xingkong.spingboot.entity.UserRedis;
 import com.xingkong.spingboot.service.UserRedisService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.xingkong.spingboot.service.impl.JHSTaskServiceImpl.JHS_KEY;
 
 /**
  * * @className: UserRedisController
@@ -11,12 +19,16 @@ import org.springframework.web.bind.annotation.*;
  * * @author: fan xiaoping
  * * @date: 2023/11/17 0017 17:07
  **/
+@Slf4j
 @RequestMapping(value = "/redis/user")
 @RestController
 public class UserRedisController {
 
     @Autowired
     private UserRedisService userRedisService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 添加
@@ -63,5 +75,30 @@ public class UserRedisController {
     @GetMapping(value = "/getVideo")
     public Integer getVideo(){
         return userRedisService.getVideo();
+    }
+
+    /**
+     * 分页查询:在高并发的情况下，只能走redis查询，走db的话必定会把db打垮
+     * 聚划算案例，每次1页每页5条显示
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping(value = "/product/find")
+    public List<Product> find(@RequestParam(name = "page") int page,@RequestParam(name = "size") int size){
+        List<Product> list = new ArrayList<>();
+        long start = (page - 1) * size;
+        long end = start + size -1;
+        try {
+            list = (List<Product>) redisUtil.lGet(JHS_KEY, start, end);
+            if(list.isEmpty()){
+                //TODO 走mysql查询
+            }
+            log.info("参加活动的商家:{}",list);
+        }catch (Exception e){
+            log.error("jhs exception:{}",e);
+            e.printStackTrace();
+        }
+        return list;
     }
 }

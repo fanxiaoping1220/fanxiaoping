@@ -1,7 +1,6 @@
 package com.xingkong.spingboot.commonutil;
 
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.common.unit.DistanceUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
@@ -582,7 +581,7 @@ public class RedisUtil {
      * @param end   结束 0 到 -1代表所有值
      * @return
      */
-    public List<Object> lGet(String key, long start, long end) {
+    public List<?> lGet(String key, long start, long end) {
         try {
             return redisTemplate.opsForList().range(key, start, end);
         } catch (Exception e) {
@@ -667,7 +666,7 @@ public class RedisUtil {
      * @param value 值
      * @return
      */
-    public boolean lSet(String key, List<Object> value) {
+    public boolean lSet(String key, Object... value) {
         try {
             redisTemplate.opsForList().rightPushAll(key, value);
             return true;

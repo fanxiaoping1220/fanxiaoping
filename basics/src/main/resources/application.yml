@@ -65,17 +65,17 @@ spring:
     publisher-confirm-type: simple
   data:
     mongodb:
-      uri: mongodb://admin:Rendui147258!@s-2ze3517db91ac0e4-pub.mongodb.rds.aliyuncs.com:3717,s-2ze1a4695cbb9c84-pub.mongodb.rds.aliyuncs.com:3717/rendui-test
+      uri: mongodb://root:Rendui147258!@s-2ze5fecabeb3e6c4-pub.mongodb.rds.aliyuncs.com:3717,s-2ze8fbbfbc3d8d34-pub.mongodb.rds.aliyuncs.com:3717/rendui-test
     elasticsearch:
       client:
         reactive:
-          endpoints: es-cn-2r42zlal6000nzvcr.public.elasticsearch.aliyuncs.com:9200
+          endpoints: es-cn-uqm3ht2cj000j07oo.public.elasticsearch.aliyuncs.com:9200
           username: elastic
           password: rendui123456!
           connection-timeout: 10s
   elasticsearch:
     rest:
-      uris: es-cn-2r42zlal6000nzvcr.public.elasticsearch.aliyuncs.com:9200
+      uris: es-cn-uqm3ht2cj000j07oo.public.elasticsearch.aliyuncs.com:9200
   mail:
     host: smtp.163.com
     password: FQXKPKXUTNZCKUEA
