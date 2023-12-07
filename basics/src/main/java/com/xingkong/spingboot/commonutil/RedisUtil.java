@@ -684,7 +684,7 @@ public class RedisUtil {
      * @param time  时间(秒)
      * @return
      */
-    public boolean lSet(String key, List<Object> value, long time) {
+    public boolean lSet(String key,long time,Object... value) {
         try {
             redisTemplate.opsForList().rightPushAll(key, value);
             if (time > 0) {

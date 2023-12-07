@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.xingkong.spingboot.service.impl.JHSTaskServiceImpl.JHS_KEY;
+import static com.xingkong.spingboot.service.impl.JHSTaskServiceImpl.*;
 
 /**
  * * @className: UserRedisController
@@ -95,6 +95,34 @@ public class UserRedisController {
                 //TODO 走mysql查询
             }
             log.info("参加活动的商家:{}",list);
+        }catch (Exception e){
+            log.error("jhs exception:{}",e);
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * AB双缓存架构，防止热点key突然失效
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping(value = "/product/findAB")
+    public List<Product> findAB(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size){
+        List<Product> list = new ArrayList<>();
+        long start = (page - 1) * size;
+        long end = start + size - 1 ;
+        try {
+            list = (List<Product>) redisUtil.lGet(JHS_KEY_A,start,end);
+            if(list.isEmpty()){
+                log.info("--A缓存已经过期失效或者活动结束了，记得人工修改，B缓存继续顶着");
+                list = (List<Product>) redisUtil.lGet(JHS_KEY_B,start,end);
+                if(list.isEmpty()){
+                    //TODO 走mysql查询
+                }
+            }
+            log.info("参加活动的商家为:{}",list);
         }catch (Exception e){
             log.error("jhs exception:{}",e);
             e.printStackTrace();

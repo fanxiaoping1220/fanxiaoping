@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * * @className: JHSTaskServiceImpl
@@ -71,6 +71,34 @@ public class JHSTaskServiceImpl implements JHSTaskService {
                     e.printStackTrace();
                 }
             }
+        },"t1").start();
+    }
+
+    /**
+     * 模拟初始化数据
+     * AB双缓存
+     */
+    @PostConstruct
+    public void initJHSAB(){
+        //1.用线程模拟定时任务，后台任务定时将mysql里面的参加活动的商品刷新到redis里
+        log.info("启动AB定时器计划任务天猫聚划算功能模拟。。。。。。。。{}", LocalDateTime.now());
+        new Thread(() -> {
+           while (true){
+               //2.模拟从msyql查出数据,用于加载到redis并给聚划算页面显示
+               List<Product> list = this.getProductsFromMysql();
+               //3.先更新缓存B且让B缓存过期时间超过A,如果A突然失效了还有B兜底,防止缓存击穿
+               redisUtil.del(JHS_KEY_B);
+               redisUtil.lSet(JHS_KEY_B,86410,list.toArray());
+               //4.在更新A缓存
+               redisUtil.del(JHS_KEY_A);
+               redisUtil.lSet(JHS_KEY_A,86400,list.toArray());
+               //5.暂停1分钟线程,间隔一分钟执行一次,模拟聚划算一天执行的参加活动的品牌
+               try {
+                   TimeUnit.MINUTES.sleep(1);
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+           }
         },"t1").start();
     }
 }
