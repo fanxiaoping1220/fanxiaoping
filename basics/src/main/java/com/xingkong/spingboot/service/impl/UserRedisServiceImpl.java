@@ -155,6 +155,6 @@ public class UserRedisServiceImpl implements UserRedisService {
         VIDEO_LIST.add(9);
         VIDEO_LIST.add(10);
         VIDEO_LIST.add(7);
-        VIDEO_LIST.add(9);
+        VIDEO_LIST.add(8);
     }
 }
