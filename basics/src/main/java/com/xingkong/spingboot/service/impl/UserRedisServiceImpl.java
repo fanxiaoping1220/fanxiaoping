@@ -10,6 +10,7 @@ import com.xingkong.spingboot.redis.filter.BloomFilterInit;
 import com.xingkong.spingboot.service.UserRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * * @className: UserRedisServiceImpl
@@ -40,6 +43,9 @@ public class UserRedisServiceImpl implements UserRedisService {
     @Autowired
     private CheckUtils checkUtils;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     //1.定义一个常量
     public static final int _1W = 10000;
     //2.定义我们guava布隆过滤器，初始容量
@@ -52,6 +58,8 @@ public class UserRedisServiceImpl implements UserRedisService {
     public static final BloomFilter<Integer> USER_BLOOM_FILTER = BloomFilter.create(Funnels.integerFunnel(),_1W,FPP);
     //初始化视频
     public static final List<Integer> VIDEO_LIST = new ArrayList<>();
+    //锁
+    private Lock lock = new ReentrantLock();
 
 
     @Transactional
@@ -139,6 +147,27 @@ public class UserRedisServiceImpl implements UserRedisService {
         USER_BLOOM_FILTER.put(video);
         log.info("推荐视频为:{}",video);
         return  video;
+    }
+
+    @Override
+    public String sale() {
+        String retMessage = "";
+        lock.lock();
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            lock.unlock();
+        }
+        return retMessage;
     }
 
     /**

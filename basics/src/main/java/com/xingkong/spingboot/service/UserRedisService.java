@@ -41,4 +41,11 @@ public interface UserRedisService {
      * @return
      */
     Integer getVideo();
+
+    /**
+     * 扣减库存,一次卖一个
+     * @param
+     * @return
+     */
+    String sale();
 }

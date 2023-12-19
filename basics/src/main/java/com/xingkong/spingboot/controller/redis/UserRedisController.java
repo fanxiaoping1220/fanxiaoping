@@ -129,4 +129,13 @@ public class UserRedisController {
         }
         return list;
     }
+
+    /**
+     * 库存扣减,一次卖一个
+     * @return
+     */
+    @GetMapping(value = "/inventory/sale")
+    public String sale(){
+        return userRedisService.sale();
+    }
 }
