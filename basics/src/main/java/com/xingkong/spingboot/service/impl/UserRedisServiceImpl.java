@@ -149,6 +149,10 @@ public class UserRedisServiceImpl implements UserRedisService {
         return  video;
     }
 
+    /**
+     * 单机版加锁配合nginx和Jmeter压测后，不满足高并发分布式锁的性能要求，出现超卖
+     * @return
+     */
     @Override
     public String sale() {
         String retMessage = "";
