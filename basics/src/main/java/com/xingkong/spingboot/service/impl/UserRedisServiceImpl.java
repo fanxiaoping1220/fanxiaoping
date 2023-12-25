@@ -190,8 +190,10 @@ public class UserRedisServiceImpl implements UserRedisService {
         String key = "zzyyRedisLock";
         String uuidValue = IdUtil.simpleUUID() + Thread.currentThread().getId();
         Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(key, uuidValue);
+        //flag=false,抢不到的线程要继续重试
         if(!flag){
             try {
+                //暂停20毫秒，进行递归重试
                 TimeUnit.MILLISECONDS.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
