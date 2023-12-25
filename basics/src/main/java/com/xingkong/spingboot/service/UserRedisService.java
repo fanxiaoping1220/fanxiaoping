@@ -51,9 +51,19 @@ public interface UserRedisService {
     String sale();
 
     /**
+     * 3.1版
      * 扣减库存,一次卖-个
      * 采用redis锁
      * @return
      */
     String sale2();
+
+    /**
+     * 3.2版
+     * 3.1的优化版
+     * 扣减库存,一次卖-个
+     * 采用redis锁
+     * @return
+     */
+    String sale3();
 }

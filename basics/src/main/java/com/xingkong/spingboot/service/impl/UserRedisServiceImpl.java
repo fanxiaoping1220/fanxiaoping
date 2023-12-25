@@ -182,6 +182,7 @@ public class UserRedisServiceImpl implements UserRedisService {
      * 3.1版
      * 分布式锁 采用redis锁
      * 通过递归重试的方式，保证抢锁成功
+     * 递归重试,容易导致stackOverFlowError,所以不太推荐;另外不太推荐; 另外,高并发唤醒后推荐用while判断而不是if
      * @return
      */
     @Override
@@ -215,6 +216,43 @@ public class UserRedisServiceImpl implements UserRedisService {
             }finally{
                 stringRedisTemplate.delete(key);
             }
+        }
+        return retMessage;
+    }
+
+    /**
+     * 3.2版
+     * 3.1的改进版 容易导致stackOverFlowError,所以不太推荐;
+     * 用自旋替代递归方法,用while来替代if
+     * @return
+     */
+    @Override
+    public String sale3() {
+        String retMessage = "";
+        String key = "zzyyRedisLock";
+        String uuidValue = IdUtil.simpleUUID() + Thread.currentThread().getId();
+        //不用递归了,高并发下容易出错,我们用自旋替代递归方法重试调用;也不用if了,用while来替代
+        while (!stringRedisTemplate.opsForValue().setIfAbsent(key, uuidValue)){
+            try {
+                TimeUnit.MILLISECONDS.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            stringRedisTemplate.delete(key);
         }
         return retMessage;
     }
