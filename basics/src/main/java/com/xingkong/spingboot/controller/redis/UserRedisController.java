@@ -131,11 +131,22 @@ public class UserRedisController {
     }
 
     /**
+     * lock锁
      * 库存扣减,一次卖一个
      * @return
      */
     @GetMapping(value = "/inventory/sale")
     public String sale(){
         return userRedisService.sale();
+    }
+
+    /**
+     * redis锁
+     * 库存扣减,一次卖-个
+     * @return
+     */
+    @GetMapping(value = "/inventory/sale2")
+    public String sale2(){
+        return userRedisService.sale2();
     }
 }

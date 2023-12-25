@@ -44,8 +44,16 @@ public interface UserRedisService {
 
     /**
      * 扣减库存,一次卖一个
+     * lock/synchronized
      * @param
      * @return
      */
     String sale();
+
+    /**
+     * 扣减库存,一次卖-个
+     * 采用redis锁
+     * @return
+     */
+    String sale2();
 }

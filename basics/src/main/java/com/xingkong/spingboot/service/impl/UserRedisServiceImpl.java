@@ -1,5 +1,7 @@
 package com.xingkong.spingboot.service.impl;
 
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.IdUtil;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import com.xingkong.spingboot.commonutil.CheckUtils;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -150,6 +153,7 @@ public class UserRedisServiceImpl implements UserRedisService {
     }
 
     /**
+     * 2.0版
      * 单机版加锁配合nginx和Jmeter压测后，不满足高并发分布式锁的性能要求，出现超卖
      * @return
      */
@@ -170,6 +174,45 @@ public class UserRedisServiceImpl implements UserRedisService {
             }
         }finally{
             lock.unlock();
+        }
+        return retMessage;
+    }
+
+    /**
+     * 3.1版
+     * 分布式锁 采用redis锁
+     * 通过递归重试的方式，保证抢锁成功
+     * @return
+     */
+    @Override
+    public String sale2() {
+        String retMessage = "";
+        String key = "zzyyRedisLock";
+        String uuidValue = IdUtil.simpleUUID() + Thread.currentThread().getId();
+        Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(key, uuidValue);
+        if(!flag){
+            try {
+                TimeUnit.MILLISECONDS.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            sale2();
+        }else {
+            //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+            try {
+                String result = stringRedisTemplate.opsForValue().get("inventory001");
+                Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+                if(inventoryNumber > 0){
+                    stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                    retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                    System.out.println(retMessage);
+                }else {
+                    retMessage = "商品卖完了";
+                    System.out.println(retMessage);
+                }
+            }finally{
+                stringRedisTemplate.delete(key);
+            }
         }
         return retMessage;
     }
