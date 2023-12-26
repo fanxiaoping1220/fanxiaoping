@@ -300,10 +300,46 @@ public class UserRedisServiceImpl implements UserRedisService {
      * 5.0版
      * 4.0的改进版
      * 加上只能自己删除自己的锁,防止误删
+     * 存在的问题: 最后的判断+del不是一行原子命令,需要用lua脚本进行修改
      * @return
      */
     @Override
     public String sale5() {
+        String retMessage = "";
+        String key = "zzyyRedisLock";
+        String uuidValue = IdUtil.simpleUUID() + Thread.currentThread().getId();
+        //不用递归了,高并发下容易出错,我们用自旋替代递归方法重试调用;也不用if了,用while来替代
+        while (!stringRedisTemplate.opsForValue().setIfAbsent(key, uuidValue,30,TimeUnit.SECONDS)){
+            try {
+                TimeUnit.MILLISECONDS.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            //改进点,只能删除属于自己的key,不能删除别人的
+            //判断加锁与解锁是不是同一个客户端,同一个才行,自己只能删除自己的锁,不误删他人的锁
+            if(stringRedisTemplate.opsForValue().get(key).equals(uuidValue)){
+                stringRedisTemplate.delete(key);
+            }
+        }
+        return retMessage;
+    }
+
+    @Override
+    public String sale6() {
         String retMessage = "";
         String key = "zzyyRedisLock";
         String uuidValue = IdUtil.simpleUUID() + Thread.currentThread().getId();

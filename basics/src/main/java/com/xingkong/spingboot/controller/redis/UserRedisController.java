@@ -182,4 +182,15 @@ public class UserRedisController {
     public String sale5(){
         return userRedisService.sale5();
     }
+
+    /**
+     * 6.0版(5.0的改进版)
+     * redis分布式锁
+     * 库存扣减,一次卖-个
+     * @return
+     */
+    @GetMapping(value = "/inventory/sale6")
+    public String sale6(){
+        return userRedisService.sale6();
+    }
 }
