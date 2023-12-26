@@ -1362,6 +1362,23 @@ public class RedisUtil {
     }
 
     /**
+     * setnx
+     * redis分布式锁
+     * @param key key
+     * @param value value
+     * @param timeout 过期时间
+     * @return
+     */
+    public Boolean setnx(String key, Object value,long timeout) {
+        try {
+            return redisTemplate.opsForValue().setIfAbsent(key,value,timeout,TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * 加锁(redis分布式锁)
      *
      * @param key

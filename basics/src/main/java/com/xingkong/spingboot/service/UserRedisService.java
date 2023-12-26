@@ -66,4 +66,22 @@ public interface UserRedisService {
      * @return
      */
     String sale3();
+
+    /**
+     * 4.0版
+     * 3.2版的优化版
+     * 扣减库存,一次卖-个
+     * 采用redis锁
+     * @return
+     */
+    String sale4();
+
+    /**
+     * 5.0版
+     * 4.0版的改进版
+     * 扣减库存,一次卖-个
+     * 采用redis锁
+     * @return
+     */
+    String sale5();
 }

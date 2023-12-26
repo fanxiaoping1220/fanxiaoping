@@ -224,6 +224,7 @@ public class UserRedisServiceImpl implements UserRedisService {
      * 3.2版
      * 3.1的改进版 容易导致stackOverFlowError,所以不太推荐;
      * 用自旋替代递归方法,用while来替代if
+     * 存在的问题:部署了微服务的java程序机器挂了，代码层面根本没有走到finally这块，没办法保证解锁(无过期时间该key一直存在),这个key没有被删除,需要加入一个过期时间限定
      * @return
      */
     @Override
@@ -253,6 +254,85 @@ public class UserRedisServiceImpl implements UserRedisService {
             }
         }finally{
             stringRedisTemplate.delete(key);
+        }
+        return retMessage;
+    }
+
+    /**
+     * 4.0版
+     * 3.2的改进版,会存在key为解锁的情况,key一直存在,没有被删除,防止死锁
+     * 加上过期时间
+     * 存在的问题: stringRedisTemplate.delete(key);只能自己删除自己的锁,不可以删除别人的,需要添加判断是否是自己的锁来进行操作
+     * @return
+     */
+    @Override
+    public String sale4() {
+        String retMessage = "";
+        String key = "zzyyRedisLock";
+        String uuidValue = IdUtil.simpleUUID() + Thread.currentThread().getId();
+        //不用递归了,高并发下容易出错,我们用自旋替代递归方法重试调用;也不用if了,用while来替代
+        while (!stringRedisTemplate.opsForValue().setIfAbsent(key, uuidValue,30,TimeUnit.SECONDS)){
+            try {
+                TimeUnit.MILLISECONDS.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            stringRedisTemplate.delete(key);
+        }
+        return retMessage;
+    }
+
+    /**
+     * 5.0版
+     * 4.0的改进版
+     * 加上只能自己删除自己的锁,防止误删
+     * @return
+     */
+    @Override
+    public String sale5() {
+        String retMessage = "";
+        String key = "zzyyRedisLock";
+        String uuidValue = IdUtil.simpleUUID() + Thread.currentThread().getId();
+        //不用递归了,高并发下容易出错,我们用自旋替代递归方法重试调用;也不用if了,用while来替代
+        while (!stringRedisTemplate.opsForValue().setIfAbsent(key, uuidValue,30,TimeUnit.SECONDS)){
+            try {
+                TimeUnit.MILLISECONDS.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            //改进点,只能删除属于自己的key,不能删除别人的
+            //判断加锁与解锁是不是同一个客户端,同一个才行,自己只能删除自己的锁,不误删他人的锁
+            if(stringRedisTemplate.opsForValue().get(key).equals(uuidValue)){
+                stringRedisTemplate.delete(key);
+            }
         }
         return retMessage;
     }

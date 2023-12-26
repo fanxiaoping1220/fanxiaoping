@@ -141,6 +141,7 @@ public class UserRedisController {
     }
 
     /**
+     * 3.1版
      * redis锁
      * 库存扣减,一次卖-个
      * @return
@@ -148,5 +149,37 @@ public class UserRedisController {
     @GetMapping(value = "/inventory/sale2")
     public String sale2(){
         return userRedisService.sale2();
+    }
+
+    /**
+     * 3.2版(3.1的改进版)
+     * redis分布式锁
+     * 库存扣减,一次卖-个
+     * @return
+     */
+    @GetMapping(value = "/inventory/sale3")
+    public String sale3(){
+        return userRedisService.sale3();
+    }
+
+    /**
+     * 4.0版(3.2的改进版)
+     * redis分布式锁
+     * 库存扣减,一次卖-个
+     * @return
+     */
+    @GetMapping(value = "/inventory/sale4")
+    public String sale4(){
+        return userRedisService.sale4();
+    }
+
+    /**
+     * 5.0版(4.0的改进版)
+     * redis分布式锁
+     * 库存扣减,一次卖-个
+     */
+    @GetMapping(value = "/inventory/sale5")
+    public String sale5(){
+        return userRedisService.sale5();
     }
 }
