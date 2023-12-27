@@ -13,12 +13,14 @@ import com.xingkong.spingboot.service.UserRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -338,6 +340,12 @@ public class UserRedisServiceImpl implements UserRedisService {
         return retMessage;
     }
 
+    /**
+     * 6.0版
+     * 5.0的改进版
+     * 加上lua脚本,原子操作,保证最后的判断+del是原子操作
+     * @return
+     */
     @Override
     public String sale6() {
         String retMessage = "";
@@ -364,11 +372,14 @@ public class UserRedisServiceImpl implements UserRedisService {
                 System.out.println(retMessage);
             }
         }finally{
-            //改进点,只能删除属于自己的key,不能删除别人的
-            //判断加锁与解锁是不是同一个客户端,同一个才行,自己只能删除自己的锁,不误删他人的锁
-            if(stringRedisTemplate.opsForValue().get(key).equals(uuidValue)){
-                stringRedisTemplate.delete(key);
-            }
+            //改进点,修改为lua脚本的redis分布式锁调用,必须保证原子性
+            String luaScript = "if redis.call('get',KEYS[1]) == ARGV[1] then " +
+                                   "return redis.call('del',KEYS[1]) " +
+                               "else " +
+                                    "return 0 " +
+                               "end";
+            //lua脚本调用 new DefaultRedisScript(luaScript,Boolean.class)需要带上返回值类型,不然会报错
+            stringRedisTemplate.execute(new DefaultRedisScript(luaScript,Boolean.class), Arrays.asList(key), uuidValue);
         }
         return retMessage;
     }
