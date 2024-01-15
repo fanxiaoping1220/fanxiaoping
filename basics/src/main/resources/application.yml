@@ -69,13 +69,13 @@ spring:
     elasticsearch:
       client:
         reactive:
-          endpoints: es-cn-uqm3ht2cj000j07oo.public.elasticsearch.aliyuncs.com:9200
+          endpoints: es-cn-lbj3kbahf0009fmvx.public.elasticsearch.aliyuncs.com:9200
           username: elastic
           password: rendui123456!
           connection-timeout: 10s
   elasticsearch:
     rest:
-      uris: es-cn-uqm3ht2cj000j07oo.public.elasticsearch.aliyuncs.com:9200
+      uris: es-cn-lbj3kbahf0009fmvx.public.elasticsearch.aliyuncs.com:9200
   mail:
     host: smtp.163.com
     password: FQXKPKXUTNZCKUEA
