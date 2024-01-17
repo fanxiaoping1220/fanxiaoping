@@ -196,7 +196,7 @@ public class SpringDataESIndexTest {
      */
     @Test
     public void termPageQuery(){
-        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("category", "手机");
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("category.keyword", "手机");
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder().withQuery(termQueryBuilder);
         nativeSearchQueryBuilder.withPageable(PageRequest.of(0,5));
         nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.DESC));
