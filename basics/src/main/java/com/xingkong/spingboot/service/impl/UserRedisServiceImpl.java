@@ -1,6 +1,5 @@
 package com.xingkong.spingboot.service.impl;
 
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.IdUtil;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
@@ -9,6 +8,8 @@ import com.xingkong.spingboot.commonutil.RedisUtil;
 import com.xingkong.spingboot.entity.UserRedis;
 import com.xingkong.spingboot.mapper.UserRedisMapper;
 import com.xingkong.spingboot.redis.filter.BloomFilterInit;
+import com.xingkong.spingboot.redis.mylock.DistributedLockFactory;
+import com.xingkong.spingboot.redis.mylock.RedisDistributedLock;
 import com.xingkong.spingboot.service.UserRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,9 @@ public class UserRedisServiceImpl implements UserRedisService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private DistributedLockFactory distributedLockFactory;
+
     //1.定义一个常量
     public static final int _1W = 10000;
     //2.定义我们guava布隆过滤器，初始容量
@@ -65,7 +69,6 @@ public class UserRedisServiceImpl implements UserRedisService {
     public static final List<Integer> VIDEO_LIST = new ArrayList<>();
     //锁
     private Lock lock = new ReentrantLock();
-
 
     @Transactional
     @Override
@@ -344,6 +347,7 @@ public class UserRedisServiceImpl implements UserRedisService {
      * 6.0版
      * 5.0的改进版
      * 加上lua脚本,原子操作,保证最后的判断+del是原子操作
+     * 问题:不满足可重入性，需要重新修改为v7.0
      * @return
      */
     @Override
@@ -382,6 +386,106 @@ public class UserRedisServiceImpl implements UserRedisService {
             stringRedisTemplate.execute(new DefaultRedisScript(luaScript,Boolean.class), Arrays.asList(key), uuidValue);
         }
         return retMessage;
+    }
+
+    /**
+     * 7.0版
+     * 6.0的改进版 lua脚本+hset+自研redis分布式锁
+     * 如何将我们的lock/unlock+lua脚本自研的redis分布式锁搞定?
+     */
+    @Override
+    public String sale7() {
+        //自研redis分布式锁
+        Lock myRedisLock = new RedisDistributedLock(stringRedisTemplate, "zzyyRedisLock");
+        String retMessage = "";
+        myRedisLock.lock();
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            myRedisLock.unlock();
+        }
+        return retMessage;
+    }
+
+    /**
+     * 7.1版
+     * 7.0的改进版 lua脚本+hset+自研redis分布式锁+工厂模式
+     * @return
+     */
+    @Override
+    public String sale8() {
+        //自研redis分布式锁
+        Lock myRedisLock = distributedLockFactory.getDistributedLock("redis");
+        String retMessage = "";
+        myRedisLock.lock();
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            myRedisLock.unlock();
+        }
+        return retMessage;
+    }
+
+    /**
+     * 7.2版
+     * 7.1的改进版 lua脚本+hset+自研redis分布式锁+工厂模式+可重入性
+     * @return
+     */
+    @Override
+    public String sale9() {
+        //自研redis分布式锁
+        Lock myRedisLock = distributedLockFactory.getDistributedLock("redis");
+        String retMessage = "";
+        myRedisLock.lock();
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+                testReEntry();
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            myRedisLock.unlock();
+        }
+        return retMessage;
+    }
+
+    private void testReEntry() {
+        Lock redisLock = distributedLockFactory.getDistributedLock("redis");
+        redisLock.lock();
+        try {
+            System.out.println("========测试可重新锁");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            redisLock.unlock();
+        }
     }
 
     /**

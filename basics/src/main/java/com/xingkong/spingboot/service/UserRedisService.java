@@ -93,4 +93,31 @@ public interface UserRedisService {
      * @return
      */
     String sale6();
+
+    /**
+     * 7.0版
+     * 6.0版的改进版
+     * 扣减库存,一次卖-个
+     * 采用redis锁+lua脚本 hset
+     * @return
+     */
+    String sale7();
+
+    /**
+     * 7.1版
+     * 7.0版的优化版
+     * 扣减库存,一次卖-个
+     * 采用redis锁+lua脚本 hset+工厂模式
+     * @return
+     */
+    String sale8();
+
+    /**
+     * 7.2版
+     * 7.1版的优化版
+     * 采用redis锁+lua脚本 hset+工厂模式+可重入性
+     * 测试7.1版的可重入性
+     * @return
+     */
+    String sale9();
 }
