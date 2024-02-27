@@ -227,4 +227,16 @@ public class UserRedisController {
     public String sale9(){
         return userRedisService.sale9();
     }
+
+    /**
+     * 8.0版(7.2的改进版)
+     * redis分布式锁
+     * 自动续期
+     * 库存扣减,一次卖-个
+     * @return
+     */
+    @GetMapping(value = "/inventory/sale10")
+    public String sale10(){
+        return userRedisService.sale10();
+    }
 }

@@ -120,4 +120,13 @@ public interface UserRedisService {
      * @return
      */
     String sale9();
+
+    /**
+     * 8.0版
+     * 7.2版的优化版
+     * 加自动续期
+     * 采用redis锁+lua脚本 hset+工厂模式+可重入性+自动续期
+     * @return
+     */
+    String sale10();
 }

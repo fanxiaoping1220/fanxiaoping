@@ -11,6 +11,7 @@ import com.xingkong.spingboot.redis.filter.BloomFilterInit;
 import com.xingkong.spingboot.redis.mylock.DistributedLockFactory;
 import com.xingkong.spingboot.redis.mylock.RedisDistributedLock;
 import com.xingkong.spingboot.service.UserRedisService;
+import jodd.time.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -469,6 +470,41 @@ public class UserRedisServiceImpl implements UserRedisService {
             }else {
                 retMessage = "商品卖完了";
                 System.out.println(retMessage);
+            }
+        }finally{
+            myRedisLock.unlock();
+        }
+        return retMessage;
+    }
+
+    /**
+     * 8.0版
+     * 实现自动续期功能的完善,后台自定义扫描程序,如果规定时间内没有完成业务逻辑,会调用加钟自动续期的脚本
+     * @return
+     */
+    @Override
+    public String sale10() {
+        //自研redis分布式锁
+        Lock myRedisLock = distributedLockFactory.getDistributedLock("redis");
+        String retMessage = "";
+        myRedisLock.lock();
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+            //暂停120秒钟线程,故意的,演示自动续期的功能
+            try {
+                TimeUnit.SECONDS.sleep(120);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }finally{
             myRedisLock.unlock();

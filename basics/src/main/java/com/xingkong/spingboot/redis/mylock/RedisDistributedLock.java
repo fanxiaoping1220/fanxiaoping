@@ -5,6 +5,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -79,9 +81,29 @@ public class RedisDistributedLock implements Lock {
                 //暂停60毫秒
                 TimeUnit.MILLISECONDS.sleep(60);
             }
+            //新建一个后台程序扫描,来检测key目前的ttl，是否到我们规定的1/2 1/3来实现续期
+            renewExpire();
             return true;
         }
         return false;
+    }
+
+    private void renewExpire() {
+        String script = "if redis.call('HEXISTS',KEYS[1],ARGV[1]) == 1 then " +
+                            "return redis.call('expire',KEYS[1],ARGV[2]) " +
+                        "else " +
+                            "return  0 " +
+                        "end";
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("redis key:"+lockName+" ttl:"+stringRedisTemplate.getExpire(lockName));
+                if (stringRedisTemplate.execute(new DefaultRedisScript<>(script,Boolean.class), Arrays.asList(lockName),uuidValue,String.valueOf(expireTime))) {
+                    System.out.println("redis key:"+lockName+" ttl:"+stringRedisTemplate.getExpire(lockName));
+                    renewExpire();
+                }
+            }
+        },(this.expireTime * 1000)/3);
     }
 
     @Override
