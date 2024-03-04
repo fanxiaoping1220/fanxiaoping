@@ -11,8 +11,9 @@ import com.xingkong.spingboot.redis.filter.BloomFilterInit;
 import com.xingkong.spingboot.redis.mylock.DistributedLockFactory;
 import com.xingkong.spingboot.redis.mylock.RedisDistributedLock;
 import com.xingkong.spingboot.service.UserRedisService;
-import jodd.time.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -55,6 +56,9 @@ public class UserRedisServiceImpl implements UserRedisService {
 
     @Autowired
     private DistributedLockFactory distributedLockFactory;
+
+    @Autowired
+    private Redisson redisson;
 
     //1.定义一个常量
     public static final int _1W = 10000;
@@ -508,6 +512,66 @@ public class UserRedisServiceImpl implements UserRedisService {
             }
         }finally{
             myRedisLock.unlock();
+        }
+        return retMessage;
+    }
+
+    /**
+     * 9.0版
+     * 引入redisson对应官网的推荐redLock算法实现类
+     * @return
+     */
+    @Override
+    public String saleByRedisson() {
+        String retMessage = "";
+        RLock redissonLock = redisson.getLock("zzyyRedisLock");
+        redissonLock.lock();
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            redissonLock.unlock();
+        }
+        return retMessage;
+    }
+
+    /**
+     * 9.1版
+     * 引入redisson对应官网的推荐redLock算法实现类
+     * 只能自己删除自己的key
+     * @return
+     */
+    @Override
+    public String saleByRedisson2() {
+        String retMessage = "";
+        RLock redissonLock = redisson.getLock("zzyyRedisLock");
+        redissonLock.lock();
+        //抢锁成功的请求线程,进行正常的业务逻辑,扣减库存,释放锁
+        try {
+            String result = stringRedisTemplate.opsForValue().get("inventory001");
+            Integer inventoryNumber = result == null ? 0 : Integer.parseInt(result);
+            if(inventoryNumber > 0){
+                stringRedisTemplate.opsForValue().set("inventory001",String.valueOf(--inventoryNumber));
+                retMessage = "成功卖出一个商品,库存剩余:"+inventoryNumber;
+                System.out.println(retMessage);
+            }else {
+                retMessage = "商品卖完了";
+                System.out.println(retMessage);
+            }
+        }finally{
+            //改进点，只能直接删除属于自己的key,不能删除别人的
+            if(redissonLock.isLocked() && redissonLock.isHeldByCurrentThread()){
+                redissonLock.unlock();
+            }
         }
         return retMessage;
     }

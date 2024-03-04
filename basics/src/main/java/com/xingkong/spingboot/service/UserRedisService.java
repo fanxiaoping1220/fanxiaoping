@@ -129,4 +129,20 @@ public interface UserRedisService {
      * @return
      */
     String sale10();
+
+    /**
+     * 9.0版
+     * 8.0版的优化版
+     * 采用redisson分布式锁
+     * @return
+     */
+    String saleByRedisson();
+
+    /**
+     * 9.1版
+     * 9.0版的优化版
+     * 采用redisson分布式锁
+     * @return
+     */
+    String saleByRedisson2();
 }

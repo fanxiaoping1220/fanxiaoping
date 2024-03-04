@@ -167,6 +167,12 @@
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 		</dependency>
+		<!--redisson-->
+		<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson</artifactId>
+			<version>3.27.1</version>
+		</dependency>
 
 		<!--kafka-->
 <!--		<dependency>-->

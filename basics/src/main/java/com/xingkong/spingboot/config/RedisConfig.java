@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import org.redisson.Redisson;
+import org.redisson.config.Config;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -16,7 +18,6 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import javax.annotation.Resource;
@@ -93,6 +94,17 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
+    }
+
+    /**
+     * redisson分布式锁配置
+     * @return
+     */
+    @Bean
+    public Redisson redisson(){
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://r-2zewkei5oh67ybtnn5pd.redis.rds.aliyuncs.com:6379").setPassword("Rendui123456!").setDatabase(10);
+        return (Redisson) Redisson.create(config);
     }
 
 }

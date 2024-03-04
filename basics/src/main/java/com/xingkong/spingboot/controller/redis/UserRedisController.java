@@ -239,4 +239,26 @@ public class UserRedisController {
     public String sale10(){
         return userRedisService.sale10();
     }
+
+    /**
+     * 9.0版(8.0的改进版)
+     * redisson分布式锁
+     * 库存扣减,一次卖-个
+     * @return
+     */
+    @GetMapping(value = "/inventory/saleByRedisson")
+    public String saleByRedisson(){
+        return userRedisService.saleByRedisson();
+    }
+
+    /**
+     * 9.1版(9.0的改进版)
+     * redisson分布式锁
+     * 库存扣减,一次卖-个
+     * @return
+     */
+    @GetMapping(value = "/inventory/saleByRedisson2")
+    public String saleByRedisson2(){
+        return userRedisService.saleByRedisson2();
+    }
 }
