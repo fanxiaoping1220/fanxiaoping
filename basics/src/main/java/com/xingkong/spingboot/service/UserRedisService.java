@@ -141,8 +141,16 @@ public interface UserRedisService {
     /**
      * 9.1版
      * 9.0版的优化版
-     * 采用redisson分布式锁
+     * 采用redisson分布式锁(单机锁)
      * @return
      */
     String saleByRedisson2();
+
+    /**
+     * 9.2版
+     * 9.1版的优化版
+     * 采用redisson分布式锁(多重锁)
+     * @return
+     */
+    String saleByRedisson3();
 }

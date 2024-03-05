@@ -13,6 +13,7 @@ import com.xingkong.spingboot.redis.mylock.RedisDistributedLock;
 import com.xingkong.spingboot.service.UserRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
+import org.redisson.RedissonMultiLock;
 import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -60,6 +61,15 @@ public class UserRedisServiceImpl implements UserRedisService {
     @Autowired
     private Redisson redisson;
 
+    @Autowired
+    private Redisson redisson1;
+
+    @Autowired
+    private Redisson redisson2;
+
+    @Autowired
+    private Redisson redisson3;
+
     //1.定义一个常量
     public static final int _1W = 10000;
     //2.定义我们guava布隆过滤器，初始容量
@@ -72,6 +82,8 @@ public class UserRedisServiceImpl implements UserRedisService {
     public static final BloomFilter<Integer> USER_BLOOM_FILTER = BloomFilter.create(Funnels.integerFunnel(),_1W,FPP);
     //初始化视频
     public static final List<Integer> VIDEO_LIST = new ArrayList<>();
+    //多重锁key
+    public static final String CACHE_KEY_REDLOCK = "XING_CENG_REDLOCK";
     //锁
     private Lock lock = new ReentrantLock();
 
@@ -548,6 +560,7 @@ public class UserRedisServiceImpl implements UserRedisService {
      * 9.1版
      * 引入redisson对应官网的推荐redLock算法实现类
      * 只能自己删除自己的key
+     * 单机锁
      * @return
      */
     @Override
@@ -574,6 +587,34 @@ public class UserRedisServiceImpl implements UserRedisService {
             }
         }
         return retMessage;
+    }
+
+    /**
+     * 9.2版
+     * 引入redisson对应官网的推荐redLock算法实现类
+     * 多重锁 multiLock
+     * @return
+     */
+    @Override
+    public String saleByRedisson3() {
+        String taskThreadID = Thread.currentThread().getId()+"";
+//        RLock lock1 = redisson1.getLock(CACHE_KEY_REDLOCK);
+//        RLock lock2 = redisson2.getLock(CACHE_KEY_REDLOCK);
+//        RLock lock3 = redisson3.getLock(CACHE_KEY_REDLOCK);
+//        RedissonMultiLock redLock = new RedissonMultiLock(lock1, lock2, lock3);
+//        redLock.lock();
+//        try {
+//            log.info("com in biz multiLock:{}",taskThreadID);
+//            TimeUnit.SECONDS.sleep(40);
+//            log.info("task is over multiLick:{}",taskThreadID);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            log.error("multiLock exception:{}",e.getCause()+"\t"+e.getMessage());
+//        }finally {
+//            redLock.unlock();
+//            log.info("释放分布式锁成功key:{}",CACHE_KEY_REDLOCK);
+//        }
+        return "multiLock task is over: "+taskThreadID;
     }
 
     private void testReEntry() {

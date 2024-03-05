@@ -107,4 +107,25 @@ public class RedisConfig extends CachingConfigurerSupport {
         return (Redisson) Redisson.create(config);
     }
 
+//    @Bean
+//    public Redisson redisson1(){
+//        Config config = new Config();
+//        config.useSingleServer().setAddress("redis://123.57.13.131:6381").setDatabase(1);
+//        return (Redisson) Redisson.create(config);
+//    }
+//
+//    @Bean
+//    public Redisson redisson2(){
+//        Config config = new Config();
+//        config.useSingleServer().setAddress("redis://123.57.13.131:6382").setDatabase(1);
+//        return (Redisson) Redisson.create(config);
+//    }
+//
+//    @Bean
+//    public Redisson redisson3(){
+//        Config config = new Config();
+//        config.useSingleServer().setAddress("redis://123.57.13.131:6383").setDatabase(1);
+//        return (Redisson) Redisson.create(config);
+//    }
+
 }
