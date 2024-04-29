@@ -598,22 +598,22 @@ public class UserRedisServiceImpl implements UserRedisService {
     @Override
     public String saleByRedisson3() {
         String taskThreadID = Thread.currentThread().getId()+"";
-//        RLock lock1 = redisson1.getLock(CACHE_KEY_REDLOCK);
-//        RLock lock2 = redisson2.getLock(CACHE_KEY_REDLOCK);
-//        RLock lock3 = redisson3.getLock(CACHE_KEY_REDLOCK);
-//        RedissonMultiLock redLock = new RedissonMultiLock(lock1, lock2, lock3);
-//        redLock.lock();
-//        try {
-//            log.info("com in biz multiLock:{}",taskThreadID);
-//            TimeUnit.SECONDS.sleep(40);
-//            log.info("task is over multiLick:{}",taskThreadID);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            log.error("multiLock exception:{}",e.getCause()+"\t"+e.getMessage());
-//        }finally {
-//            redLock.unlock();
-//            log.info("释放分布式锁成功key:{}",CACHE_KEY_REDLOCK);
-//        }
+        RLock lock1 = redisson1.getLock(CACHE_KEY_REDLOCK);
+        RLock lock2 = redisson2.getLock(CACHE_KEY_REDLOCK);
+        RLock lock3 = redisson3.getLock(CACHE_KEY_REDLOCK);
+        RedissonMultiLock redLock = new RedissonMultiLock(lock1, lock2, lock3);
+        redLock.lock();
+        try {
+            log.info("com in biz multiLock:{}",taskThreadID);
+            TimeUnit.SECONDS.sleep(40);
+            log.info("task is over multiLick:{}",taskThreadID);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("multiLock exception:{}",e.getCause()+"\t"+e.getMessage());
+        }finally {
+            redLock.unlock();
+            log.info("释放分布式锁成功key:{}",CACHE_KEY_REDLOCK);
+        }
         return "multiLock task is over: "+taskThreadID;
     }
 
