@@ -3,6 +3,7 @@ package com.xingkong.spingboot.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * * @author: fan xiaoping
  * * @date: 2023/12/6 0006 16:49
  **/
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

@@ -81,6 +81,11 @@ spring:
     password: FQXKPKXUTNZCKUEA
     username: fan18324485857@163.com
 
+rocketmq:
+  name-server: 123.57.13.131:9876
+  producer:
+    group: my_group
+
 
 server:
   port: 9000
