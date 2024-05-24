@@ -33,4 +33,16 @@ public class ProductController {
         log.info("send msg:{}",message);
         return "message:"+message;
     }
+
+    /**
+     * 发送消息:多个订阅的消息者消费
+     * @param message
+     * @return
+     */
+    @PostMapping(value = "/dailySendMsg")
+    public String dailySendMsg(@RequestParam(name = "message") String message) {
+        rocketmqTemplate.convertAndSend("test-daily-topic",message);
+        log.info("daily send msg:{}", message);
+        return "message:"+message;
+    }
 }
