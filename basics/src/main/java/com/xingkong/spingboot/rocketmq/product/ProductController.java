@@ -45,4 +45,40 @@ public class ProductController {
         log.info("daily send msg:{}", message);
         return "message:"+message;
     }
+
+    /**
+     * 发送同步消息
+     * @param message
+     * @return
+     */
+    @PostMapping(value = "/syncSendMsg")
+    public String syncSendMsg(@RequestParam(name = "message") String message){
+        rocketmqTemplate.syncSend("sync-message",message);
+        log.info("sync message:{}",message);
+        return message;
+    }
+
+    /**
+     * 异步发送消息
+     * @param message
+     * @return
+     */
+    @PostMapping(value = "/asyncSendMsg")
+    public String asyncSendMsg(@RequestParam(name = "message") String message){
+        rocketmqTemplate.asyncSend("async-message",message,null);
+        log.info("async message:{}",message);
+        return message;
+    }
+
+    /**
+     * 发送单向消息
+     * @param message
+     * @return
+     */
+    @PostMapping(value = "/oneWaySendMsg")
+    public String oneWaySendMsg(@RequestParam(name = "message") String message){
+        rocketmqTemplate.sendOneWay("one-way-message",message);
+        log.info("one way message:{}",message);
+        return message;
+    }
 }
