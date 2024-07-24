@@ -81,4 +81,17 @@ public class ProductController {
         log.info("one way message:{}",message);
         return message;
     }
+
+    /**
+     * 顺序消息: 分区有序消息
+     * 通过hashKey转换为hashcode来选择存放的queue
+     * @param message
+     * @return
+     */
+    @PostMapping(value = "/partitionSortSendMsg")
+    public String partitionSortSendMsg(@RequestParam(name = "message") String message){
+        rocketmqTemplate.syncSendOrderly("partition-sort-message",message,String.valueOf(System.currentTimeMillis()));
+        log.info("partition sort message:{}",message);
+        return message;
+    }
 }
