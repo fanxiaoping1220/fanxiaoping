@@ -84,7 +84,8 @@ public class ProductController {
 
     /**
      * 顺序消息: 分区有序消息
-     * 通过hashKey转换为hashcode来选择存放的queue
+     * 通过hashKey(选择key)转换为hashcode来选择存放的queue
+     * MessageQueueSelector messageQueueSelector = new SelectMessageQueueByHash()
      * @param message
      * @return
      */
