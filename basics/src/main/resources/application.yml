@@ -48,10 +48,10 @@ spring:
     type: redis
     cache-names: redisCache
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: 123.57.13.131
+    port: 5671
+    username: admin
+    password: rendui@123456!
     connection-timeout: 60s
     listener:
       simple:
