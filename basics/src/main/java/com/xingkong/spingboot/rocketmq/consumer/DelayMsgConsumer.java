@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * @className: DelayMsgConsumer
  * @author: fanxiaoping
  * @date: 2025/3/28
- * @description:
+ * @description: 异步消息消费者
  */
 @Slf4j
 @Component
