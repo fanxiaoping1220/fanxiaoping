@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: langchain4j
+
+server:
+  port: 8080
