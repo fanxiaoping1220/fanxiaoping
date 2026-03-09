@@ -47,9 +47,7 @@ public class ChatController {
      * @param message
      * @return
      */
-    @GetMapping(value = "/streamChat",produces = {
-            MediaType.TEXT_HTML_VALUE + ";charset=UTF-8"
-    })
+    @GetMapping(value = "/streamChat",produces = MediaType.TEXT_HTML_VALUE + ";charset=UTF-8")
     public Flux<String> streamChat(@RequestParam(value = "message") String message){
         return consultantStreamService.chat(message);
     }
