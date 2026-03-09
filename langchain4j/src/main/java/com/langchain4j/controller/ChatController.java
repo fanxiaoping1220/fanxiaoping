@@ -4,6 +4,7 @@ import com.langchain4j.aiservice.ConsultantService;
 import com.langchain4j.aiservice.ConsultantStreamService;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,7 +47,9 @@ public class ChatController {
      * @param message
      * @return
      */
-    @GetMapping(value = "/streamChat",produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/streamChat",produces = {
+            MediaType.TEXT_HTML_VALUE + ";charset=UTF-8"
+    })
     public Flux<String> streamChat(@RequestParam(value = "message") String message){
         return consultantStreamService.chat(message);
     }
