@@ -62,7 +62,7 @@ public class CommonConfig {
 
     /**
      * 配置嵌入向量存储
-     *
+     * EmbeddingStore的对象，这个对象不能重复，所以这里使用store
      * @return
      */
     @Bean
