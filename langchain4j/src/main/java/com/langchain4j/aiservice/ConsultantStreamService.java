@@ -1,6 +1,8 @@
 package com.langchain4j.aiservice;
 
 import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 import dev.langchain4j.service.spring.AiService;
 import dev.langchain4j.service.spring.AiServiceWiringMode;
 import reactor.core.publisher.Flux;
@@ -14,7 +16,11 @@ public interface ConsultantStreamService {
      * @param message 对话内容
      * @return
      */
+    //指定系统消息
 //    @SystemMessage("你是小平的助手小爱，人美又多金")
     @SystemMessage(fromResource = "system-message.txt")
+//    @UserMessage(value = "你是小平的助手小爱，人美又多金!{{it}}")
+//    @UserMessage(value = "你是小平的助手小爱，人美又多金!{{msg}}")
+//    Flux<String> chat(@V("msg") String message);
     Flux<String> chat(String message);
 }
