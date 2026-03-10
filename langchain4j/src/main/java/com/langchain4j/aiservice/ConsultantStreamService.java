@@ -8,12 +8,13 @@ import dev.langchain4j.service.spring.AiService;
 import dev.langchain4j.service.spring.AiServiceWiringMode;
 import reactor.core.publisher.Flux;
 
-@AiService(wiringMode = AiServiceWiringMode.EXPLICIT,//显式注入手动转配
+@AiService(
+        wiringMode = AiServiceWiringMode.EXPLICIT,//显式注入手动转配
         chatModel = "openAiChatModel",//模型
         streamingChatModel = "openAiStreamingChatModel",
         chatMemory = "chatMemory",//会话记忆
         chatMemoryProvider = "chatMemoryProvider"//会话记忆提供者
-    )
+         )
 public interface ConsultantStreamService {
 
     /**
