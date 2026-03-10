@@ -49,7 +49,7 @@ public class ChatController {
      * @return
      */
     @GetMapping(value = "/streamChat",produces = MediaType.TEXT_HTML_VALUE + ";charset=UTF-8")
-    public Flux<String> streamChat(@RequestParam(value = "memoryId") Object memoryId,@RequestParam(value = "message") String message){
+    public Flux<String> streamChat(@RequestParam(value = "memoryId") String memoryId,@RequestParam(value = "message") String message){
         return consultantStreamService.chat(memoryId,message);
     }
 }

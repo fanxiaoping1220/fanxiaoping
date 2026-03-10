@@ -28,5 +28,5 @@ public interface ConsultantStreamService {
 //    @UserMessage(value = "你是小平的助手小爱，人美又多金!{{it}}")
 //    @UserMessage(value = "你是小平的助手小爱，人美又多金!{{msg}}")
 //    Flux<String> chat(@V("msg") String message);
-    Flux<String> chat(@MemoryId Object memoryId, @UserMessage String message);
+    Flux<String> chat(@MemoryId String memoryId, @UserMessage String message);
 }
