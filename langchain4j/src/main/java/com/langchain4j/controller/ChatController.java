@@ -44,11 +44,12 @@ public class ChatController {
 
     /**
      * 使用 AI service 进行流式对话
-     * @param message
+     * @param memoryId 会话记忆ID
+     * @param message 对话内容
      * @return
      */
     @GetMapping(value = "/streamChat",produces = MediaType.TEXT_HTML_VALUE + ";charset=UTF-8")
-    public Flux<String> streamChat(@RequestParam(value = "message") String message){
-        return consultantStreamService.chat(message);
+    public Flux<String> streamChat(@RequestParam(value = "memoryId") Object memoryId,@RequestParam(value = "message") String message){
+        return consultantStreamService.chat(memoryId,message);
     }
 }
