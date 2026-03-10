@@ -1,11 +1,9 @@
 package com.langchain4j.config;
 
-import com.langchain4j.aiservice.ConsultantService;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.openai.OpenAiChatModel;
-import dev.langchain4j.service.AiServices;
+import dev.langchain4j.store.memory.chat.ChatMemoryStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class CommonConfig {
 
-    private OpenAiChatModel model;
+//    @Autowired
+//    private OpenAiChatModel model;
+    private final ChatMemoryStore redisChatMemoryStore;
 
 //    @Bean
 //    public ConsultantService consultantService() {
@@ -37,7 +37,7 @@ public class CommonConfig {
         return new ChatMemoryProvider(){
             @Override
             public ChatMemory get(Object memoryId) {
-                return MessageWindowChatMemory.builder().id(memoryId).maxMessages(20).build();
+                return MessageWindowChatMemory.builder().id(memoryId).maxMessages(20).chatMemoryStore(redisChatMemoryStore).build();
             }
         };
     }
