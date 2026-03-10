@@ -83,6 +83,23 @@
             <artifactId>langchain4j-spring-boot-starter</artifactId>
             <version>1.11.0-beta19</version>
         </dependency>
+        <!--langchain4j向量数据rag相关依赖-->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-easy-rag</artifactId>
+            <version>1.11.0-beta19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.junrar</groupId>
+            <artifactId>junrar</artifactId>
+            <version>7.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.18.0</version>
+        </dependency>
+
         <!--引入流式调用相关依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
