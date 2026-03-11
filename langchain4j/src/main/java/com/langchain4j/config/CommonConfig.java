@@ -2,6 +2,7 @@ package com.langchain4j.config;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.ClassPathDocumentLoader;
+import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
@@ -69,6 +70,8 @@ public class CommonConfig {
     public EmbeddingStore<TextSegment> store() {
         //1.加载文档
         List<Document> documentList = ClassPathDocumentLoader.loadDocuments("content");
+        //文件加载器要求文件路径
+//        List<Document> documentList = FileSystemDocumentLoader.loadDocuments("/Users/songzj/Desktop/workspace/fanxiaoping/langchain4j/src/main/resources/content");
         //2.创建嵌入向量存储
         InMemoryEmbeddingStore<TextSegment> store = new InMemoryEmbeddingStore<>();
         //3.将文档导入向量存储
