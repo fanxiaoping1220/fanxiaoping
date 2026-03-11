@@ -89,6 +89,12 @@
             <artifactId>langchain4j-easy-rag</artifactId>
             <version>1.11.0-beta19</version>
         </dependency>
+        <!--langchain4j-文档解析pdf依赖-->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
+            <version>1.11.0-beta19</version>
+        </dependency>
         <dependency>
             <groupId>com.github.junrar</groupId>
             <artifactId>junrar</artifactId>
