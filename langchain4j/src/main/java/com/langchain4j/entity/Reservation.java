@@ -1,12 +1,13 @@
 package com.langchain4j.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * (Reservation)实体类
@@ -15,6 +16,8 @@ import java.util.Date;
  * @since 2026-03-12 15:01:57
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Reservation implements Serializable {
 
     /**

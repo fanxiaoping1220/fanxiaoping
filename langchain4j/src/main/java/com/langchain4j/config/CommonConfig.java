@@ -71,7 +71,7 @@ public class CommonConfig {
      * RedisEmbeddingStore是redis向量存储，服务重启不需要重新加载数据，数据是存储在redis中的，不会丢失
      * @return
      */
-    @Bean
+//    @Bean
     public EmbeddingStore<TextSegment> store() {
         //1.加载文档
         List<Document> documentList = ClassPathDocumentLoader.loadDocuments("content");
