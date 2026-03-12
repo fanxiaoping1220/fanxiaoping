@@ -1,5 +1,6 @@
 package com.langchain4j.config;
 
+import dev.langchain4j.community.store.embedding.redis.RedisEmbeddingStore;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.ClassPathDocumentLoader;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
@@ -29,6 +30,7 @@ public class CommonConfig {
 //    private OpenAiChatModel model;
     private final ChatMemoryStore redisChatMemoryStore;
     private final EmbeddingModel embeddingModel;
+    private final RedisEmbeddingStore redisEmbeddingStore;
 
 //    @Bean
 //    public ConsultantService consultantService() {
@@ -65,6 +67,8 @@ public class CommonConfig {
     /**
      * 配置嵌入向量存储
      * EmbeddingStore的对象，这个对象不能重复，所以这里使用store
+     * InMemoryEmbeddingStore是内存向量存储，服务重启就需要重新加载数据，一旦数据多了启动会很慢，重启之后会丢失数据
+     * RedisEmbeddingStore是redis向量存储，服务重启不需要重新加载数据，数据是存储在redis中的，不会丢失
      * @return
      */
     @Bean
@@ -75,26 +79,39 @@ public class CommonConfig {
 //        List<Document> documentList = ClassPathDocumentLoader.loadDocuments("content",new ApachePdfBoxDocumentParser());
         //文件加载器要求文件路径
 //        List<Document> documentList = FileSystemDocumentLoader.loadDocuments("/Users/songzj/Desktop/workspace/fanxiaoping/langchain4j/src/main/resources/content");
-        //2.创建嵌入向量存储
-        InMemoryEmbeddingStore<TextSegment> store = new InMemoryEmbeddingStore<>();
+        //2.创建嵌入内存向量存储
+//        InMemoryEmbeddingStore<TextSegment> store = new InMemoryEmbeddingStore<>();
         //3.将文档导入向量存储
         for (Document document : documentList) {
             TextSegment segment = TextSegment.from(document.text());
             Embedding embedding = embeddingModel.embed(segment).content();
-            store.add(embedding, segment);
+            redisEmbeddingStore.add(embedding, segment);
         }
-        return store;
+        return redisEmbeddingStore;
     }
 
     /**
-     * 配置构建向量数据库检索对象
+     * 配置构建内存向量数据库检索对象
+     *
+     * @return
+     */
+//    @Bean
+//    public ContentRetriever contentRetriever(EmbeddingStore<TextSegment> store) {
+//        return EmbeddingStoreContentRetriever.builder()
+//                .embeddingStore(store)
+//                .embeddingModel(embeddingModel)
+//                .minScore(0.5).maxResults(3).build();
+//    }
+
+    /**
+     * 配置构建redis向量数据库检索对象
      *
      * @return
      */
     @Bean
-    public ContentRetriever contentRetriever(EmbeddingStore<TextSegment> store) {
+    public ContentRetriever contentRetriever() {
         return EmbeddingStoreContentRetriever.builder()
-                .embeddingStore(store)
+                .embeddingStore(redisEmbeddingStore)
                 .embeddingModel(embeddingModel)
                 .minScore(0.5).maxResults(3).build();
     }

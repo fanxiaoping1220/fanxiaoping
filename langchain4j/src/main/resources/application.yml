@@ -31,6 +31,11 @@ langchain4j:
       model-name: text-embedding-v3
       log-requests: true
       log-responses: true
+  community:
+    redis:
+      host: 1.94.101.207
+      port: 6379
+      password: PGFmy8pbBxeJYpYZ
 
 logging:
   level:
