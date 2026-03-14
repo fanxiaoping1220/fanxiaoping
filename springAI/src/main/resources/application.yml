@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: springAI
+    version: 1.0.0
+  # ??deepseek???????url?????????
+  ai:
+    deepseek:
+      api-key: sk-dc5bbf751c8643318d0d83fd92d7cd36
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+          temperature: 0.8 # ??0~2???0????????1???????
+
+server:
+  port: 8080
+
+logging:
+  level:
+    spring.ai.deepseek: debug
