@@ -1,5 +1,6 @@
 package com.springai.controller;
 
+import com.springai.service.EmbeddingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.zhipuai.ZhiPuAiEmbeddingModel;
@@ -21,9 +22,10 @@ import java.util.Map;
 public class ZhiPuAIEmbeddingController {
 
     private final ZhiPuAiEmbeddingModel embeddingModel;
+    private final EmbeddingService embeddingService;
 
     /**
-     * 对用户传入的文件进行向量化处理，测试embedding
+     * 对用户传入的文本进行向量化处理，测试embedding
      * @param message
      * @return
      */
@@ -32,5 +34,15 @@ public class ZhiPuAIEmbeddingController {
         log.info("message: {}", message);
         float[] embed = embeddingModel.embed(message);
         return Map.of("embedding", embed, "message", message);
+    }
+
+    /**
+     * 对用户传入的文本进行相似度计算，得到最相似的文本
+     * @param message
+     * @return
+     */
+    @GetMapping(value = "/similarity")
+    public String similarity(@RequestParam(value = "message") String message){
+        return embeddingService.queryBestMatch(message);
     }
 }
