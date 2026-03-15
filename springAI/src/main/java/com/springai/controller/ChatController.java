@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+/**
+ * 使用deepseek模型进行聊天
+ */
 @RequestMapping("/chat")
 @RestController
 @RequiredArgsConstructor

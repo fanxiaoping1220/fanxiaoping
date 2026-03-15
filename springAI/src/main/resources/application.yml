@@ -11,12 +11,22 @@ spring:
         options:
           model: deepseek-chat
           temperature: 0.8 # ??0~2???0????????1???????
+    zhipuai: # ??AI
+      base-url: https://open.bigmodel.cn/api/paas
+      api-key: 6f0540468b104e149781575eddcb7aef.zVbuBH6XOtRpWBLJ
+      embedding:
+        options:
+          model: Embedding-3
+      chat:
+        options:
+          model: GLM-4-Air-250414
 
 server:
   port: 8080
 
 logging:
   level:
-    org.springframework.ai: debug
+    org.springframework.ai: trace
     org.springframework.ai.deepseek: debug
+    org.springframework.ai.zhipuai: trace
     org.springframework.web.reactive.function.client: trace
