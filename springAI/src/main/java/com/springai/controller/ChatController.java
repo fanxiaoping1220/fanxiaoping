@@ -2,6 +2,9 @@ package com.springai.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,5 +46,24 @@ public class ChatController {
         Flux<String> response = deepSeekChatModel.stream(message);
         System.out.println("response="+response);
         return response;
+    }
+
+    /**
+     * 运行时参数配置
+     * @param message 消息
+     * @param temperature 模型温度
+     * @return
+     */
+    @GetMapping(value = "/runtimeOptions")
+    public Flux<String> runtimeOptions(@RequestParam(value = "message", defaultValue = "你是谁") String message,
+                                       @RequestParam(value = "temperature",required = false) Double temperature){
+        System.out.println("message="+message);
+        if(temperature!=null){
+            System.out.println("temperature="+temperature);
+            Prompt prompt = new Prompt(message, ChatOptions.builder().temperature(temperature).build());
+            Flux<ChatResponse> flux = deepSeekChatModel.stream(prompt);
+            return flux.mapNotNull(chatResponse -> chatResponse.getResult().getOutput().getText());
+        }
+        return deepSeekChatModel.stream(message);
     }
 }
