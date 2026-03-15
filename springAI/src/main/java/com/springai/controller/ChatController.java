@@ -6,6 +6,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,7 +55,7 @@ public class ChatController {
      * @param temperature 模型温度
      * @return
      */
-    @GetMapping(value = "/runtimeOptions")
+    @GetMapping(value = "/runtimeOptions",produces = MediaType.TEXT_HTML_VALUE+";charset=utf-8")
     public Flux<String> runtimeOptions(@RequestParam(value = "message", defaultValue = "你是谁") String message,
                                        @RequestParam(value = "temperature",required = false) Double temperature){
         System.out.println("message="+message);

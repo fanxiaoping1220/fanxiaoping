@@ -17,4 +17,6 @@ server:
 
 logging:
   level:
-    spring.ai.deepseek: debug
+    org.springframework.ai: debug
+    org.springframework.ai.deepseek: debug
+    org.springframework.web.reactive.function.client: trace
