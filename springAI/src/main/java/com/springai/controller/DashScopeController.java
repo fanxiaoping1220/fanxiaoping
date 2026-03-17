@@ -1,6 +1,7 @@
 package com.springai.controller;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,10 @@ public class DashScopeController {
     @Autowired
     @Qualifier("deepseekModel")
     private DashScopeChatModel deepseekChatModel;
+
+    @Autowired
+    @Qualifier("qwenChatClient")
+    private ChatClient qwenChatClient;
 
     /**
      * qwen聊天
@@ -62,5 +67,35 @@ public class DashScopeController {
     @GetMapping(value = "/deepseekStreamChat")
     public Flux<String> deepseekStreamChat(@RequestParam("message") String message){
         return deepseekChatModel.stream(message);
+    }
+
+    /**
+     * qwen chat client 聊天
+     * @param message
+     * @return
+     */
+    @GetMapping(value = "/chatClient")
+    public String chatClient(@RequestParam("message") String message){
+        return qwenChatClient.prompt().user(message).call().content();
+    }
+
+    /**
+     * qwen chat client 聊天流式返回
+     * @param message
+     * @return
+     */
+    @GetMapping(value = "/streamChatClient")
+    public Flux<String> StreamChatClient(@RequestParam("message") String message){
+        return qwenChatClient.prompt()
+                .user(message)
+                .stream()
+                .chatClientResponse()
+                .mapNotNull(chatClientResponse -> {
+                    assert chatClientResponse.chatResponse() != null;
+                    return chatClientResponse.chatResponse()
+                            .getResult()
+                            .getOutput()
+                            .getText();
+                });
     }
 }

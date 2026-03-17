@@ -4,6 +4,7 @@ import com.springai.service.RagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.zhipuai.ZhiPuAiEmbeddingModel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,8 @@ public class RagServiceImpl implements RagService {
      */
     private final List<float[]> vectors = new ArrayList<>();
 
-    public RagServiceImpl(ZhiPuAiEmbeddingModel embeddingModel,ChatClient.Builder chatClientBuilder) throws IOException {
-        this.chatClient = chatClientBuilder.build();
+    public RagServiceImpl(ZhiPuAiEmbeddingModel embeddingModel,@Qualifier("zhipuChatClient")ChatClient zhipuChatClient) throws IOException {
+        this.chatClient = zhipuChatClient;
         this.embeddingModel = embeddingModel;
         ClassPathResource resource = new ClassPathResource("古代诗歌常用意象.txt");
         String content = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);

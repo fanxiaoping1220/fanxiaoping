@@ -13,9 +13,4 @@ public class SpringAiApplication {
         SpringApplication.run(SpringAiApplication.class, args);
     }
 
-    @Bean
-    public ChatClient.Builder chatClientBuilder(ZhiPuAiChatModel chatModel){
-        return ChatClient.builder(chatModel);
-    }
-
 }
