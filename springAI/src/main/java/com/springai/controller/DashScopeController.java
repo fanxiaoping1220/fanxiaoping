@@ -1,6 +1,7 @@
 package com.springai.controller;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import com.springai.service.RagService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +29,9 @@ public class DashScopeController {
     @Autowired
     @Qualifier("qwenChatClient")
     private ChatClient qwenChatClient;
+
+    @Autowired
+    private RagService ragService;
 
     /**
      * qwen聊天
@@ -105,5 +109,15 @@ public class DashScopeController {
                 .user(message)
                 .stream()
                 .content();
+    }
+
+    /**
+     * 使用知识库的方式回答用户问题
+     * @param message
+     * @return
+     */
+    @GetMapping(value = "/streamAnswer")
+    public Flux<String> streamAnswer(@RequestParam ("message") String message){
+        return ragService.streamAnswer(message);
     }
 }

@@ -14,9 +14,9 @@ spring:
     zhipuai: # ??AI
       base-url: https://open.bigmodel.cn/api/paas
       api-key: 6f0540468b104e149781575eddcb7aef.zVbuBH6XOtRpWBLJ
-      embedding:
-        options:
-          model: Embedding-3
+#      embedding:
+#        options:
+#          model: Embedding-3
       chat:
         options:
           model: GLM-4-Air-250414

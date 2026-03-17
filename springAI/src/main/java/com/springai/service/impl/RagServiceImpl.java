@@ -3,15 +3,21 @@ package com.springai.service.impl;
 import com.springai.service.RagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.redis.RedisVectorStore;
 import org.springframework.ai.zhipuai.ZhiPuAiEmbeddingModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -19,6 +25,13 @@ public class RagServiceImpl implements RagService {
 
     private final ZhiPuAiEmbeddingModel embeddingModel;
     private final ChatClient chatClient;
+
+    @Autowired
+    @Qualifier("qwenChatClient")
+    private ChatClient qwenChatClient;
+
+    @Autowired
+    private RedisVectorStore vectorStore;
 
     /**
      * 存储切割后的文档
@@ -74,6 +87,22 @@ public class RagServiceImpl implements RagService {
         String prompt = "以下是知识库内容：\n" + content + "\n 请根据知识库内容回答用户问题：" + message;
         //将获取到的top2文档，作为提示词交给chat大模型回复
         return chatClient.prompt().system("你是知识组手，结合上下文回答用户问题").user(prompt).call().content();
+    }
+
+    @Override
+    public Flux<String> streamAnswer(String message) {
+        //创建搜索请求
+        SearchRequest searchRequest = SearchRequest.builder().query(message).topK(3).similarityThreshold(0.8f).build();
+        //执行搜索请求，获取最相似的文档
+        List<Document> documentList = vectorStore.similaritySearch(searchRequest);
+        String content = "";
+        if(!documentList.isEmpty()){
+            content = documentList.stream().map(Document::getText).collect(Collectors.joining("\n----\n"));
+        }else {
+            content = "未找到相关知识库内容";
+        }
+        String systemPrompt = "你是知识库组手,以下是知识库内容：" + content + " 结合上下文回答用户问题：" + message;
+        return qwenChatClient.prompt().system(systemPrompt).user(message).stream().content();
     }
 
     /**
