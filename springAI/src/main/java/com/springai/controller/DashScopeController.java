@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 /**
  * spring ai alibaba dashscope
@@ -25,5 +26,15 @@ public class DashScopeController {
     @GetMapping(value = "/chat")
     public String chat(@RequestParam("message") String message){
         return dashScopeChatModel.call(message);
+    }
+
+    /**
+     * 聊天流式返回
+     * @param message
+     * @return
+     */
+    @GetMapping(value = "/streamChat")
+    public Flux<String> streamChat(@RequestParam("message") String message){
+        return dashScopeChatModel.stream(message);
     }
 }
