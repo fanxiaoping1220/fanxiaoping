@@ -21,7 +21,7 @@ spring:
         options:
           model: GLM-4-Air-250414
     dashscope: ## alibaba
-      base-url: https://dashscope.aliyuncs.com
+#      base-url: https://dashscope.aliyuncs.com #??????,?????
       api-key: ${QWEN_API_KEY}
       chat:
         options:
@@ -37,7 +37,8 @@ server:
 
 logging:
   level:
-    org.springframework.ai: trace
+    org.springframework.ai: debug
     org.springframework.ai.deepseek: debug
-    org.springframework.ai.zhipuai: trace
-    org.springframework.web.reactive.function.client: trace
+    org.springframework.ai.zhipuai: debug
+    com.alibaba.cloud.ai: debug
+    org.springframework.web.reactive.function.client: debug
