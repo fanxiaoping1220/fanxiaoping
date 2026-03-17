@@ -89,13 +89,21 @@ public class DashScopeController {
         return qwenChatClient.prompt()
                 .user(message)
                 .stream()
-                .chatClientResponse()
-                .mapNotNull(chatClientResponse -> {
-                    assert chatClientResponse.chatResponse() != null;
-                    return chatClientResponse.chatResponse()
-                            .getResult()
-                            .getOutput()
-                            .getText();
-                });
+                .content();
+    }
+
+    /**
+     * 使用提示词的方式聊天
+     * qwen chat client 聊天流式返回
+     * @param message
+     * @return
+     */
+    @GetMapping(value = "/streamPromptChat")
+    public Flux<String> streamPromptChat(@RequestParam("message") String message){
+        return qwenChatClient.prompt()
+                .system("你是一个法律组手，只能回答法律相关的问题，其他问题一概不回答")
+                .user(message)
+                .stream()
+                .content();
     }
 }
