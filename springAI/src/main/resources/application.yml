@@ -26,6 +26,17 @@ spring:
 #      chat:
 #        options:
 #          model: qwen-plus
+    vectorstore:
+      redis:
+        index-name: spring-ai-alibaba-rag
+        prefix: "rag:"
+        initialize-schema: true
+
+  data:
+    redis:
+      host: 1.94.101.207
+      port: 6379
+      password: PGFmy8pbBxeJYpYZ
 
 server:
   port: 8080

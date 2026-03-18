@@ -129,24 +129,24 @@ public class LLMConfig {
         };
     }
 
-    @Bean
-    public JedisPooled jedisPooled(){
-        HostAndPort hostAndPort = new HostAndPort("1.94.101.207", 6379);
-        JedisClientConfig jedisClientConfig = DefaultJedisClientConfig.builder()
-                .password("PGFmy8pbBxeJYpYZ")
-                .build();
-        return new JedisPooled(hostAndPort,jedisClientConfig);
-    }
-
-    @Bean
-    public RedisVectorStore redisVectorStore(JedisPooled jedisPooled,
-                                             @Qualifier("dashScopeEmbeddingModel") EmbeddingModel embeddingModel) {
-        // 需要获取 JedisPooled，Spring AI 提供了转换方法
-        return RedisVectorStore.builder(jedisPooled, embeddingModel)
-                .indexName("spring-ai-alibaba-rag")  // 👈 显式指定
-                .prefix("rag:")                       // 👈 显式指定前缀
-                .initializeSchema(true)               // 👈 强制初始化
-                .build();
-    }
+//    @Bean
+//    public JedisPooled jedisPooled(){
+//        HostAndPort hostAndPort = new HostAndPort("1.94.101.207", 6379);
+//        JedisClientConfig jedisClientConfig = DefaultJedisClientConfig.builder()
+//                .password("PGFmy8pbBxeJYpYZ")
+//                .build();
+//        return new JedisPooled(hostAndPort,jedisClientConfig);
+//    }
+//
+//    @Bean
+//    public RedisVectorStore redisVectorStore(JedisPooled jedisPooled,
+//                                             @Qualifier("dashScopeEmbeddingModel") EmbeddingModel embeddingModel) {
+//        // 需要获取 JedisPooled，Spring AI 提供了转换方法
+//        return RedisVectorStore.builder(jedisPooled, embeddingModel)
+//                .indexName("spring-ai-alibaba-rag")  // 👈 显式指定
+//                .prefix("rag:")                       // 👈 显式指定前缀
+//                .initializeSchema(true)               // 👈 强制初始化
+//                .build();
+//    }
 
 }
