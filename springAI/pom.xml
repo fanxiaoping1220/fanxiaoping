@@ -120,8 +120,8 @@
 
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j</artifactId>
-            <version>1.12.2</version>
+            <artifactId>langchain4j-spring-boot-starter</artifactId>
+            <version>1.12.2-beta22</version>
         </dependency>
 
         <dependency>
