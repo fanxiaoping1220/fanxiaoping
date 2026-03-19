@@ -114,8 +114,8 @@
         <!--langchain4相关依赖-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-open-ai</artifactId>
-            <version>1.12.2</version>
+            <artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
+            <version>1.12.2-beta22</version>
         </dependency>
 
         <dependency>
