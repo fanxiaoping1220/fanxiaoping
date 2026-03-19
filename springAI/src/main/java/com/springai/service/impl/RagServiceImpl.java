@@ -101,8 +101,8 @@ public class RagServiceImpl implements RagService {
         }else {
             content = "未找到相关知识库内容";
         }
-        String systemPrompt = "你是知识库组手,以下是知识库内容：" + content + " 结合上下文回答用户问题：" + message;
-        return qwenChatClient.prompt().system(systemPrompt).user(message).stream().content();
+        String userMessage = "以下是知识库内容：" + content + " 请根据知识库内容回答用户问题：" + message;
+        return qwenChatClient.prompt().system("你是知识库组手,结合上下文回答用户问题").user(userMessage).stream().content();
     }
 
     /**
