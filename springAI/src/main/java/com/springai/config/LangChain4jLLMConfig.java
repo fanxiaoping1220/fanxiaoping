@@ -5,6 +5,9 @@ import dev.langchain4j.model.openai.OpenAiChatModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * langChain4j LLM 配置类
+ */
 @Configuration
 public class LangChain4jLLMConfig {
 

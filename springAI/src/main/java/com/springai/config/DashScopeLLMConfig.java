@@ -7,12 +7,10 @@ import com.alibaba.cloud.ai.dashscope.embedding.DashScopeEmbeddingModel;
 import com.alibaba.cloud.ai.dashscope.embedding.DashScopeEmbeddingOptions;
 import com.alibaba.cloud.ai.dashscope.spec.DashScopeModel;
 import com.alibaba.cloud.ai.transformer.splitter.RecursiveCharacterTextSplitter;
-import com.alibaba.cloud.ai.transformer.splitter.SentenceSplitter;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.EmbeddingModel;
-import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.redis.RedisVectorStore;
 import org.springframework.ai.zhipuai.ZhiPuAiChatModel;
 import org.springframework.ai.zhipuai.ZhiPuAiEmbeddingModel;
@@ -24,20 +22,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
-import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.JedisClientConfig;
-import redis.clients.jedis.JedisPooled;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * LLM 配置类
+ * dashscope LLM 配置类
  */
 @Configuration
-public class LLMConfig {
+public class DashScopeLLMConfig {
 
     /**
      * deepseek model
