@@ -6,6 +6,8 @@ import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.alibaba.cloud.ai.dashscope.embedding.DashScopeEmbeddingModel;
 import com.alibaba.cloud.ai.dashscope.embedding.DashScopeEmbeddingOptions;
 import com.alibaba.cloud.ai.dashscope.spec.DashScopeModel;
+import com.alibaba.cloud.ai.transformer.splitter.RecursiveCharacterTextSplitter;
+import com.alibaba.cloud.ai.transformer.splitter.SentenceSplitter;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.document.MetadataMode;
@@ -123,9 +125,23 @@ public class LLMConfig {
         return args -> {
             ClassPathResource resource = new ClassPathResource("古代诗歌常用意象.txt");
             String content = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            TokenTextSplitter tokenTextSplitter = new TokenTextSplitter();
-            List<Document> documentList = tokenTextSplitter.apply(List.of(new Document(content)));
-            redisVectorStore.add(documentList);
+            // token分割 严格按照token数量分割文本
+//            TokenTextSplitter tokenTextSplitter = new TokenTextSplitter();
+//            List<Document> documentList = tokenTextSplitter.apply(List.of(new Document(content)));
+            // 句子分割器 先用NIP模型识别句子，在按token合并句子
+//            SentenceSplitter sentenceSplitter = new SentenceSplitter();
+//            List<Document> documentList = sentenceSplitter.apply(List.of(new Document(content)));
+            // 递归分割器
+            RecursiveCharacterTextSplitter recursiveCharacterTextSplitter = new RecursiveCharacterTextSplitter();
+            List<Document> documentList = recursiveCharacterTextSplitter.apply(List.of(new Document(content)));
+            int batchSize = 10;
+            for (int i = 0; i < documentList.size(); i += batchSize) {
+                int end = Math.min(i + batchSize, documentList.size());
+                List<Document> batch = documentList.subList(i, end);
+                System.out.println("正在处理批次: " + (i/batchSize + 1) + ", 数量: " + batch.size());
+                redisVectorStore.add(batch);
+            }
+//            redisVectorStore.add(documentList);
         };
     }
 
