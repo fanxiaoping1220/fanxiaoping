@@ -107,7 +107,7 @@ public class LangChain4jChat {
     @PostMapping("/uploadImageChat")
     public String uploadImageChat(@RequestParam("message") String message, @RequestBody MultipartFile file) throws IOException {
         String base64 = Base64.getEncoder().encodeToString(file.getBytes());
-        Image image = Image.builder().base64Data(base64).mimeType("image/png").build();
+        Image image = Image.builder().base64Data(base64).mimeType(file.getContentType()).build();
         UserMessage userMessage = new UserMessage(message, ImageContent.from(image));
         ChatResponse chat = qwenChatModel.chat(userMessage);
         return chat.aiMessage().text();
