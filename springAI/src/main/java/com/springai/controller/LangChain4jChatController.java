@@ -6,21 +6,26 @@ import dev.langchain4j.data.image.Image;
 import dev.langchain4j.data.message.ImageContent;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.function.Consumer;
 
 
 @RequestMapping("/langChain4j/chat")
 @RestController
-public class LangChain4jChat {
+public class LangChain4jChatController {
 
     @Autowired
     @Qualifier("qwenChatModel")
@@ -35,6 +40,14 @@ public class LangChain4jChat {
 
     @Autowired
     private DeepSeekAiService deepSeekAiService;
+
+    @Autowired
+    @Qualifier("qwenStreamChatModel")
+    private StreamingChatModel qwenStreamChatModel;
+
+    @Autowired
+    @Qualifier("deepseekStreamChatModel")
+    private StreamingChatModel deepseekStreamChatModel;
 
     @Value("classpath:static/image/img.png")
     private Resource resource;
@@ -111,5 +124,88 @@ public class LangChain4jChat {
         UserMessage userMessage = new UserMessage(message, ImageContent.from(image));
         ChatResponse chat = qwenChatModel.chat(userMessage);
         return chat.aiMessage().text();
+    }
+
+    /**
+     * qwen 通过streamChatModel 进行流式聊天
+     * qwen streaming chat
+     * @param message
+     * @return
+     */
+    @GetMapping("/qwen/streamChat")
+    public Flux<String> qwenStreamChat(@RequestParam("message") String message){
+        return Flux.create(new Consumer<FluxSink<String>>() {
+            @Override
+            public void accept(FluxSink<String> stringFluxSink) {
+                qwenStreamChatModel.chat(message, new StreamingChatResponseHandler() {
+
+                    @Override
+                    public void onPartialResponse(String partialResponse){
+                        stringFluxSink.next(partialResponse);
+                    }
+
+
+                    @Override
+                    public void onCompleteResponse(ChatResponse completeResponse) {
+                        stringFluxSink.complete();
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        stringFluxSink.error(error);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * deepseek 通过streamChatModel 进行流式聊天
+     * deepseek streaming chat
+     * @param message
+     * @return
+     */
+    @GetMapping("/deepseek/streamChat")
+    public Flux<String> deepseekStreamChat(@RequestParam("message") String message){
+        return Flux.create(stringFluxSink -> deepseekStreamChatModel.chat(message, new StreamingChatResponseHandler() {
+
+            @Override
+            public void onPartialResponse(String partialResponse) {
+                stringFluxSink.next(partialResponse);
+            }
+
+            @Override
+            public void onCompleteResponse(ChatResponse completeResponse) {
+                stringFluxSink.complete();
+
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                stringFluxSink.error(error);
+            }
+        }));
+    }
+
+    /**
+     * qwen
+     * 使用aiService 进行流式聊天
+     * @param message
+     * @return
+     */
+    @GetMapping("/aiService/qwen/streamChat")
+    public Flux<String> aiServiceQwenStreamChat(@RequestParam("message") String message){
+        return qwenAiService.streamChat(message);
+    }
+
+    /**
+     * deepseek
+     * 使用aiService 进行流式聊天
+     * @param message
+     * @return
+     */
+    @GetMapping("/aiService/deepseek/streamChat")
+    public Flux<String> aiServiceDeepSeekStreamChat(@RequestParam("message") String message){
+        return deepSeekAiService.streamChat(message);
     }
 }
