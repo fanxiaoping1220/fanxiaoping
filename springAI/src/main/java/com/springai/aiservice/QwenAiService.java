@@ -1,5 +1,7 @@
 package com.springai.aiservice;
 
+import dev.langchain4j.service.MemoryId;
+import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.spring.AiService;
 import dev.langchain4j.service.spring.AiServiceWiringMode;
 import reactor.core.publisher.Flux;
@@ -12,7 +14,9 @@ import reactor.core.publisher.Flux;
 @AiService(
         wiringMode = AiServiceWiringMode.EXPLICIT,
         chatModel = "qwenChatModel",
-        streamingChatModel = "qwenStreamChatModel"
+        streamingChatModel = "qwenStreamChatModel",
+        chatMemory = "langChainchatMemory",
+        chatMemoryProvider = "chatMemoryProvider"
 )
 public interface QwenAiService {
 
@@ -29,4 +33,13 @@ public interface QwenAiService {
      * @return
      */
     Flux<String> streamChat(String message);
+
+
+    /**
+     * 流式聊天
+     * @param memoryId 会话id
+     * @param message 消息
+     * @return
+     */
+    Flux<String> streamChatMemory(@MemoryId String memoryId, @UserMessage String message);
 }

@@ -1,9 +1,17 @@
 package com.springai.config;
 
+import dev.langchain4j.community.store.embedding.redis.RedisEmbeddingStore;
+import dev.langchain4j.community.store.memory.chat.redis.RedisChatMemoryStore;
+import dev.langchain4j.community.store.memory.chat.redis.StoreType;
+import dev.langchain4j.memory.ChatMemory;
+import dev.langchain4j.memory.chat.ChatMemoryProvider;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
+import dev.langchain4j.store.memory.chat.ChatMemoryStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +20,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class LangChain4jLLMConfig {
+
+    @Autowired
+    private ChatMemoryStore redisChatMemoryStore;
 
     /**
      * qwen chatModel
@@ -74,4 +85,20 @@ public class LangChain4jLLMConfig {
                 .logRequests(true)
                 .build();
     }
+
+    @Bean("langChainchatMemory")
+    public ChatMemory langChainchatMemory() {
+        return MessageWindowChatMemory.builder().maxMessages(20).build();
+    }
+
+    @Bean
+    public ChatMemoryProvider chatMemoryProvider() {
+        return new ChatMemoryProvider() {
+            @Override
+            public ChatMemory get(Object memoryId) {
+                return MessageWindowChatMemory.builder().id(memoryId).maxMessages(20).chatMemoryStore(redisChatMemoryStore).build();
+            }
+        };
+    }
+
 }

@@ -208,4 +208,17 @@ public class LangChain4jChatController {
     public Flux<String> aiServiceDeepSeekStreamChat(@RequestParam("message") String message){
         return deepSeekAiService.streamChat(message);
     }
+
+    /**
+     * 会话记忆
+     * chatMemory
+     * @param memoryId
+     * @param message
+     * @return
+     */
+    @GetMapping("/chatMemory")
+    public Flux<String> chatMemory(@RequestParam("memoryId") String memoryId,
+                                   @RequestParam("message") String message){
+        return qwenAiService.streamChatMemory(memoryId, message);
+    }
 }

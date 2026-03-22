@@ -37,6 +37,16 @@ spring:
       host: 1.94.101.207
       port: 6379
       password: PGFmy8pbBxeJYpYZ
+  autoconfigure:
+    exclude: dev.langchain4j.community.store.embedding.redis.spring.RedisEmbeddingStoreAutoConfiguration
+
+
+langchain4j:
+  community:
+    redis:
+      host: 1.94.101.207
+      port: 6379
+      password: PGFmy8pbBxeJYpYZ
 
 server:
   port: 8080
