@@ -41,6 +41,11 @@ langchain4j:
       host: 1.94.101.207
       port: 6379
       password: PGFmy8pbBxeJYpYZ
+    #方式二的方式
+    dashscope:
+      chat-model:
+        api-key: ${QWEN_API_KEY}
+        model-name: qwen-plus
 
 # MyBatisPlus配置
 # https://baomidou.com/config/
@@ -63,3 +68,4 @@ mybatis-plus:
 logging:
   level:
     dev.langchain4j: debug
+    root: info
