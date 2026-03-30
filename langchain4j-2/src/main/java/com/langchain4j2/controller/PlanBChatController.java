@@ -1,4 +1,4 @@
-package com.langchain4j.controller;
+package com.langchain4j2.controller;
 
 import com.alibaba.dashscope.aigc.imagegeneration.ImageGeneration;
 import com.alibaba.dashscope.aigc.imagegeneration.ImageGenerationMessage;
@@ -6,8 +6,8 @@ import com.alibaba.dashscope.aigc.imagegeneration.ImageGenerationParam;
 import com.alibaba.dashscope.aigc.imagegeneration.ImageGenerationResult;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.alibaba.dashscope.exception.UploadFileException;
-import com.langchain4j.factory.LLMFactory;
-import com.langchain4j.factory.service.LLMService;
+import com.langchain4j2.factory.LLMFactory;
+import com.langchain4j2.factory.service.LLMService;
 import dev.langchain4j.community.model.dashscope.QwenChatModel;
 import dev.langchain4j.community.model.dashscope.WanxImageModel;
 import dev.langchain4j.data.image.Image;
