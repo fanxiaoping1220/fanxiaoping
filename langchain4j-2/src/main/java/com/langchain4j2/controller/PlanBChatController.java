@@ -93,7 +93,7 @@ public class PlanBChatController {
      */
     @GetMapping("/factoryChat")
     public String factoryChat(@RequestParam("message") String message){
-        LLMService llmService = LLMFactory.createLLMService(LLMFactory.ModelType.OPEN_AI_DEEPSEEK);
+        LLMService llmService = LLMFactory.createLLMService(LLMFactory.ModelType.DASHSCOPE_QWEN);
         return llmService.chat(message);
     }
 }

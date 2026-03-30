@@ -12,6 +12,8 @@ public class OpenAIDeepSeekService implements LLMService {
                 .apiKey(System.getenv("QWEN_API_KEY"))
                 .baseUrl("https://dashscope.aliyuncs.com/compatible-mode/v1")
                 .modelName("deepseek-v3.2")
+                .logResponses(true)
+                .logRequests(true)
                 .build();
     }
 

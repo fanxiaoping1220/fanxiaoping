@@ -15,7 +15,7 @@ public class LLMFactory {
     public enum ModelType{
         OPEN_AI_DEEPSEEK,
         OPEN_AI_QWEN,
-        DASH_SCOPE_QWEN
+        DASHSCOPE_QWEN
     }
 
     public static LLMService createLLMService(ModelType modelType) {
@@ -26,7 +26,7 @@ public class LLMFactory {
             case OPEN_AI_QWEN -> {
                 return new OpenAIQwenService();
             }
-            case DASH_SCOPE_QWEN -> {
+            case DASHSCOPE_QWEN -> {
                 return new QwenAIService();
             }
             default -> {

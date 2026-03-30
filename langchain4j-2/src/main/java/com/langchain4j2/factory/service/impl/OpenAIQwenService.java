@@ -12,6 +12,8 @@ public class OpenAIQwenService implements LLMService {
                 .baseUrl("https://dashscope.aliyuncs.com/compatible-mode/v1")
                 .apiKey(System.getenv("QWEN_API_KEY"))
                 .modelName("qwen-plus")
+                .logRequests(true)
+                .logResponses(true)
                 .build();
     }
 
