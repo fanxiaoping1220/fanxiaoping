@@ -1,0 +1,38 @@
+package com.langchain4j2.aiService;
+
+import dev.langchain4j.service.MemoryId;
+import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.spring.AiServiceWiringMode;
+import reactor.core.publisher.Flux;
+
+@dev.langchain4j.service.spring.AiService(
+        wiringMode = AiServiceWiringMode.EXPLICIT,
+        chatModel = "openAiChatModel",
+        streamingChatModel = "openAiStreamingChatModel",
+        chatMemory = "chatMemory",
+        chatMemoryProvider = "chatMemoryProvider"
+)
+public interface AiService {
+
+    /**
+     * 聊天
+     * @param message
+     * @return
+     */
+    String chat(String message);
+
+    /**
+    * 流式聊天
+     * @param message
+     * @return
+     */
+    Flux<String> chatStream(String message);
+
+    /**
+     * 流式聊天
+     * @param memoryId The ID of the chat memory.
+     * @param userMessage The user message.
+     * @return
+     */
+    Flux<String> chatStream(@MemoryId String memoryId, @UserMessage String userMessage);
+}

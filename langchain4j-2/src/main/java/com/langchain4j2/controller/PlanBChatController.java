@@ -6,6 +6,7 @@ import com.alibaba.dashscope.aigc.imagegeneration.ImageGenerationParam;
 import com.alibaba.dashscope.aigc.imagegeneration.ImageGenerationResult;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.alibaba.dashscope.exception.UploadFileException;
+import com.langchain4j2.aiService.AiService;
 import com.langchain4j2.factory.LLMFactory;
 import com.langchain4j2.factory.service.LLMService;
 import dev.langchain4j.community.model.dashscope.QwenChatModel;
@@ -14,10 +15,8 @@ import dev.langchain4j.data.image.Image;
 import dev.langchain4j.model.output.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,6 +32,7 @@ import java.util.Map;
 public class PlanBChatController {
 
     private final QwenChatModel qwenChatModel;
+    private final AiService aiService;
 
     /**
      * 调用千问进行对话
@@ -42,6 +42,37 @@ public class PlanBChatController {
     @GetMapping("/chat")
     public String chat(@RequestParam("message") String message) {
         return qwenChatModel.chat(message);
+    }
+
+    /**
+     * aiService方式聊天
+     * @param message
+     * @return
+     */
+    @GetMapping("/serviceChat")
+    public String serviceChat(@RequestParam("message") String message){
+        return aiService.chat(message);
+    }
+
+    /**
+     * aiService方式聊天流式
+     * @param message
+     * @return
+     */
+    @GetMapping("/serviceStreamChat")
+    public Flux<String> serviceStreamChat(@RequestParam("message") String message){
+        return aiService.chatStream(message);
+    }
+
+    /**
+     * aiService方式聊天流式
+     * @param memoryId 内存id
+     * @param message
+     * @return
+     */
+    @GetMapping("/serviceStreamChat/{memoryId}")
+    public Flux<String> serviceStreamChat(@PathVariable String memoryId, @RequestParam("message") String message){
+        return aiService.chatStream(memoryId, message);
     }
 
     /**

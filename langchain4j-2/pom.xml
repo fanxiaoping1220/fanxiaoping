@@ -52,6 +52,21 @@
             <artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
             <version>1.11.0-beta19</version>
         </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-spring-boot-starter</artifactId>
+            <version>1.11.0-beta19</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-reactor</artifactId>
+            <version>1.11.0-beta19</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-community-redis-spring-boot-starter</artifactId>
+            <version>1.11.0-beta19</version>
+        </dependency>
         <!--方式二的方式：dashscope相关依赖-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
