@@ -13,11 +13,13 @@ import dev.langchain4j.community.model.dashscope.WanxImageModel;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.model.output.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -95,5 +97,28 @@ public class PlanBChatController {
     public String factoryChat(@RequestParam("message") String message){
         LLMService llmService = LLMFactory.createLLMService(LLMFactory.ModelType.DASHSCOPE_QWEN);
         return llmService.chat(message);
+    }
+
+    /**
+     * 创建订单接口
+     * @return
+     */
+    @GetMapping("/createOrder")
+    public ResponseEntity<Map<String,Object>> createOrder(){
+        System.out.println("开始创建订单..."+ LocalDateTime.now());
+        System.out.println("创建订单成功..."+ LocalDateTime.now());
+        Map<String,Object> response = Map.of("code",200,"size",2,"message","创建订单成功");
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 同步订单接口
+     * @return
+     */
+    @GetMapping("/syncOrder")
+    public ResponseEntity<String> syncOrder(){
+        System.out.println("开始同步订单..."+ LocalDateTime.now());
+        System.out.println("同步订单成功..."+ LocalDateTime.now());
+        return ResponseEntity.ok("同步订单成功");
     }
 }
