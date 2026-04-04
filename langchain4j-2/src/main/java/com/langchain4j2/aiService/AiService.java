@@ -1,5 +1,6 @@
 package com.langchain4j2.aiService;
 
+import com.langchain4j2.entity.Person;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
@@ -52,4 +53,25 @@ public interface AiService {
      */
     @SystemMessage(fromResource = "system_message2.txt")
     Flux<String> chatStream(@MemoryId String memoryId, @UserMessage String userMessage,@V("name") String name,@V("age") Integer age);
+
+    /**
+     * 从文本中提取整数
+     * @param text
+     * @return
+     */
+    Integer extractInteger(String text);
+
+    /**
+     * 从文本中提取长整型
+     * @param text
+     * @return
+     */
+    Long extractLong(String text);
+
+    /**
+     * 从文本中提取人物信息
+     * @param text
+     * @return
+     */
+    Person extractPerson(String text);
 }

@@ -7,6 +7,7 @@ import com.alibaba.dashscope.aigc.imagegeneration.ImageGenerationResult;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.alibaba.dashscope.exception.UploadFileException;
 import com.langchain4j2.aiService.AiService;
+import com.langchain4j2.entity.Person;
 import com.langchain4j2.factory.LLMFactory;
 import com.langchain4j2.factory.service.LLMService;
 import dev.langchain4j.community.model.dashscope.QwenChatModel;
@@ -89,6 +90,36 @@ public class PlanBChatController {
     public Flux<String> serviceStreamChat2(@RequestParam("memoryId") String memoryId, @RequestParam("message") String message,
                                            @RequestParam("name") String name,@RequestParam("age") Integer age){
         return aiService.chatStream(memoryId, message,name,age);
+    }
+
+    /**
+    * 从文本中提取整数
+     * @param text
+     * @return
+     */
+    @GetMapping("/extractInteger")
+    public Integer extractInteger(@RequestParam("text") String text){
+        return aiService.extractInteger(text);
+    }
+
+    /**
+     * 从文本中提取长整型
+     * @param text
+     * @return
+     */
+    @GetMapping("/extractLong")
+    public Long extractLong (@RequestParam("text") String text){
+        return aiService.extractLong(text);
+    }
+
+    /**
+     * 从文本中提取人物信息
+     * @param text
+     * @return
+     */
+    @GetMapping("/extractPerson")
+    public Person extractPerson(@RequestParam("text") String text){
+        return aiService.extractPerson(text);
     }
 
     /**
