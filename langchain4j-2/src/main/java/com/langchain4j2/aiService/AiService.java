@@ -3,6 +3,7 @@ package com.langchain4j2.aiService;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 import dev.langchain4j.service.spring.AiServiceWiringMode;
 import reactor.core.publisher.Flux;
 
@@ -35,7 +36,9 @@ public interface AiService {
      * @param userMessage The user message.
      * @return
      */
+    @UserMessage("你是我的好朋友，请用日语回答我的问题。今天是{{current_date}} {{message}})")
 //    @SystemMessage(value = "你是我的好朋友，请用英语话回答我的问题。今天是 {{current_date}}")
-    @SystemMessage(fromResource = "system_message.txt")
-    Flux<String> chatStream(@MemoryId String memoryId, @UserMessage String userMessage);
+//    @SystemMessage(fromResource = "system_message.txt")
+    Flux<String> chatStream(@MemoryId String memoryId, @V("message") String userMessage);
+//    Flux<String> chatStream(@MemoryId String memoryId,@UserMessage String userMessage);
 }
