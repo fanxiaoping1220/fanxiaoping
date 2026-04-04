@@ -1,5 +1,6 @@
 package com.langchain4j2.aiService;
 
+import com.langchain4j2.entity.LegalQuestion;
 import com.langchain4j2.entity.Person;
 import com.langchain4j2.enums.RateTierEnum;
 import dev.langchain4j.service.MemoryId;
@@ -91,4 +92,13 @@ public interface AiService {
      * @return
      */
     RateTierEnum extractRateTier(String text);
+
+    /**
+     * 根据法律规定回答问题
+     * @param legalQuestion
+     * @return
+     */
+    @SystemMessage("你是一个专业的中国法律专家，只根据法律规定回答问题，" +
+            "输出限制：其他领域的问题禁止回答，直接返回，抱歉，我只能回答中国法律相关的的问题")
+    Flux<String> answerLegalQuestion(LegalQuestion legalQuestion);
 }

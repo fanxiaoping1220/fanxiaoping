@@ -7,6 +7,7 @@ import com.alibaba.dashscope.aigc.imagegeneration.ImageGenerationResult;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.alibaba.dashscope.exception.UploadFileException;
 import com.langchain4j2.aiService.AiService;
+import com.langchain4j2.entity.LegalQuestion;
 import com.langchain4j2.entity.Person;
 import com.langchain4j2.enums.RateTierEnum;
 import com.langchain4j2.factory.LLMFactory;
@@ -141,6 +142,16 @@ public class PlanBChatController {
     @GetMapping("/extractRateTier")
     public RateTierEnum extractRateTier(@RequestParam("text") String text) {
         return aiService.extractRateTier(text);
+    }
+
+    /**
+     * 根据法律规定回答问题
+     * @param legalQuestion
+     * @return
+     */
+    @PostMapping("/answerLegalQuestion")
+    public Flux<String> answerLegalQuestion(@RequestBody LegalQuestion legalQuestion){
+        return aiService.answerLegalQuestion(legalQuestion);
     }
 
     /**
