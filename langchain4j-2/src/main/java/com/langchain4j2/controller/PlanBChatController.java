@@ -14,6 +14,7 @@ import dev.langchain4j.community.model.dashscope.WanxImageModel;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.model.output.Response;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -26,6 +27,7 @@ import java.util.Map;
  * 方式二的方式，通过引入langchain4j-community-dashscope模块
  * 原生模式，专用SDK模式，更灵活的方式
  */
+@Slf4j
 @RestController
 @RequestMapping("/planBChat")
 @RequiredArgsConstructor
@@ -138,7 +140,7 @@ public class PlanBChatController {
     public ResponseEntity<Map<String,Object>> createOrder(){
         System.out.println("开始创建订单..."+ LocalDateTime.now());
         System.out.println("创建订单成功..."+ LocalDateTime.now());
-        Map<String,Object> response = Map.of("code",200,"size",2,"message","创建订单成功");
+        Map<String,Object> response = Map.of("code",200,"size",0,"message","创建订单成功");
         return ResponseEntity.ok(response);
     }
 
@@ -147,8 +149,9 @@ public class PlanBChatController {
      * @return
      */
     @GetMapping("/syncOrder")
-    public ResponseEntity<String> syncOrder(){
+    public ResponseEntity<String> syncOrder(@RequestParam ("size") Integer size){
         System.out.println("开始同步订单..."+ LocalDateTime.now());
+        log.info("size:{}",size);
         System.out.println("同步订单成功..."+ LocalDateTime.now());
         return ResponseEntity.ok("同步订单成功");
     }
