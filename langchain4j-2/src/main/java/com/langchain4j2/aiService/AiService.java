@@ -1,6 +1,7 @@
 package com.langchain4j2.aiService;
 
 import com.langchain4j2.entity.Person;
+import com.langchain4j2.enums.RateTierEnum;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
@@ -74,4 +75,20 @@ public interface AiService {
      * @return
      */
     Person extractPerson(String text);
+
+    /**
+     * 从文本中提取布尔值
+     * @param text
+     * @return
+     */
+    @UserMessage("评价{{text}}是否为好评?")
+    Boolean extractBoolean(@V("text") String text);
+
+    /**
+     * 评价等级
+     * 从文本中提取枚举值
+     * @param text
+     * @return
+     */
+    RateTierEnum extractRateTier(String text);
 }

@@ -8,6 +8,7 @@ import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.alibaba.dashscope.exception.UploadFileException;
 import com.langchain4j2.aiService.AiService;
 import com.langchain4j2.entity.Person;
+import com.langchain4j2.enums.RateTierEnum;
 import com.langchain4j2.factory.LLMFactory;
 import com.langchain4j2.factory.service.LLMService;
 import dev.langchain4j.community.model.dashscope.QwenChatModel;
@@ -120,6 +121,26 @@ public class PlanBChatController {
     @GetMapping("/extractPerson")
     public Person extractPerson(@RequestParam("text") String text){
         return aiService.extractPerson(text);
+    }
+
+    /**
+     * 从文本中提取布尔值
+     * @param text
+     * @return
+     */
+    @GetMapping("/extractBoolean")
+    public Boolean extractBoolean(@RequestParam("text") String text){
+        return aiService.extractBoolean(text);
+    }
+
+    /**
+     * 从文本中提取评价等级
+     * @param text
+     * @return
+     */
+    @GetMapping("/extractRateTier")
+    public RateTierEnum extractRateTier(@RequestParam("text") String text) {
+        return aiService.extractRateTier(text);
     }
 
     /**
