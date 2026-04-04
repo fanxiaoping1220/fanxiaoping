@@ -44,10 +44,10 @@ public interface AiService {
 
     /**
      * 带参数-流式聊天
-     * @param memoryId
-     * @param userMessage
-     * @param name
-     * @param age
+     * @param memoryId The ID of the chat memory.
+     * @param userMessage The user message.
+     * @param name 姓名
+     * @param age 年龄
      * @return
      */
     @SystemMessage(fromResource = "system_message2.txt")
