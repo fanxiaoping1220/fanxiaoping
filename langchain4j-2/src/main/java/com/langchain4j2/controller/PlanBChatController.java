@@ -78,6 +78,20 @@ public class PlanBChatController {
     }
 
     /**
+     * 带参数-aiService方式聊天流式
+     * @param memoryId
+     * @param message
+     * @param name
+     * @param age
+     * @return
+     */
+    @GetMapping("/serviceStreamChat2")
+    public Flux<String> serviceStreamChat2(@RequestParam("memoryId") String memoryId, @RequestParam("message") String message,
+                                           @RequestParam("name") String name,@RequestParam("age") Integer age){
+        return aiService.chatStream(memoryId, message,name,age);
+    }
+
+    /**
      * 简单模式
      * 调用万相进行图片生成
      * @param prompt

@@ -36,9 +36,20 @@ public interface AiService {
      * @param userMessage The user message.
      * @return
      */
-    @UserMessage("你是我的好朋友，请用日语回答我的问题。今天是{{current_date}} {{message}})")
-//    @SystemMessage(value = "你是我的好朋友，请用英语话回答我的问题。今天是 {{current_date}}")
+//    @UserMessage("你是我的好朋友，请用日语回答我的问题。今天是{{current_date}} {{message}})")
+    @SystemMessage(value = "你是我的好朋友，请用湖北话回答我的问题。今天是 {{current_date}}")
 //    @SystemMessage(fromResource = "system_message.txt")
-    Flux<String> chatStream(@MemoryId String memoryId, @V("message") String userMessage);
-//    Flux<String> chatStream(@MemoryId String memoryId,@UserMessage String userMessage);
+//    Flux<String> chatStream(@MemoryId String memoryId, @V("message") String userMessage);
+    Flux<String> chatStream(@MemoryId String memoryId,@UserMessage String userMessage);
+
+    /**
+     * 带参数-流式聊天
+     * @param memoryId
+     * @param userMessage
+     * @param name
+     * @param age
+     * @return
+     */
+    @SystemMessage(fromResource = "system_message2.txt")
+    Flux<String> chatStream(@MemoryId String memoryId, @UserMessage String userMessage,@V("name") String name,@V("age") Integer age);
 }
