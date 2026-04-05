@@ -1,5 +1,6 @@
 package com.langchain4j2.tools;
 
+import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import org.springframework.stereotype.Component;
 
@@ -12,22 +13,22 @@ import java.math.BigDecimal;
 public class CalculateTool {
 
     @Tool(value = "对两个数字进行加法运算")
-    public Double add(Double a, Double b){
+    public Double add(@P("加数a") Double a, @P("加数b") Double b){
         return new BigDecimal(a).add(new BigDecimal(b)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     @Tool(value = "对两个数字进行减法运算")
-    public Double sub(Double a, Double b){
+    public Double sub(@P("被减数a") Double a, @P("减数b") Double b){
         return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     @Tool(value = "对两个数字进行乘法运算")
-    public Double multiply(Double a, Double b){
+    public Double multiply(@P("乘数a") Double a, @P("乘数b") Double b){
         return new BigDecimal(a).multiply(new BigDecimal(b)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     @Tool(value = "对两个数字进行除法运算")
-    public Double divide(Double a, Double b){
+    public Double divide(@P("被除数a") Double a, @P("除数b") Double b){
         return new BigDecimal(a).divide(new BigDecimal(b), 2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }
