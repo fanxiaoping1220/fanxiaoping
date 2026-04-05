@@ -1,6 +1,6 @@
 package com.langchain4j2.aiService;
 
-import com.langchain4j2.entity.IntentionOutput;
+import com.langchain4j2.entity.LostRegisterOutput;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
         chatMemoryProvider = "assistantChatMemoryProvider",
         tools = {"testTool"}
 )
+@SystemMessage(fromResource = "register_lost.txt")
 public interface AiAssistant {
 
     /**
@@ -35,12 +36,11 @@ public interface AiAssistant {
     Flux<String> streamChat(@MemoryId String memoryId, @UserMessage String message);
 
     /**
-     * 调用千问进行流式意图分析
+     * 调用千问进行失物登记
      * @param sessionId
      * @param message
      * @return
      */
-    @SystemMessage(fromResource = "intention.txt")
     @UserMessage("当前sessionId:{{sessionId}},用户的当前消息:{{message}}")
-    IntentionOutput streamIntention(@MemoryId @V("sessionId") Integer sessionId, @V("message") String message);
+    LostRegisterOutput registerLost(@MemoryId @V("sessionId") Integer sessionId, @V("message") String message);
 }
