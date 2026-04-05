@@ -1,6 +1,7 @@
 package com.langchain4j2.controller;
 
 import com.langchain4j2.aiService.AiAssistant;
+import com.langchain4j2.service.AiChatIntentionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import reactor.core.publisher.Flux;
 public class AssistantController {
 
     private final AiAssistant aiAssistant;
+    private final AiChatIntentionService aiChatIntentionService;;
 
     /**
      * 聊天
@@ -38,5 +40,17 @@ public class AssistantController {
     @GetMapping("/streamChat")
     public Flux<String> streamChat(@RequestParam ("memoryId") String memoryId, @RequestParam ("message") String message){
         return aiAssistant.streamChat(memoryId, message);
+    }
+
+    /**
+     * 流式意图分析
+     * @param sessionId 用户id
+     * @param message 用户消息
+     * @return
+     */
+    @GetMapping("/streamIntention")
+    public Flux<String> streamIntention(@RequestParam ("sessionId") Integer sessionId,
+                                                 @RequestParam ("message") String message){
+        return aiChatIntentionService.chatStream(sessionId, message);
     }
 }
