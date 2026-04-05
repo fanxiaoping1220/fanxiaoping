@@ -23,7 +23,6 @@ public class AiChatIntentionServiceImpl implements AiChatIntentionService {
     public Flux<String> chatStream(Integer userId, String message) {
         IntentionOutput intentionOutput = aiInterionAssistant.intention(userId, message);
         log.info("intentionOutput:{}", intentionOutput);
-        String output = intentionOutput.getOutput();
         return switch (intentionOutput.getIntention()) {
             case IntentionEnum.ONE ->
                     //丢失信息登记
