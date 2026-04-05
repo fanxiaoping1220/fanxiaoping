@@ -155,6 +155,17 @@ public class PlanBChatController {
     }
 
     /**
+     * 计算流式聊天
+     * @param memoryId
+     * @param userMessage
+     * @return
+     */
+    @GetMapping("/calculateStream")
+    public Flux<String> calculateStream(@RequestParam("memoryId") String memoryId, @RequestParam("userMessage") String userMessage){
+        return aiService.calculateStream(memoryId, userMessage);
+    }
+
+    /**
      * 简单模式
      * 调用万相进行图片生成
      * @param prompt

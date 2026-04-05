@@ -15,7 +15,8 @@ import reactor.core.publisher.Flux;
         chatModel = "openAiChatModel",
         streamingChatModel = "openAiStreamingChatModel",
         chatMemory = "chatMemory",
-        chatMemoryProvider = "chatMemoryProvider"
+        chatMemoryProvider = "chatMemoryProvider",
+        tools = "calculateTool"
 )
 public interface AiService {
 
@@ -101,4 +102,12 @@ public interface AiService {
     @SystemMessage("你是一个专业的中国法律专家，只根据法律规定回答问题，" +
             "输出限制：其他领域的问题禁止回答，直接返回，抱歉，我只能回答中国法律相关的的问题")
     Flux<String> answerLegalQuestion(LegalQuestion legalQuestion);
+
+    /**
+     * 计算流式聊天
+     * @param memoryId
+     * @param userMessage
+     * @return
+     */
+    Flux<String> calculateStream(@MemoryId String memoryId, @UserMessage String userMessage);
 }
