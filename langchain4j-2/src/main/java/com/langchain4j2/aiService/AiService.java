@@ -16,7 +16,7 @@ import reactor.core.publisher.Flux;
         streamingChatModel = "openAiStreamingChatModel",
         chatMemory = "chatMemory",
         chatMemoryProvider = "chatMemoryProvider",
-        tools = "calculateTool"
+        tools = {"calculateTool","productTool"}
 )
 public interface AiService {
 
@@ -110,4 +110,13 @@ public interface AiService {
      * @return
      */
     Flux<String> calculateStream(@MemoryId String memoryId, @UserMessage String userMessage);
+
+    /**
+     * 商品库存流式聊天
+     * @param memoryId
+     * @param userMessage
+     * @return
+     */
+    @SystemMessage("你是一个电商平台的机器人，帮助用户查询商品和配送详情，记住用户之前询问的商品，以便在后续对话中提供相关的信息")
+    Flux<String> productChatStream(@MemoryId String memoryId, @UserMessage String userMessage);
 }

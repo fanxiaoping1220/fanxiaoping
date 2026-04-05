@@ -166,6 +166,17 @@ public class PlanBChatController {
     }
 
     /**
+     * 商品聊天流式
+     * @param memoryId
+     * @param message
+     * @return
+     */
+    @GetMapping("/productChatStream")
+    public Flux<String> productChatStream(@RequestParam("memoryId") String memoryId, @RequestParam("message") String message){
+        return aiService.productChatStream(memoryId, message);
+    }
+
+    /**
      * 简单模式
      * 调用万相进行图片生成
      * @param prompt
