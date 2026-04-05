@@ -28,6 +28,6 @@ public class CalculateTool {
 
     @Tool(value = "对两个数字进行除法运算")
     public Double divide(Double a, Double b){
-        return new BigDecimal(a).divide(new BigDecimal(b)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return new BigDecimal(a).divide(new BigDecimal(b), 2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }
