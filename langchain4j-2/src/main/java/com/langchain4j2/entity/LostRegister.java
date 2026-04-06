@@ -2,6 +2,7 @@ package com.langchain4j2.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  * @since 2026-04-06 15:10:40
  */
 @Data
+@TableName("lost_register")
 public class LostRegister implements Serializable {
     private static final long serialVersionUID = 580329828448571092L;
 

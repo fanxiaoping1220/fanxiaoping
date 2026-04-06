@@ -51,6 +51,6 @@ public class AssistantController {
     @GetMapping("/streamIntention")
     public Flux<String> streamIntention(@RequestParam ("sessionId") Integer sessionId,
                                                  @RequestParam ("message") String message){
-        return aiChatIntentionService.chatStream(sessionId, message);
+        return Flux.just(aiChatIntentionService.chatStream(sessionId, message));
     }
 }
