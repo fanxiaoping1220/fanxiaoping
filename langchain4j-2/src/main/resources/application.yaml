@@ -61,9 +61,23 @@ mybatis-plus:
       # AUTO 自增 NONE 空 INPUT 用户输入 ASSIGN_ID 雪花 ASSIGN_UUID 唯一 UUID
       # 如需改为自增 需要将数据库表全部设置为自增
       idType: ASSIGN_ID
+  configuration:
+    # 开启SQL日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 logging:
   level:
     dev.langchain4j: debug
     root: info
+    # MyBatis SQL日志
+    com.baomidou.mybatisplus: debug
+    com.baomidou.mybatisplus.mapper: trace
+    # MyBatis日志
+    org.mybatis: debug
+    # JDBC SQL执行日志
+    org.springframework.jdbc.core.JdbcTemplate: debug
+    org.springframework.jdbc.core.StatementCreatorUtils: trace
+    # SQL日志
+    com.mysql.cj.jdbc: DEBUG
+    com.mysql.cj.protocol: DEBUG
