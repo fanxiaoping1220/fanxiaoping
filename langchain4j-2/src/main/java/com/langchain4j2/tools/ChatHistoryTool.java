@@ -26,7 +26,7 @@ public class ChatHistoryTool {
 
     @Tool("获取用户聊天历史对话")
     public List<ChatHistory> getChatHistory(@P(value = "会话ID") Integer sessionId){
-        return chatHistoryDao.selectList(new LambdaQueryWrapper<>(ChatHistory.class)
+        return chatHistoryDao.selectList(new LambdaQueryWrapper<ChatHistory>()
                 .eq(ChatHistory::getSessionId, sessionId)
                 .orderByDesc(ChatHistory::getCreateTime)
                 .last("limit 20"));
@@ -34,7 +34,7 @@ public class ChatHistoryTool {
 
     @Tool({"根据手机号获取失物招领信息","获取用户手机号对应的失物登记信息"})
     public List<LostRegister> getLostRegisterByPhone(@P(value = "手机号") String phone){
-        return lostRegisterDao.selectList(new LambdaQueryWrapper<>(LostRegister.class)
+        return lostRegisterDao.selectList(new LambdaQueryWrapper<LostRegister>()
                 .eq(LostRegister::getPhone, phone)
                 .orderByDesc(LostRegister::getUpdateTime));
     }
