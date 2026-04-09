@@ -47,10 +47,15 @@ public class AiChatIntentionServiceImpl implements AiChatIntentionService {
         LostRegisterOutput lostRegisterOutput = aiAssistant.registerLost(userId, message);
         log.info("lostRegisterOutput:{}", lostRegisterOutput);
         if (lostRegisterOutput.getCompleted()) {
-            // 用户确认完成，保存数据
             LostRegister lostRegister = new LostRegister();
             BeanUtils.copyProperties(lostRegisterOutput, lostRegister);
-            lostRegisterService.insert(lostRegister);
+            if(lostRegisterOutput.getId() != null){
+                log.info("更新失物登记信息:{}", lostRegister);
+                lostRegisterService.update(lostRegister);
+            }else {
+                log.info("插入失物登记信息:{}", lostRegister);
+                lostRegisterService.insert(lostRegister);
+            }
         }
         return lostRegisterOutput.getOutput();
     }

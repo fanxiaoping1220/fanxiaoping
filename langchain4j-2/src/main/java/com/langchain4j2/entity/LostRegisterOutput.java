@@ -10,6 +10,11 @@ import lombok.Data;
 public class LostRegisterOutput {
 
     /**
+     * 失物登记的id
+     */
+    @Description({"失物登记的id","数据库记录的id"})
+    private Long id;
+    /**
      * 大模型输出的内容
      */
     @Description("大模型输出的内容")

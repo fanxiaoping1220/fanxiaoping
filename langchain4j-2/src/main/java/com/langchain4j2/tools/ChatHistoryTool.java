@@ -2,7 +2,9 @@ package com.langchain4j2.tools;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.langchain4j2.dao.ChatHistoryDao;
+import com.langchain4j2.dao.LostRegisterDao;
 import com.langchain4j2.entity.ChatHistory;
+import com.langchain4j2.entity.LostRegister;
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ChatHistoryTool {
 
     private final ChatHistoryDao chatHistoryDao;
+    private final LostRegisterDao lostRegisterDao;
 
     @Tool("获取用户聊天历史对话")
     public List<ChatHistory> getChatHistory(@P(value = "会话ID") Integer sessionId){
@@ -27,5 +30,12 @@ public class ChatHistoryTool {
                 .eq(ChatHistory::getSessionId, sessionId)
                 .orderByDesc(ChatHistory::getCreateTime)
                 .last("limit 20"));
+    }
+
+    @Tool({"根据手机号获取失物招领信息","获取用户手机号对应的失物登记信息"})
+    public List<LostRegister> getLostRegisterByPhone(@P(value = "手机号") String phone){
+        return lostRegisterDao.selectList(new LambdaQueryWrapper<>(LostRegister.class)
+                .eq(LostRegister::getPhone, phone)
+                .orderByDesc(LostRegister::getUpdateTime));
     }
 }
