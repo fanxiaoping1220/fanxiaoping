@@ -1,4 +1,4 @@
-package com.langchain4j2.conifg;
+package com.langchain4j2.config;
 
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;

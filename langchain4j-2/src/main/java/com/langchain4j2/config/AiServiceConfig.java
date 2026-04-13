@@ -1,4 +1,4 @@
-package com.langchain4j2.conifg;
+package com.langchain4j2.config;
 
 import dev.langchain4j.community.store.memory.chat.redis.RedisChatMemoryStore;
 import dev.langchain4j.memory.ChatMemory;

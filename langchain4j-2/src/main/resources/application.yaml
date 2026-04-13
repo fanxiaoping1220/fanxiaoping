@@ -2,10 +2,20 @@ spring:
   application:
     name: langchain4j-2
   datasource:
-    url: jdbc:mysql://rm-2ze4fy49tij35tigpfo.mysql.rds.aliyuncs.com:3306/test?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: rendui,.!2026
+    dynamic:
+      primary: master
+      strict: false
+      datasource:
+        master:
+          url: jdbc:mysql://rm-2ze4fy49tij35tigpfo.mysql.rds.aliyuncs.com:3306/test?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          username: root
+          password: rendui,.!2026
+        slave:
+         url: jdbc:sqlserver://124.90.46.250:1433;databaseName=MG2020;encrypt=false;trustServerCertificate=true;
+         username: sa
+         password: mg.123456
+         driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
 server:
   port: 8080
@@ -64,7 +74,10 @@ mybatis-plus:
   configuration:
     # 开启SQL日志
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+    # 日期格式化处理
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+  # TypeHandler 扫描路径
+  type-handlers-package: com.langchain4j2.entity.handler
 
 logging:
   level:
