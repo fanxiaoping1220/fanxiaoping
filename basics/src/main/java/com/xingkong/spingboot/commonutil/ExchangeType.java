@@ -7,7 +7,7 @@ package com.xingkong.spingboot.commonutil;
  * @Date 2018/9/26 16:34
  * @Version 1.0.0
  **/
-public enum  ExchangeType {
+public enum ExchangeType {
 
     /**
      * type = direct

@@ -23,9 +23,9 @@ public class WatercolorSets {
         System.out.print(set2);
         System.out.print(set3);
         System.out.println();
-        System.out.println("并集union(set1,set2):"+SetsUtil.union(set1,set2));
-        System.out.println("共有intersection(set1,set2):"+SetsUtil.intersection(set1,SetsUtil.union(set1,set2)));
-        System.out.println("从a移除b包含的元素difference(set1,set2):"+SetsUtil.difference(SetsUtil.union(set1,set2),set1));
-        System.out.println("除交集之外的元素(set1,set2):"+SetsUtil.complement(set1,SetsUtil.union(set1,set2)));
+        System.out.println("并集union(set1,set2):" + SetsUtil.union(set1, set2));
+        System.out.println("共有intersection(set1,set2):" + SetsUtil.intersection(set1, SetsUtil.union(set1, set2)));
+        System.out.println("从a移除b包含的元素difference(set1,set2):" + SetsUtil.difference(SetsUtil.union(set1, set2), set1));
+        System.out.println("除交集之外的元素(set1,set2):" + SetsUtil.complement(set1, SetsUtil.union(set1, set2)));
     }
 }

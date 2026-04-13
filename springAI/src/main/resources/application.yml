@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: springAI
+    version: 1.0.0
+  # ??deepseek???????url?????????
+  ai:
+    deepseek:
+      api-key: sk-dc5bbf751c8643318d0d83fd92d7cd36
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+          temperature: 0.8 # ??0~2???0????????1???????
+    zhipuai: # ??AI
+      base-url: https://open.bigmodel.cn/api/paas
+      api-key: 6f0540468b104e149781575eddcb7aef.zVbuBH6XOtRpWBLJ
+#      embedding:
+#        options:
+#          model: Embedding-3
+      chat:
+        options:
+          model: GLM-4-Air-250414
+    dashscope: ## alibaba
+#      base-url: https://dashscope.aliyuncs.com #??????,?????
+      api-key: ${QWEN_API_KEY}
+#      chat:
+#        options:
+#          model: qwen-plus
+    vectorstore:
+      redis:
+        index-name: spring-ai-alibaba-rag
+        prefix: "rag:"
+        initialize-schema: true
+
+  data:
+    redis:
+      host: 1.94.101.207
+      port: 6379
+      password: PGFmy8pbBxeJYpYZ
+  autoconfigure:
+    exclude: dev.langchain4j.community.store.embedding.redis.spring.RedisEmbeddingStoreAutoConfiguration
+
+
+langchain4j:
+  community:
+    redis:
+      host: 1.94.101.207
+      port: 6379
+      password: PGFmy8pbBxeJYpYZ
+
+server:
+  port: 8080
+  servlet:  ## ?????????
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+
+logging:
+  level:
+    org.springframework.ai: debug
+    org.springframework.ai.deepseek: debug
+    org.springframework.ai.zhipuai: debug
+    com.alibaba.cloud.ai: debug
+    org.springframework.web.reactive.function.client: debug

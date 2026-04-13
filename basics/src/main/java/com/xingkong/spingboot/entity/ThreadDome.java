@@ -13,13 +13,13 @@ public class ThreadDome implements Runnable {
 
     @Override
     public void run() {
-        try{
+        try {
             Thread.sleep(200);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         flag = true;
-        System.out.println("flag="+flag);
+        System.out.println("flag=" + flag);
     }
 
     public boolean isFlag() {

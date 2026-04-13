@@ -1,0 +1,137 @@
+#-----------------数据库---------------------------------------
+spring:
+  application:
+    name: basics
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/learn?characterEncoding=utf8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    database: 10
+    host: r-2zewkei5oh67ybtnn5pd.redis.rds.aliyuncs.com
+    port: 6379
+    lettuce:
+      pool:
+        min-idle: 0
+        max-wait: -1
+        max-idle: 8
+        max-active: 8
+    password: Rendui123456!
+# redis集群配置
+#  redis:
+#    password: #密码
+#    cluster:
+#      max-redirects: 3 #最大重定向次数
+#      nodes: #集群节点
+#    lettuce:
+#      cluster:
+#        refresh:
+#          period: 2000 #定时刷新
+#          adaptive: true #支持集群拓扑动态感应刷新，自适应拓扑刷新是否使用所有可用的更新，默认false关闭
+#      pool:
+#        max-active: 8 #最大活动连接数
+#        max-idle: 8 #最大空闲连接数
+#        min-idle: 0 #最小空闲连接数
+#        max-wait: -1 #最大等待时间
+
+#  kafka:
+#    producer:
+#      bootstrap-servers: 127.0.0.1:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#    consumer:
+#      group-id: foo
+  cache:
+    type: redis
+    cache-names: redisCache
+  rabbitmq:
+    host: 123.57.13.131
+    port: 5671
+    username: admin
+    password: rendui@123456!
+    connection-timeout: 60s
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动ack auto自动ack
+        retry:
+          enabled: true # 开启重试
+          max-attempts: 3  # 最大重试次数
+          max-interval: 1000ms # 最大间隔时间
+        default-requeue-rejected: false # 被拒绝的消息是否重新入列 默认为true
+    publisher-returns: true # 消息发布返回
+    publisher-confirm-type: simple
+  data:
+    mongodb:
+      uri: mongodb://root:Rendui147258!@s-2ze5fecabeb3e6c4-pub.mongodb.rds.aliyuncs.com:3717,s-2ze8fbbfbc3d8d34-pub.mongodb.rds.aliyuncs.com:3717/rendui-test
+    elasticsearch:
+      client:
+        reactive:
+          endpoints: es-cn-lbj3kbahf0009fmvx.public.elasticsearch.aliyuncs.com:9200
+          username: elastic
+          password: rendui123456!
+          connection-timeout: 10s
+  elasticsearch:
+    rest:
+      uris: es-cn-lbj3kbahf0009fmvx.public.elasticsearch.aliyuncs.com:9200
+  mail:
+    host: smtp.163.com
+    password: FQXKPKXUTNZCKUEA
+    username: fan18324485857@163.com
+
+rocketmq:
+  name-server: 123.57.13.131:9876
+  producer:
+    group: my_group
+
+
+server:
+  port: 9000
+
+person:
+  id: 100
+  age: 10
+  birthday: 1992/12/20
+  map: {ss: 123,name: xingkong,age: sdf}
+  list:
+    - 123
+    - dfxj
+    - xingkong
+  name: fan18324485857@163.com
+
+rabbitmq:
+  queue:
+    name: ${server.port}
+
+echarts:
+  host: http://127.0.0.1:6666
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.xingkong.spingboot.entity
+
+
+
+#------------日志---------------------
+logging:
+  level:
+    javax:
+      activation: debug
+    org:
+      mybatis:
+        spring: debug
+      springframework: debug
+      springframework.boot: debug
+    root: debug
+
+wxpay:
+  mchId: 1376395802
+  appId: wxa11729a79b0e847e
+  mchKey: wing123456wing123456wing123456wi
+  apiV3Key: adjf232893jsejsaSasdf828320qfjqh
+  certSerialNo: 2FA165D45C8938477421C509F5567D6C6694EECF
+  keyPath: ./cert/apiclient_cert.p12
+  privateCertPath: ./cert/apiclient_cert.pem
+  privateKeyPath: ./cert/apiclient_key.pem

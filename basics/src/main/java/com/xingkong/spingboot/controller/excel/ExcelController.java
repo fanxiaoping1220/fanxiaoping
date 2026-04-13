@@ -1,0 +1,328 @@
+package com.xingkong.spingboot.controller.excel;
+
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.alibaba.excel.annotation.format.NumberFormat;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.alibaba.excel.converters.Converter;
+import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.util.FileUtils;
+import com.alibaba.excel.write.merge.LoopMergeStrategy;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.write.metadata.style.WriteCellStyle;
+import com.alibaba.excel.write.metadata.style.WriteFont;
+import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.xingkong.spingboot.controller.excel.read.ReadUser;
+import com.xingkong.spingboot.controller.excel.read.UserInfoDTO;
+import com.xingkong.spingboot.service.excel.entity.*;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
+/**
+ * @className: ExcelController
+ * @description: excel写入
+ * @author: 范小平
+ * @date: 2019-10-31 10:48
+ * @version: 1.0.0
+ */
+@RestController
+@RequestMapping(value = "/excel")
+public class ExcelController {
+
+
+    /**
+     * 写法一 参照{@link DemoDateDO}
+     * 导出demoExcel
+     */
+    @PostMapping(value = "/demoExportExcel")
+    void demoExportExcel(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        EasyExcel.write(response.getOutputStream(), DemoDateDO.class).sheet().doWrite(doList());
+    }
+
+    /**
+     * 写法二
+     *
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/demoExportExcelTwo")
+    void demoExportExcelTwo(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), DemoDateDO.class).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet().build();
+        build.write(doList(), writeSheet);
+        //千万别忘记finish 会帮忙关闭流
+        build.finish();
+    }
+
+    /**
+     * 复杂头导出 参照 {@link ComplexDateDO}
+     *
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/complexHeader")
+    void complexHeader(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        List<DemoDateDO> demoDateList = doList();
+        List<ComplexDateDO> list = new ArrayList<>();
+        demoDateList.forEach(demoDateDO -> {
+            ComplexDateDO complexDateDO = new ComplexDateDO();
+            BeanUtils.copyProperties(demoDateDO, complexDateDO);
+            list.add(complexDateDO);
+        });
+        EasyExcel.write(response.getOutputStream(), DemoDateDO.class).sheet().doWrite(list);
+    }
+
+    /**
+     * 重复多次写入 参照{@link DemoDateDO}
+     * 方法一 写到同一个sheet
+     *
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/repeatedWriteOne")
+    void repeatedWriteOne(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        //指定写用哪个class去读
+        ExcelWriter write = EasyExcel.write(response.getOutputStream(), DemoDateDO.class).build();
+        //如果同一个sheet只要创建一次
+        WriteSheet writeSheet = EasyExcel.writerSheet().build();
+        //去调用写入，这里我调用了5次，实际使用时根据数据库分页的总也数来
+        for (int i = 0; i < 5; i++) {
+            //分页去数据库查询数据，这里可以去数据库查询每一页的数据
+            write.write(doList(), writeSheet);
+        }
+        //千万别忘记finish 会帮忙关闭流
+        write.finish();
+    }
+
+    /**
+     * 重复多次写入 参照{@link DemoDateDO}
+     * 方法二 如果写到不同的sheet 同一个对象
+     *
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/repeatedWriteTwo")
+    void repeatedWriteTwo(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        //指定class
+        ExcelWriter write = EasyExcel.write(response.getOutputStream(), DemoDateDO.class).build();
+        //去调用写入,这里我调用了五次，实际使用时根据数据库分页的总的页数来。这里最终会写到5个sheet里面
+        for (int i = 0; i < 5; i++) {
+            //每次都要创建writeSheet 这里注意必须指定sheetNo
+            WriteSheet writeSheet = EasyExcel.writerSheet(i).build();
+            //分页去数据库查询数据 这里可以去数据库查询每一页的数据
+            write.write(doList(), writeSheet);
+        }
+        write.finish();
+    }
+
+    /**
+     * 重复多次写入 参照{@link DemoDateDO}
+     * 方法三 写到不同的sheet,不同的对象
+     *
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/repeatedWriteThree")
+    void repeatedWriteThree(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        //不指定class
+        ExcelWriter writer = EasyExcel.write(response.getOutputStream()).build();
+        // 去调用写入,这里我调用了五次，实际使用时根据数据库分页的总的页数来。这里最终会写到5个sheet里面
+        for (int i = 0; i < 5; i++) {
+            // 每次都要创建writeSheet 这里注意必须指定sheetNo。这里注意DemoData.class 可以每次都变，我这里为了方便 所以用的同一个class 实际上可以一直变
+            WriteSheet writeSheet = EasyExcel.writerSheet(i).head(DemoDateDO.class).build();
+            // 分页去数据库查询数据 这里可以去数据库查询每一页的数据
+            writer.write(doList(), writeSheet);
+        }
+        // 千万别忘记finish 会帮忙关闭流
+        writer.finish();
+    }
+
+    /**
+     * 自定格式转换
+     * 参照 {@link ConverterDataDO}
+     * 配合使用注解{@link DateTimeFormat},{@link NumberFormat}
+     * 格式转换
+     * LocalTime LocalDate LocalDateTime 需要重写{@link Converter}
+     * Date 可以直接用 {@link com.alibaba.excel.annotation.format.DateTimeFormat}
+     *
+     * @param response
+     */
+    @PostMapping(value = "/converterWrite")
+    void converterWrite(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        List<DemoDateDO> demoDateList = doList();
+        List<ConverterDataDO> list = new ArrayList<>();
+        demoDateList.forEach(demoDateDO -> {
+            ConverterDataDO converterDataDO = new ConverterDataDO();
+            converterDataDO.setString(demoDateDO.getTitle());
+            converterDataDO.setDate(LocalTime.now());
+            converterDataDO.setDoubleDate(demoDateDO.getDoubleDate());
+            list.add(converterDataDO);
+        });
+        EasyExcel.write(response.getOutputStream(), ConverterDataDO.class).sheet().doWrite(list);
+    }
+
+    /**
+     * 图片导出
+     *
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/imageWrite")
+    void imageWrite(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        List<ImageDateDO> list = new ArrayList<>();
+        ImageDateDO imageDateDO = new ImageDateDO();
+        list.add(imageDateDO);
+        String imagepath = (new File("")).getAbsolutePath() + File.separator + "image" + File.separator + "img.jpg";
+        //放入四种类型的图片,实际使用只要选一种即可
+        //文件
+        imageDateDO.setFile(new File(imagepath));
+        //inPutStream
+        imageDateDO.setInputStream(new FileInputStream(new File(imagepath)));
+        //地址
+        imageDateDO.setString(imagepath);
+        //byte
+        imageDateDO.setByteArray(FileUtils.readFileToByteArray(new File(imagepath)));
+        EasyExcel.write(response.getOutputStream(), ImageDateDO.class).sheet().doWrite(list);
+    }
+
+    /**
+     * 设置列宽，行高
+     * 参照{@link WithAndHeightDataVO}
+     * 列宽{@link ColumnWidth}
+     * 头部行高{@link com.alibaba.excel.annotation.write.style.HeadRowHeight}
+     * 内容行高{@link com.alibaba.excel.annotation.write.style.ContentRowHeight}
+     *
+     * @param response
+     * @throws UnsupportedEncodingException
+     */
+    @PostMapping(value = "/withAndHeightWrite")
+    void withAndHeightWrite(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        List<DemoDateDO> demoDateList = doList();
+        List<WithAndHeightDataVO> list = new ArrayList<>();
+        demoDateList.forEach(demoDateDO -> {
+            WithAndHeightDataVO withAndHeightDataVO = new WithAndHeightDataVO();
+            withAndHeightDataVO.setString(demoDateDO.getTitle());
+            withAndHeightDataVO.setDate(new Date());
+            withAndHeightDataVO.setDoubleData(demoDateDO.getDoubleDate());
+            list.add(withAndHeightDataVO);
+        });
+        EasyExcel.write(response.getOutputStream(), WithAndHeightDataVO.class).sheet().doWrite(list);
+    }
+
+    /**
+     * 自定义样式
+     * 参照对象{@link DemoDateDO} 忽然字段 {@link com.alibaba.excel.annotation.ExcelIgnore}
+     * 创建样式策略
+     *
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/styleWrite")
+    void styleWrite(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        //设置头部 背景色，字的字体颜色以及大小
+        WriteCellStyle headStyle = new WriteCellStyle();
+        headStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+        WriteFont headFont = new WriteFont();
+        headFont.setFontHeightInPoints((short) 15);
+        headFont.setColor(IndexedColors.BLUE.getIndex());
+        headStyle.setWriteFont(headFont);
+        //设置内容 背景色，字的字体颜色以及大小
+        WriteCellStyle contentStyle = new WriteCellStyle();
+        //要设置内容背景色需要设置FillPatternType.SOLID_FOREGROUND,不设置无法添加背景颜色
+        contentStyle.setFillPatternType(FillPatternType.SOLID_FOREGROUND);
+        contentStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        WriteFont contentFont = new WriteFont();
+        contentFont.setFontHeightInPoints((short) 10);
+        contentFont.setColor(IndexedColors.DARK_BLUE.getIndex());
+        contentStyle.setWriteFont(contentFont);
+        //设置头部是头部的样式，内容是内容的样式
+        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headStyle, contentStyle);
+        EasyExcel.write(response.getOutputStream(), DemoDateDO.class)
+                .registerWriteHandler(horizontalCellStyleStrategy).sheet()
+                .doWrite(doList());
+
+    }
+
+    /**
+     * 合并单元格
+     * 1.创建实体对象 参照{@link DemoDateDO}
+     * 2.创建策略，并注册
+     *
+     * @param response
+     * @throws IOException
+     */
+    @PostMapping(value = "/mergeWrite")
+    void mergeWrite(HttpServletResponse response) throws IOException {
+        setResponse(response);
+        //每2行合并一次，对应字段为0
+        LoopMergeStrategy loopMergeStrategy = new LoopMergeStrategy(2, 0);
+        EasyExcel.write(response.getOutputStream(), DemoDateDO.class)
+                .registerWriteHandler(loopMergeStrategy).sheet().doWrite(doList());
+
+    }
+
+    @PostMapping(value = "/test")
+    public void test(){
+        String path = "C:"+ File.separator+"Users"+ File.separator+"cky"+ File.separator+"Desktop"+ File.separator+"电信小程序项目"+File.separator+"导入用户.xlsx";
+        EasyExcel.read(path, UserInfoDTO.class, new ReadUser()).sheet().doRead();
+    }
+
+    private void setResponse(HttpServletResponse response) throws UnsupportedEncodingException {
+        String path = "demo" + ExcelTypeEnum.XLSX.getValue();
+        String name = URLEncoder.encode(path, "UTF-8");
+        //设置请求头
+        response.setHeader("content-Type", "application/vnd.ms-excel");
+        response.setHeader("Content-disposition", "attachment;filename=" + name);
+        response.setHeader("fileName", name);
+        response.setHeader("Access-Control-Expose-Headers", "fileName,Content-disposition");
+    }
+
+    /**
+     * 模拟生成数据
+     *
+     * @return
+     */
+    private List<DemoDateDO> doList() {
+        List<DemoDateDO> list = new ArrayList<>();
+        for (int i = 0; i <= 10; i++) {
+            DemoDateDO demo = new DemoDateDO();
+            demo.setDate(LocalDate.now().plusDays(i).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            demo.setDoubleDate(15.26 * i);
+            demo.setTitle("字符串标题:" + i);
+            list.add(demo);
+        }
+        return list;
+    }
+
+}

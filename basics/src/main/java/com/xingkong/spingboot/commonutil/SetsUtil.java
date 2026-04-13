@@ -14,12 +14,13 @@ public class SetsUtil {
 
     /**
      * a与b的合集
+     *
      * @param a
      * @param b
      * @param <T>
      * @return
      */
-    public static <T> Set<T> union(Set<T> a ,Set<T> b){
+    public static <T> Set<T> union(Set<T> a, Set<T> b) {
         Set<T> result = new HashSet<>(a);
         result.addAll(b);
         return result;
@@ -27,12 +28,13 @@ public class SetsUtil {
 
     /**
      * b与a共有的
+     *
      * @param a
      * @param b
      * @param <T>
      * @return
      */
-    public static <T> Set<T> intersection(Set<T> a ,Set<T> b){
+    public static <T> Set<T> intersection(Set<T> a, Set<T> b) {
         Set<T> result = new HashSet<>(a);
         result.retainAll(b);
         return result;
@@ -40,12 +42,13 @@ public class SetsUtil {
 
     /**
      * 从a移除b包含的元素
+     *
      * @param a
      * @param b
      * @param <T>
      * @return
      */
-    public static <T> Set<T> difference(Set<T> a ,Set<T> b){
+    public static <T> Set<T> difference(Set<T> a, Set<T> b) {
         Set<T> result = new HashSet<>(a);
         result.removeAll(b);
         return result;
@@ -53,12 +56,13 @@ public class SetsUtil {
 
     /**
      * 除交集之外的元素
+     *
      * @param a
      * @param b
      * @param <T>
      * @return
      */
-    public static <T> Set<T> complement(Set<T> a ,Set<T> b){
-        return difference(union(a,b),intersection(a,b));
+    public static <T> Set<T> complement(Set<T> a, Set<T> b) {
+        return difference(union(a, b), intersection(a, b));
     }
 }

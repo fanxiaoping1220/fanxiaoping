@@ -41,9 +41,10 @@ public class Java8SortTest {
 
     /**
      * Java 7 的排序
+     *
      * @param list
      */
-    private void sortUsingJava7(List<String> list){
+    private void sortUsingJava7(List<String> list) {
         Collections.sort(list, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -54,10 +55,11 @@ public class Java8SortTest {
 
     /**
      * Java 8 的排序
+     *
      * @param list
      */
-    private void sortUsingJava8(List<String> list){
-        Collections.sort(list,(s1,s2) -> s1.compareTo(s2));
+    private void sortUsingJava8(List<String> list) {
+        Collections.sort(list, (s1, s2) -> s1.compareTo(s2));
     }
 
 }

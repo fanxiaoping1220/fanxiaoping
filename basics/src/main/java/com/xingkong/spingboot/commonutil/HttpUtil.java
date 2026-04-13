@@ -32,6 +32,7 @@ public class HttpUtil {
 
     /**
      * 发送HttpGet请求
+     *
      * @param url
      * @return
      */
@@ -64,6 +65,7 @@ public class HttpUtil {
 
     /**
      * 发送HttpPost请求，参数为map
+     *
      * @param url
      * @param map
      * @return
@@ -94,11 +96,12 @@ public class HttpUtil {
 
     /**
      * 发送HTTP post请求 参数为String
-     * @param url url地址
+     *
+     * @param url  url地址
      * @param para 参数
      * @return
      */
-    public static String sendPost(String url,String para){
+    public static String sendPost(String url, String para) {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader("Content-Type", "application/json; charset=UTF-8");
         StringEntity stringEntity = new StringEntity(para, Charset.forName("UTF-8"));
@@ -121,6 +124,7 @@ public class HttpUtil {
 
     /**
      * 发送不带参数的HttpPost请求
+     *
      * @param url
      * @return
      */

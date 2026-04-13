@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: langchain4j
+  data:
+    redis:
+      host: 1.94.101.207
+      port: 6379
+      password: PGFmy8pbBxeJYpYZ
+      database: 10
+  datasource:
+    url: jdbc:mysql://rm-2ze4fy49tij35tigpfo.mysql.rds.aliyuncs.com:3306/test?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: rendui,.!2026
+
+server:
+  port: 8080
+
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: ${QWEN_API_KEY}
+      model-name: qwen-plus
+      log-requests: true
+      log-responses: true
+    streaming-chat-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: ${QWEN_API_KEY}
+      model-name: qwen-plus
+      log-requests: true
+      log-responses: true
+    embedding-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: ${QWEN_API_KEY}
+      model-name: text-embedding-v3
+      log-requests: true
+      log-responses: true
+  community:
+    redis:
+      host: 1.94.101.207
+      port: 6379
+      password: PGFmy8pbBxeJYpYZ
+    #方式二的方式
+    dashscope:
+      chat-model:
+        api-key: ${QWEN_API_KEY}
+        model-name: qwen-plus
+
+# MyBatisPlus配置
+# https://baomidou.com/config/
+mybatis-plus:
+  # 自定义配置 是否全局开启逻辑删除 关闭后 所有逻辑删除功能将失效
+  enableLogicDelete: true
+  # 多包名使用 例如 org.dromara.**.mapper,org.xxx.**.mapper
+  mapperPackage: org.dromara.**.mapper
+  # 对应的 XML 文件位置
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: org.dromara.**.domain
+  global-config:
+    dbConfig:
+      # 主键类型
+      # AUTO 自增 NONE 空 INPUT 用户输入 ASSIGN_ID 雪花 ASSIGN_UUID 唯一 UUID
+      # 如需改为自增 需要将数据库表全部设置为自增
+      idType: ASSIGN_ID
+
+logging:
+  level:
+    dev.langchain4j: debug
+    root: info
